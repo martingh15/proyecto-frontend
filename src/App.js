@@ -1,58 +1,57 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+
+//Actions
+import { fetchUsuarioLogueadoIfNeeded } from "./actions/UsuarioActions";
+
+//Constants
+import * as rutas from './constants/rutas.js';
+
+//Components
+import Navegador from "./components/elementos/Navegador";
+import Inicio from "./components/secciones/Inicio";
+import Login from "./components/secciones/Login";
+import Registro from "./components/secciones/Registro";
+import CambiarPassword from "./components/secciones/CambiarPassword";
+import ValidarEmail from "./components/secciones/ValidarEmail";
+import NotFound from "./components/secciones/NotFound";
+
+//Redux
+import {connect} from 'react-redux';
+
+//Router
+import { withRouter } from "react-router-dom";
+import { Route, Switch } from "react-router";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+      <div className="app">
+          <Navegador />
+          <div className="contenedor">
+              <Switch>
+                  <Route exact path={rutas.INICIO} component={Inicio} />
+                  <Route exact path={rutas.LOGIN} component={Login} />
+                  <Route exact path={rutas.REGISTRO} component={Registro} />
+                  <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
+                  <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
+                  <Route exact path="*" component={NotFound} />
+              </Switch>
+          </div>
+      </div>
+
   );
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        authentication: state.authentication,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchUsuarioLogueadoIfNeeded: () => {
+            dispatch(fetchUsuarioLogueadoIfNeeded())
+        },
+    }
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

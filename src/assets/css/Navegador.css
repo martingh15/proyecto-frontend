@@ -1,0 +1,102 @@
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+.navegador {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    height: 60px;
+    position: fixed;
+    z-index: 10;
+    width: 100vw;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    background-color: #1579bf;
+    align-items: center;
+}
+
+.navegador .no-mostrar {
+    display: none !important;
+}
+
+.navegador .logo {
+    height: 30px;
+    width: 30px;
+    margin: 10px 0 10px 30px;
+    cursor: pointer;
+}
+
+.navegador .itemMenu {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    margin-right: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.navegador .itemMenu:hover {
+    text-decoration: none;
+}
+
+.navegador .itemMenu:focus {
+    background-color: transparent;
+}
+
+.navegador button, .navegador button:hover, .navegador .btn-primary:not(:disabled):not(.disabled).active:focus, .navegador .btn-primary:not(:disabled):not(.disabled):active:focus, .navegador .show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: none !important;
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+.navegador .izquierda a, .navegador .derecha a {
+   display: none;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+    .navegador .izquierda a, .navegador .derecha a {
+        display: block;
+    }
+
+    .navegador .izquierda {
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+    }
+
+    .navegador .izquierda .itemMenu {
+        margin-left: 20px;
+    }
+
+    .navegador .derecha {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+    }
+
+    .navegador .usuario-logueado {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-right: 30px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .navegador .usuario-logueado .logout {
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+}

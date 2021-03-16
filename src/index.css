@@ -11,3 +11,63 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.contenedor {
+  padding-top: 80px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("./assets/img/fondo.jpg");
+  height: auto;
+  min-height: 100vh;
+}
+
+.tarjeta-body {
+  background-color: white;
+  border-radius: 6px;
+  margin: 0 auto;
+  display: block;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 0px;
+}
+
+.tarjeta-body h4 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.tarjeta-body .olvide-password {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tarjeta-body .email-valido {
+  font-size: 12px;
+  color: red;
+}
+
+.tarjeta-body .boton-submit {
+  margin: 0 auto;
+  display: block;
+  margin-top: 20px;
+}
+
+.hvr-grow {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translateZ(0);
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  transform: scale(1.1);
+}
+
+@media (max-width: 450px) {
+  .tarjeta-body {
+    width: 250px !important;
+  }
+}
