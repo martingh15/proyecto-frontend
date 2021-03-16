@@ -14,6 +14,7 @@ import Registro from "./components/secciones/Registro";
 import CambiarPassword from "./components/secciones/CambiarPassword";
 import ValidarEmail from "./components/secciones/ValidarEmail";
 import NotFound from "./components/secciones/NotFound";
+import MenuAlta from "./components/secciones/MenuAlta"
 
 //Redux
 import {connect} from 'react-redux';
@@ -30,6 +31,7 @@ function App() {
               <Switch>
                   <Route exact path={rutas.INICIO} component={Inicio} />
                   <Route exact path={rutas.LOGIN} component={Login} />
+                  <Route exact path={rutas.ALTA_MENU} component={MenuAlta} />
                   <Route exact path={rutas.REGISTRO} component={Registro} />
                   <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
                   <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />

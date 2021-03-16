@@ -148,6 +148,13 @@ class Navegador extends React.Component {
                         admin={true}
                         ruta={rutas.GESTION}
                     />
+                    <ItemMenu
+                        mostrar={true}
+                        grow={true}
+                        texto={"Alta Menu"}
+                        admin={true}
+                        ruta={rutas.ALTA_MENU}
+                    />
                 </div>
                 <div className="derecha">
                     <NoLogueado mostrar={!logueado}/>

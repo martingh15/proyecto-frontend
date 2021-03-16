@@ -67,8 +67,7 @@ class Login extends React.Component {
     }
 
     render() {
-        console.log('loginn')
-        const nuevoUsuario = this.props.usuarios.create.nuevo;
+        const nuevoUsuario = this.props.authentication.usuario;
         return (
             <div className="login">
                 <div className="login-contenedor">

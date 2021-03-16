@@ -1,0 +1,15 @@
+.alta-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+.alta-menu .alta-menu-contenedor {
+    width: 400px;
+}
+
+.alta-menu .alta-menu-contenedor h1 {
+    font-size: 20px;
+    text-align: center;
+}
