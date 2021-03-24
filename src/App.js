@@ -14,6 +14,7 @@ import Registro from "./components/secciones/Registro";
 import MiPerfil from "./components/secciones/MiPerfil";
 import CambiarPassword from "./components/secciones/CambiarPassword";
 import ValidarEmail from "./components/secciones/ValidarEmail";
+import Gestion from "./components/secciones/Gestion";
 import NotFound from "./components/secciones/NotFound";
 
 //Redux
@@ -35,6 +36,7 @@ function App() {
                   <Route exact path={rutas.MI_PERFIL} component={MiPerfil} />
                   <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
                   <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
+                  <Route exact path={rutas.GESTION} component={Gestion} />
                   <Route exact path="*" component={NotFound} />
               </Switch>
           </div>

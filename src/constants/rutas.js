@@ -9,9 +9,11 @@ export const VALIDAR_EMAIL  = '/validar-email/:token';
 export const RESET_PASSWORD = '/reset-password/:token';
 
 //System routes
-export const MENU    = '/menu';
-export const ALMACEN = '/almacen';
-export const GESTION = '/gestion';
+export const MENU     = '/menu';
+export const ALMACEN  = '/almacen';
+export const GESTION  = '/gestion';
+export const COMPRAS  = '/compras';
+export const USUARIOS = '/admin/usuario';
 
 const RUTAS = [
     LOGIN,
@@ -22,7 +24,9 @@ const RUTAS = [
     RESET_PASSWORD,
     MENU,
     ALMACEN,
-    GESTION
+    GESTION,
+    USUARIOS,
+    COMPRAS
 ];
 
 export function validarRuta(ruta) {
