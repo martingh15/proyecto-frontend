@@ -1,6 +1,5 @@
 import {combineReducers} from 'redux';
 import merge from "lodash/merge";
-// import union from "lodash/union";
 
 //Actions
 import {
@@ -21,6 +20,7 @@ import {
 
 } from '../actions/UsuarioActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
+
 
 function usuariosById(state = {
     isFetching: false,
@@ -97,7 +97,12 @@ function create(state = {
 function update(state = {
     isFetchingUsuarioLogueado: false,
     isUpdating: false,
-    activo: {},
+    activo: {
+        nombre_modificado: '',
+        email: '',
+        password: '',
+        confirmaPass: ''
+    },
     success: "",
     error: null
 }, action) {
@@ -153,9 +158,10 @@ function update(state = {
                 error: action.error,
             });
         case RECEIVE_USUARIO_LOGUEADO:
+            let usuario = action.usuario ? action.usuario.entities.usuarios[action.usuario.result] : {};
             return Object.assign({}, state, {
                 isFetchingUsuarioLogueado: false,
-                activo: action.usuario ? action.usuario.entities.usuarios[action.usuario.result] : {},
+                activo: merge({}, state.activo, usuario),
                 lastUpdated: action.receivedAt,
                 success: action.message,
                 error: null

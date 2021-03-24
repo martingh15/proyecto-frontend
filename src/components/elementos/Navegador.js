@@ -7,6 +7,10 @@ import { withRouter } from "react-router-dom";
 
 //Actions
 import { logout } from "../../actions/AuthenticationActions";
+import {fetchUsuarioLogueadoIfNeeded} from "../../actions/UsuarioActions";
+
+//Api
+import auth from "../../api/authentication";
 
 //Constants
 import * as rutas from '../../constants/rutas.js';
@@ -26,6 +30,10 @@ class Navegador extends React.Component {
     }
 
     componentDidMount() {
+        window.scroll(0, 0);
+        if (auth.idUsuario()) {
+            this.props.fetchUsuarioLogueadoIfNeeded();
+        }
         if (this.props.usuarios.update.activo.nombre) {
             this.setNombreUsuarioLogueado();
         }
@@ -170,6 +178,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         logout: () => {
             dispatch(logout())
+        },
+        fetchUsuarioLogueadoIfNeeded: () => {
+            dispatch(fetchUsuarioLogueadoIfNeeded())
         }
     }
 };

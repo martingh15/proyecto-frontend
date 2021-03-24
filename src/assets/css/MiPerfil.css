@@ -1,0 +1,18 @@
+.datos-usuario form {
+    width: 400px;
+}
+
+.datos-usuario .botones {
+    display: flex;
+}
+
+.datos-usuario .contenedor-contrasenia {
+    position: relative;
+}
+
+.datos-usuario .contenedor-contrasenia .ver-password {
+    width: 20px;
+    position: absolute;
+    right: 10px;
+    top: 9px;
+}

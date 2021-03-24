@@ -2,8 +2,9 @@
 export const LOGIN          = '/login';
 export const LOGOUT         = '/logout';
 export const PERFIL         = '/perfil';
-export const INICIO          = '/';
+export const INICIO         = '/';
 export const REGISTRO       = '/registro';
+export const MI_PERFIL      = '/perfil';
 export const VALIDAR_EMAIL  = '/validar-email/:token';
 export const RESET_PASSWORD = '/reset-password/:token';
 

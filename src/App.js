@@ -11,6 +11,7 @@ import Navegador from "./components/elementos/Navegador";
 import Inicio from "./components/secciones/Inicio";
 import Login from "./components/secciones/Login";
 import Registro from "./components/secciones/Registro";
+import MiPerfil from "./components/secciones/MiPerfil";
 import CambiarPassword from "./components/secciones/CambiarPassword";
 import ValidarEmail from "./components/secciones/ValidarEmail";
 import NotFound from "./components/secciones/NotFound";
@@ -31,6 +32,7 @@ function App() {
                   <Route exact path={rutas.INICIO} component={Inicio} />
                   <Route exact path={rutas.LOGIN} component={Login} />
                   <Route exact path={rutas.REGISTRO} component={Registro} />
+                  <Route exact path={rutas.MI_PERFIL} component={MiPerfil} />
                   <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
                   <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
                   <Route exact path="*" component={NotFound} />
