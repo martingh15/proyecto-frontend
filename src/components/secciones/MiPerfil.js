@@ -26,7 +26,7 @@ class MiPerfil extends React.Component {
         this.state = {
             fueModificado: false,
             imgPassword: blackEye,
-            mostrarClave: false,
+            tipo: 'password'
         }
 
         this.confirmaPass = React.createRef();
@@ -63,10 +63,9 @@ class MiPerfil extends React.Component {
     }
 
     toogleClave(mostrar) {
-        let inputs = document.getElementsByClassName("input-clave");
-        for (let input of inputs) {
-            input.type = mostrar ? "text" : "password";
-        }
+        this.setState(prevState => ({
+            tipo: mostrar ? 'text' : 'password'
+        }))
     }
 
     onChangeUsuario(e) {
@@ -104,7 +103,7 @@ class MiPerfil extends React.Component {
 
     render() {
         const usuarioLogueado = this.props.usuarios.update.activo;
-        const {fueModificado, verPassword, imgPassword } = this.state;
+        const {fueModificado, verPassword, imgPassword, tipo } = this.state;
         const passwordVacias =
             (usuarioLogueado.password === "" || usuarioLogueado.password === undefined)
             || (usuarioLogueado.password_confirmation === "" || usuarioLogueado.password_confirmation === undefined);
@@ -147,7 +146,7 @@ class MiPerfil extends React.Component {
                             <input
                                 id="password"
                                 className="form-control input-clave"
-                                type="password"
+                                type={tipo}
                                 onChange={(e) => this.onChangeUsuario(e)}
                                 value={usuarioLogueado ? usuarioLogueado.password : ""}
                                 required={!passwordVacias}
@@ -168,7 +167,7 @@ class MiPerfil extends React.Component {
                                 id="confirmaPass"
                                 ref={this.confirmaPass}
                                 className="form-control input-clave"
-                                type="password"
+                                type={tipo}
                                 onChange={(e) => this.onChangeUsuario(e)}
                                 value={usuarioLogueado ? usuarioLogueado.confirmaPass : ""}
                                 required={!passwordVacias}
