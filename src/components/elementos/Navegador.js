@@ -25,7 +25,8 @@ class Navegador extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nombre: ''
+            nombre: '',
+            esAdmin: null,
         }
     }
 
@@ -40,9 +41,15 @@ class Navegador extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.usuarios.update.activo.nombre !== this.props.usuarios.update.activo.nombre
-            && (this.state.nombre === "" || this.state.nombre !== this.props.usuarios.update.activo.nombre)) {
+        let logueado = this.props.usuarios.update.activo;
+        if (prevProps.usuarios.update.activo.nombre !== logueado.nombre
+            && (this.state.nombre === "" || this.state.nombre !== logueado.nombre)) {
             this.setNombreUsuarioLogueado();
+        }
+        if (this.state.esAdmin === null && logueado.id) {
+            this.setState({
+                esAdmin: logueado.esAdmin
+            });
         }
     }
 
@@ -64,7 +71,7 @@ class Navegador extends React.Component {
     }
 
     render() {
-        const { nombre } = this.state;
+        const { nombre, esAdmin } = this.state;
         const logueado = this.props.authentication.token;
         const ItemMenu = props => {
             let display = props.mostrar ? "" : "no-mostrar";
@@ -150,7 +157,7 @@ class Navegador extends React.Component {
                         ruta={rutas.MENU}
                     />
                     <ItemMenu
-                        mostrar={true}
+                        mostrar={esAdmin}
                         grow={true}
                         texto={"Gestión"}
                         admin={true}
