@@ -158,7 +158,13 @@ function update(state = {
                 error: action.error,
             });
         case RECEIVE_USUARIO_LOGUEADO:
-            let usuario = action.usuario ? action.usuario.entities.usuarios[action.usuario.result] : {};
+            let usuario    = action.usuario ? action.usuario.entities.usuarios[action.usuario.result] : {};
+            let roles      = usuario.roles;
+            let arrayRoles = [];
+            roles.forEach(rol => {
+                arrayRoles.push(rol.nombre);
+            })
+            usuario.rolesArray = arrayRoles;
             return Object.assign({}, state, {
                 isFetchingUsuarioLogueado: false,
                 activo: merge({}, state.activo, usuario),

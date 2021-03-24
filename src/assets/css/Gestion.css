@@ -1,6 +1,23 @@
-.gestion {
+.gestion .contenedor-operaciones {
+    background-color: #226fa5;
+    margin: 0 20px;
+    border-radius: 6px;
+    padding: 20px 10px 10px 10px;
+}
+
+.gestion .contenedor-operaciones h1 {
+    color: white;
+    font-size: 18px;
+    background-color: #ea0c0c;
+    width: 150px;
+    padding: 3px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.gestion .contenedor-operaciones .operaciones {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 25% 25% 25% 25%;
     grid-template-rows: auto;
     grid-template-areas: "tarjeta-menu tarjeta-menu tarjeta-menu";
 }

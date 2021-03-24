@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 
 //Constants
 import * as rutas from '../../constants/rutas.js';
+import * as roles from '../../constants/roles.js';
 
 //CSS
 import "../../assets/css/Gestion.css";
@@ -29,35 +30,65 @@ class Gestion extends React.Component {
         }
     }
 
-    render() {
-        const logueado    = this.props.usuarios.update.activo;
-        const operaciones = logueado && logueado.id ? logueado.operaciones : [];
-        const Operaciones = operaciones.map((operacion) => {
-            let alt         = operacion && operacion.alt ? operacion.alt : "";
-            let key         = Math.floor(Math.random() * 100);
-            let ruta        = operacion && operacion.ruta ? operacion.ruta : "";
-            let titulo      = operacion && operacion.titulo ? operacion.titulo : "";
-            let descripcion = operacion && operacion.descripcion ? operacion.descripcion : "";
-            if (ruta !== "") {
-                let rutaValida = rutas.validarRuta(ruta);
-                ruta = rutaValida ? ruta : "#";
+    getOperacion(operacion, rol) {
+        let usuario      = this.props.usuarios.update.activo;
+        let rolesUsuario = usuario && usuario.rolesArray ? usuario.rolesArray : [];
+        let tieneRol     = rolesUsuario.includes(rol);
+        if (!tieneRol) {
+            return;
+        }
+        let alt         = operacion && operacion.alt ? operacion.alt : "";
+        let key         = Math.floor(Math.random() * 100);
+        let ruta        = operacion && operacion.ruta ? operacion.ruta : "";
+        let titulo      = operacion && operacion.titulo ? operacion.titulo : "";
+        let descripcion = operacion && operacion.descripcion ? operacion.descripcion : "";
+        if (ruta !== "") {
+            let rutaValida = rutas.validarRuta(ruta);
+            ruta = rutaValida ? ruta : "#";
+        }
+        let imagen = this.getImagenPorRuta(ruta);
+        return(
+            <TarjetaMenu
+                key={key}
+                titulo={titulo}
+                descripcion={descripcion}
+                alt={alt}
+                title={titulo}
+                ruta={ruta}
+                img={imagen}
+            />
+        );
+    }
+
+    getOperaciones(rol) {
+        const logueado         = this.props.usuarios.update.activo;
+        const operaciones      = logueado && logueado.id ? logueado.operaciones : [];
+        let   operacionesAdmin = [];
+        operaciones.map((operacion) => {
+            let existe = this.getOperacion(operacion, rol);
+            if (existe) {
+                operacionesAdmin.push(existe);
             }
-            let imagen = this.getImagenPorRuta(ruta);
-            return(
-                <TarjetaMenu
-                    key={key}
-                    titulo={titulo}
-                    descripcion={descripcion}
-                    alt={alt}
-                    title={titulo}
-                    ruta={ruta}
-                    img={imagen}
-                />
-            );
         });
+        let renderOperacionesAdmin =  (
+            <div className="contenedor-operaciones">
+                <h1>Administrador</h1>
+                <div className="operaciones">
+                    {operacionesAdmin}
+                </div>
+            </div>
+        );
+        if (operaciones.length === 0) {
+            renderOperacionesAdmin = (<div></div>);
+        }
+        return renderOperacionesAdmin;
+    }
+
+    render() {
+        let operacionesAdmin = this.getOperaciones(roles.ROL_ADMIN);
         return (
             <div className="gestion">
-                {Operaciones}
+                {operacionesAdmin}
             </div>
         )
     }
@@ -65,7 +96,8 @@ class Gestion extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        usuarios: state.usuarios
+        usuarios: state.usuarios,
+        roles: state.roles,
     };
 }
 
