@@ -6,7 +6,11 @@ public/mail
 /.pnp
 .pnp.js
 .idea
+/.idea/*
 .eslintcache
+/.eslintcache
+nbproject/
+/nbproject/
 
 # testing
 /coverage
