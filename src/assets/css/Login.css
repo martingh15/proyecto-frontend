@@ -8,14 +8,3 @@
 .login-contenedor .tarjeta-body {
     width: 400px;
 }
-
-.login .contenedor-contrasenia {
-    position: relative;
-}
-
-.login .contenedor-contrasenia .ver-password {
-    width: 20px;
-    position: absolute;
-    right: 10px;
-    top: 9px;
-}

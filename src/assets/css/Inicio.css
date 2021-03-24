@@ -9,3 +9,14 @@
     max-width: 300px !important;
     border-radius: 6px;
 }
+
+.contenedor-contrasenia {
+    position: relative;
+}
+
+.contenedor-contrasenia .ver-password {
+    width: 20px;
+    position: absolute;
+    right: 10px;
+    top: 9px;
+}

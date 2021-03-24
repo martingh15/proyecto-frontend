@@ -123,7 +123,7 @@ class Login extends React.Component {
                                     placeholder="Contraseña"
                                     minLength="8"
                                 />
-                                    <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
+                                   <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
                             </div>
                         </Form.Group>
                         <span className="olvide-password" onClick={(e) => this.olvideMiPassword(e)}>

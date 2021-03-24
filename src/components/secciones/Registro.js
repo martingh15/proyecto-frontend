@@ -19,6 +19,10 @@ import Loader from "../elementos/Loader";
 //CSS
 import '../../assets/css/Registro.css';
 
+//Images
+import blackEye from "../../assets/img/eye.png";
+import whiteEye from "../../assets/img/view.png";
+
 //Librerias
 import history from "../../history";
 
@@ -26,6 +30,8 @@ class Registro extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            imgPassword: blackEye,
+            tipo: 'password'
         };
 
         this.inputConfirmaPasw = React.createRef();
@@ -35,6 +41,27 @@ class Registro extends React.Component {
         if (this.props.authentication.token) {
             history.push(rutas.INICIO);
         }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === blackEye) {
+            this.toogleClave(false);
+        }
+        if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === whiteEye) {
+            this.toogleClave(true);
+        }
+    }
+
+    toogleClave(mostrar) {
+        this.setState(prevState => ({
+            tipo: mostrar ? 'text' : 'password'
+        }))
+    }
+
+    onClickEye() {
+        this.setState(prevState => ({
+            imgPassword: prevState.imgPassword === blackEye ? whiteEye : blackEye,
+        }));
     }
 
     onChangeUsuario(e) {
@@ -60,6 +87,12 @@ class Registro extends React.Component {
     }
 
     render() {
+        const {imgPassword, tipo} = this.state;
+        const Ojo = () => {
+            return(
+                <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
+            );
+        };
         return (
             <div className="registro">
                 <div className="registro-contenedor">
@@ -90,28 +123,34 @@ class Registro extends React.Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Contraseña</Form.Label>
-                            <input
-                                id="password"
-                                className="form-control"
-                                type="password"
-                                onChange={(e) => this.onChangeUsuario(e)}
-                                placeholder="Contraseña"
-                                minLength="8"
-                                required={true}
-                            />
+                            <div className="contenedor-contrasenia">
+                                <input
+                                    id="password"
+                                    className="form-control"
+                                    type={tipo}
+                                    onChange={(e) => this.onChangeUsuario(e)}
+                                    placeholder="Contraseña"
+                                    minLength="8"
+                                    required={true}
+                                />
+                                <Ojo />
+                            </div>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Confirmar contraseña</Form.Label>
-                            <input
-                                id="password_confirmation"
-                                className="form-control"
-                                ref={this.inputConfirmaPasw}
-                                type="password"
-                                onChange={(e) => this.onChangeUsuario(e)}
-                                placeholder="Confirma contraseña"
-                                minLength="8"
-                                required={true}
-                            />
+                            <div className="contenedor-contrasenia">
+                                <input
+                                    id="password_confirmation"
+                                    className="form-control"
+                                    ref={this.inputConfirmaPasw}
+                                    type={tipo}
+                                    onChange={(e) => this.onChangeUsuario(e)}
+                                    placeholder="Confirma contraseña"
+                                    minLength="8"
+                                    required={true}
+                                />
+                                <Ojo />
+                            </div>
                         </Form.Group>
                         {
                             this.props.usuarios.create.isCreating ?
