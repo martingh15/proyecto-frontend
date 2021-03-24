@@ -61,6 +61,9 @@ class Navegador extends React.Component {
     }
 
     redirectTo(ruta) {
+        if (ruta === "") {
+            return;
+        }
         if (!this.props.authentication.currentlySending && ruta === rutas.LOGOUT) {
             this.props.logout();
             window.location.reload();
@@ -77,7 +80,8 @@ class Navegador extends React.Component {
             let display = props.mostrar ? "" : "no-mostrar";
             let grow    = props.grow ? "hvr-grow" : "";
             let ruta    = props.ruta;
-            if (ruta === rutas.LOGOUT) {
+            let tipo    = props.tipo;
+            if (ruta === rutas.LOGOUT || tipo === 'boton') {
                 return (
                     <button
                         className={`itemMenu ${display} ${grow}`}
@@ -118,9 +122,10 @@ class Navegador extends React.Component {
             <>
                 <ItemMenu
                     mostrar={props.mostrar}
-                    grow={true}
+                    grow={false}
                     texto={nombre !== "" ? "Hola " + nombre + "!" : ""}
-                    ruta={rutas.INICIO}
+                    ruta={""}
+                    tipo={"boton"}
                 />
                 <ItemMenu
                     mostrar={props.mostrar}
