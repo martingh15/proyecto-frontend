@@ -32,9 +32,6 @@ class Navegador extends React.Component {
 
     componentDidMount() {
         window.scroll(0, 0);
-        if (auth.idUsuario()) {
-            this.props.fetchUsuarioLogueadoIfNeeded();
-        }
         if (this.props.usuarios.update.activo.nombre) {
             this.setNombreUsuarioLogueado();
         }
@@ -45,11 +42,6 @@ class Navegador extends React.Component {
         if (prevProps.usuarios.update.activo.nombre !== logueado.nombre
             && (this.state.nombre === "" || this.state.nombre !== logueado.nombre)) {
             this.setNombreUsuarioLogueado();
-        }
-        if (this.state.esAdmin === null && logueado.id) {
-            this.setState({
-                esAdmin: logueado.esAdmin
-            });
         }
     }
 
@@ -71,7 +63,8 @@ class Navegador extends React.Component {
     }
 
     render() {
-        const { nombre, esAdmin } = this.state;
+        const { nombre } = this.state;
+        const esAdmin = this.props.esAdmin;
         const logueado = this.props.authentication.token;
         const ItemMenu = props => {
             let display = props.mostrar ? "" : "no-mostrar";
@@ -137,7 +130,7 @@ class Navegador extends React.Component {
             </>
         );
         return (
-            <nav className="navegador">
+            <nav className="navegador" style={{right: "0", left: esAdmin ? "175px" : "0"}}>
                 <div className="izquierda">
                     <img className="logo" src={logo}
                          onClick={() => this.redirectTo(rutas.INICIO)}
