@@ -103,7 +103,7 @@ class MiPerfil extends React.Component {
 
     render() {
         const usuarioLogueado = this.props.usuarios.update.activo;
-        const {fueModificado, verPassword, imgPassword, tipo } = this.state;
+        const {fueModificado, imgPassword, tipo } = this.state;
         const passwordVacias =
             (usuarioLogueado.password === "" || usuarioLogueado.password === undefined)
             || (usuarioLogueado.password_confirmation === "" || usuarioLogueado.password_confirmation === undefined);
