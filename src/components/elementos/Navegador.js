@@ -86,6 +86,7 @@ class Navegador extends React.Component {
                     <button
                         className={`itemMenu ${display} ${grow}`}
                         onClick={() => this.redirectTo(ruta)}
+                        style={{cursor: props.grow ? "pointer" : "unset"}}
                     >
                         {props.texto}
                     </button>
