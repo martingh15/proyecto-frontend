@@ -25,7 +25,7 @@ class Gestion extends React.Component {
         switch (ruta) {
             case rutas.COMPRAS:
                 return imgCompras;
-            case rutas.USUARIOS:
+            case rutas.REGISTRO_ADMIN:
                 return imgUsuarios;
         }
     }

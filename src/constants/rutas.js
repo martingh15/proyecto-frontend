@@ -3,17 +3,19 @@ export const LOGIN          = '/login';
 export const LOGOUT         = '/logout';
 export const PERFIL         = '/perfil';
 export const INICIO         = '/';
-export const REGISTRO       = '/registro';
 export const MI_PERFIL      = '/perfil';
 export const VALIDAR_EMAIL  = '/validar-email/:token';
 export const RESET_PASSWORD = '/reset-password/:token';
 
-//System routes
+//Registro
+export const REGISTRO            = '/registro/:tipo?';
+export const REGISTRO_TIPO_ADMIN = 'admin';
+export const REGISTRO_ADMIN      = `/registro/${REGISTRO_TIPO_ADMIN}`;
+
 export const MENU     = '/menu';
 export const ALMACEN  = '/almacen';
 export const GESTION  = '/gestion';
 export const COMPRAS  = '/compras';
-export const USUARIOS = '/admin/usuario';
 
 const RUTAS = [
     LOGIN,
@@ -25,7 +27,7 @@ const RUTAS = [
     MENU,
     ALMACEN,
     GESTION,
-    USUARIOS,
+    REGISTRO_ADMIN,
     COMPRAS
 ];
 

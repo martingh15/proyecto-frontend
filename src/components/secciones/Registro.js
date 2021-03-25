@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 //Actions
 import {resetPassword} from "../../actions/AuthenticationActions";
-import {createUsuario, saveCreateUsuario, resetCreateUsuario} from "../../actions/UsuarioActions";
+import {createUsuario, saveCreateUsuario} from "../../actions/UsuarioActions";
 
 //Constants
 import * as rutas from '../../constants/rutas.js';
@@ -25,31 +25,33 @@ import whiteEye from "../../assets/img/view.png";
 
 //Librerias
 import history from "../../history";
+import Swal from 'sweetalert2';
 
 class Registro extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             imgPassword: blackEye,
-            tipo: 'password'
+            tipo: 'password',
         };
 
         this.inputConfirmaPasw = React.createRef();
     }
 
-    componentDidMount() {
-        if (this.props.authentication.token) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let tipoRuta  = this.props.match.params['tipo'];
+        let logueado  = this.props.usuarios.update.activo;
+        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        if ((!tipoAdmin && this.props.authentication.token) || (tipoAdmin && logueado && logueado.id && !logueado.esAdmin) ) {
             history.push(rutas.INICIO);
         }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === blackEye) {
             this.toogleClave(false);
         }
         if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === whiteEye) {
             this.toogleClave(true);
         }
+
     }
 
     toogleClave(mostrar) {
@@ -65,8 +67,8 @@ class Registro extends React.Component {
     }
 
     onChangeUsuario(e) {
-        var cambio = {};
-        var mensaje = "";
+        var cambio          = {};
+        var mensaje         = "";
         cambio[e.target.id] = e.target.value;
         this.props.createUsuario(cambio);
         if (e.target.id === "password_confirmation") {
@@ -79,15 +81,64 @@ class Registro extends React.Component {
         }
     }
 
+    showErrores(errores) {
+        let texto = "";
+        errores.map((e) => {
+            texto = texto + `<li style="width: fit-content;text-align: initial;">${e}</li>`;
+            return true;
+        });
+        Swal.fire({
+            title: 'Faltan completar campos',
+            icon: 'info',
+            html:
+                `Le ha faltado completar los siguientes campos,` +
+                `<ul style="margin-left: 30px;">${texto}</ul>`,
+            showCloseButton: true,
+            focusConfirm: false,
+            confirmButtonText: 'Aceptar',
+        });
+    }
+
+    validarUsuario() {
+        let errores = [];
+        let usuario = this.props.usuarios.create.nuevo;
+        if (usuario.nombre === undefined || usuario.nombre === "") {
+            errores.push("Nombre");
+        }
+        if (usuario.email === undefined || usuario.email === "") {
+            errores.push("Correo");
+        }
+        if (usuario.dni === undefined || usuario.dni === "") {
+            errores.push("Dni");
+        }
+        if (usuario.rol === undefined || usuario.rol === "") {
+            errores.push("Rol");
+        }
+
+        if (errores.length > 0) {
+            this.showErrores(errores);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     submitForm(e) {
         e.preventDefault();
-        if (this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password) {
+        let tipoRuta  = this.props.match.params['tipo'];
+        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let valido    = this.validarUsuario();
+        if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password
+            || tipoAdmin && valido
+        ) {
             this.props.saveCreateUsuario();
         }
     }
 
     render() {
         const {imgPassword, tipo} = this.state;
+        const tipoRuta  = this.props.match.params['tipo'];
+        const tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
         const Ojo = () => {
             return(
                 <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
@@ -97,7 +148,7 @@ class Registro extends React.Component {
             <div className="registro">
                 <div className="registro-contenedor">
                     <Form className="tarjeta-body" onSubmit={(e) => {this.submitForm(e)}}>
-                        <h4>Registro</h4>
+                        <h4>{!tipoAdmin ? "Registro" : "Registrar usuario"}</h4>
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
@@ -121,43 +172,79 @@ class Registro extends React.Component {
                                 No le compartiremos el email a nadie.
                             </Form.Text>
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Contraseña</Form.Label>
-                            <div className="contenedor-contrasenia">
-                                <input
-                                    id="password"
-                                    className="form-control"
-                                    type={tipo}
-                                    onChange={(e) => this.onChangeUsuario(e)}
-                                    placeholder="Contraseña"
-                                    minLength="8"
-                                    required={true}
-                                />
-                                <Ojo />
+                        { !tipoAdmin ?
+                            <div className="claves">
+                                <Form.Group>
+                                    <Form.Label>Contraseña</Form.Label>
+                                    <div className="contenedor-contrasenia">
+                                        <input
+                                            id="password"
+                                            className="form-control"
+                                            type={tipo}
+                                            onChange={(e) => this.onChangeUsuario(e)}
+                                            placeholder="Contraseña"
+                                            minLength="8"
+                                            required={true}
+                                        />
+                                        <Ojo />
+                                    </div>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Confirmar contraseña</Form.Label>
+                                    <div className="contenedor-contrasenia">
+                                        <input
+                                            id="password_confirmation"
+                                            className="form-control"
+                                            ref={this.inputConfirmaPasw}
+                                            type={tipo}
+                                            onChange={(e) => this.onChangeUsuario(e)}
+                                            placeholder="Confirma contraseña"
+                                            minLength="8"
+                                            required={true}
+                                        />
+                                        <Ojo />
+                                    </div>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Confirmar contraseña</Form.Label>
-                            <div className="contenedor-contrasenia">
-                                <input
-                                    id="password_confirmation"
-                                    className="form-control"
-                                    ref={this.inputConfirmaPasw}
-                                    type={tipo}
-                                    onChange={(e) => this.onChangeUsuario(e)}
-                                    placeholder="Confirma contraseña"
-                                    minLength="8"
-                                    required={true}
-                                />
-                                <Ojo />
+                            :
+                            <div className="contenedor-roles">
+                                <Form.Group>
+                                    <Form.Label>DNI</Form.Label>
+                                    <input
+                                        id="dni"
+                                        className="form-control"
+                                        type="number"
+                                        onChange={(e) => this.onChangeUsuario(e)}
+                                        placeholder="Ingrese DNI"
+                                        maxLength="9"
+                                        required={true}
+                                    />
+                                    <Form.Text className="text-muted">
+                                        Esta será la contraseña del usuario que está creando.
+                                    </Form.Text>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Rol</Form.Label>
+                                    <Form.Control
+                                        id="rol"
+                                        as="select"
+                                        defaultValue=""
+                                        className="form-control"
+                                        onChange={(e) => this.onChangeUsuario(e, true)}
+                                    >
+                                        <option value="">Seleccione un rol</option>
+                                        <option value="vendedor">Vendedor</option>
+                                        <option value="mozo">Mozo</option>
+                                    </Form.Control>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
+                        }
                         {
                             this.props.usuarios.create.isCreating ?
                                 <Loader display={true}/>
                                 :
                                 <Button className="boton-submit" variant="primary" type="submit">
-                                    Registrarse
+                                    {!tipoAdmin ? "Registrarse" : "Guardar usuario"}
                                 </Button>
                         }
                     </Form>
@@ -178,9 +265,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         createUsuario: (usuario) => {
             dispatch(createUsuario(usuario))
-        },
-        resetCreateUsuario: () => {
-            dispatch(resetCreateUsuario())
         },
         saveCreateUsuario: () => {
             dispatch(saveCreateUsuario())
