@@ -15,6 +15,7 @@ class TarjetaMenu extends React.Component {
         return (
             <a href={props.ruta} key={props.key} className="tarjeta-menu">
                 <div className={"tarjeta hvr-grow"} onClick={props.click}>
+                    <span className="text-capitalize rol">{props.rol}</span>
                     <h2>{props.titulo}</h2>
                     <img src={props.img} alt={props.alt} title={props.title} />
                     <p>{props.descripcion}</p>

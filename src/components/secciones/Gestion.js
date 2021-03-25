@@ -56,6 +56,7 @@ class Gestion extends React.Component {
                 title={titulo}
                 ruta={ruta}
                 img={imagen}
+                rol={rol}
             />
         );
     }
@@ -72,7 +73,6 @@ class Gestion extends React.Component {
         });
         let renderOperacionesAdmin =  (
             <div className="contenedor-operaciones">
-                <h1>Administrador</h1>
                 <div className="operaciones">
                     {operacionesAdmin}
                 </div>
