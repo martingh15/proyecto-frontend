@@ -19,7 +19,8 @@ class MensajeCorrecto extends React.Component {
             mostrar: false,
             procesoFinalizado: false,
             mensajes: [],
-            titulo: ""
+            titulo: "",
+            ruta: "",
         };
     }
 
@@ -41,6 +42,7 @@ class MensajeCorrecto extends React.Component {
                 }
                 if (value.create && valuePrev && valuePrev.create && !value.create.isCreating && valuePrev.create.isCreating && !value.create.error && value.create.success) {
                     mensajes.push(value.create.success);
+                    this.setState({ruta: value.create.ruta});
                     procesoFinalizado = true;
                 }
                 if (value.update && valuePrev && valuePrev.update && !value.update.isUpdating && valuePrev.update.isUpdating && !value.update.error) {

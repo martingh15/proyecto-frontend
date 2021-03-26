@@ -46,7 +46,8 @@ function create(state = {
     isCreating: false,
     nuevo: {},
     success: "",
-    error: null
+    error: null,
+    ruta: '',
 }, action) {
     switch (action.type) {
         //REGISTRO
@@ -75,6 +76,7 @@ function create(state = {
                 isCreating: false,
                 success: action.message,
                 error: null,
+                ruta: action.ruta,
             });
         case ERROR_CREATE_USUARIO:
             return Object.assign({}, state, {

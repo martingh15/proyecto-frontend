@@ -27,12 +27,13 @@ function requestCreateUsuario() {
     }
 }
 
-function reveiceCreateUsuario(message) {
+function reveiceCreateUsuario(message, ruta) {
     return {
         type: RECEIVE_CREATE_USUARIO,
         message: message,
         receivedAt: Date.now(),
-        nuevo: {}
+        nuevo: {},
+        ruta: ruta
     }
 }
 
@@ -72,7 +73,7 @@ export function saveCreateUsuario(admin) {
                 if (data.message) {
                     mensaje = data.message;
                 }
-                dispatch(reveiceCreateUsuario(mensaje));
+                dispatch(reveiceCreateUsuario(mensaje, rutas.GESTION));
                 dispatch(changeLogin({
                     email: "",
                     password: ""
