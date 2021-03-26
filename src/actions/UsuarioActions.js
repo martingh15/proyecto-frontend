@@ -56,24 +56,32 @@ export function createUsuario(usuario) {
     }
 }
 
-export function saveCreateUsuario() {
+export function saveCreateUsuario(admin) {
     return (dispatch, getState) => {
         dispatch(requestCreateUsuario());
-        return usuarios.saveCreate(getState().usuarios.create.nuevo)
+        return usuarios.saveCreate(getState().usuarios.create.nuevo, admin)
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
                 } else {
-                    history.push(rutas.LOGIN);
-                    dispatch(reveiceCreateUsuario("¡Se ha registro con éxito! Para poder ingresar debe validar su email ingresando al link que le enviamos a su correo."));
                     return response.json();
                 }
             })
-            .then(function () {
+            .then(function (data) {
+                let mensaje = "¡Se ha registro con éxito! Para poder ingresar debe validar su email ingresando al link que le enviamos a su correo."
+                if (data.message) {
+                    mensaje = data.message;
+                }
+                dispatch(reveiceCreateUsuario(mensaje));
                 dispatch(changeLogin({
                     email: "",
                     password: ""
                 }));
+                if (data.admin) {
+                    history.push(rutas.GESTION);
+                } else {
+                    history.push(rutas.LOGIN);
+                }
             })
             .catch(function (error) {
                 switch (error.status) {

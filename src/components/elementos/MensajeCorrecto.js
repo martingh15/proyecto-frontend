@@ -59,7 +59,6 @@ class MensajeCorrecto extends React.Component {
                 mostrar: procesoFinalizado,
                 titulo: titulo
             });
-            setTimeout(() => this.ocultarModal(), 8000);
         }
     }
 

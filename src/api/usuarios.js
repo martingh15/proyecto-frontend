@@ -3,7 +3,7 @@ require('isomorphic-fetch');
 
 var usuarios = {
 
-    saveCreate(usuario) {
+    saveCreate(usuario, admin) {
         let defaultOptions = {
             url: '',
             method: 'POST',
@@ -16,7 +16,18 @@ var usuarios = {
             body: JSON.stringify(usuario)
         };
 
-        return fetch(c.BASE_URL + '/registro', defaultOptions);
+        let url = "/registro";
+        if (admin) {
+            url = "/registro-admin";
+            defaultOptions.headers = {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.token
+            }
+        }
+
+
+        return fetch(c.BASE_URL + url, defaultOptions);
     },
 
     getLogueado() {

@@ -8,6 +8,7 @@ import {createUsuario, saveCreateUsuario} from "../../actions/UsuarioActions";
 
 //Constants
 import * as rutas from '../../constants/rutas.js';
+import * as roles from '../../constants/roles.js';
 
 //Boostrap
 import Button from "react-bootstrap/Button";
@@ -70,6 +71,12 @@ class Registro extends React.Component {
         var cambio          = {};
         var mensaje         = "";
         cambio[e.target.id] = e.target.value;
+        let tipoRuta  = this.props.match.params['tipo'];
+        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let logueado = this.props.usuarios.create.nuevo;
+        if (logueado.tipoRegistro === undefined || logueado.tipoRegistro === "") {
+            cambio["tipoRegistro"] = tipoAdmin ? "admin" : "comun";
+        }
         this.props.createUsuario(cambio);
         if (e.target.id === "password_confirmation") {
             if (this.props.usuarios.create.nuevo.password !== e.target.value) {
@@ -102,16 +109,18 @@ class Registro extends React.Component {
     validarUsuario() {
         let errores = [];
         let usuario = this.props.usuarios.create.nuevo;
+        let tipoRuta  = this.props.match.params['tipo'];
+        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
         if (usuario.nombre === undefined || usuario.nombre === "") {
             errores.push("Nombre");
         }
         if (usuario.email === undefined || usuario.email === "") {
             errores.push("Correo");
         }
-        if (usuario.dni === undefined || usuario.dni === "") {
+        if (tipoAdmin && (usuario.dni === undefined || usuario.dni === "")) {
             errores.push("Dni");
         }
-        if (usuario.rol === undefined || usuario.rol === "") {
+        if (tipoAdmin && (usuario.rol === undefined || usuario.rol === "")) {
             errores.push("Rol");
         }
 
@@ -128,10 +137,10 @@ class Registro extends React.Component {
         let tipoRuta  = this.props.match.params['tipo'];
         let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
         let valido    = this.validarUsuario();
-        if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password
-            || tipoAdmin && valido
-        ) {
-            this.props.saveCreateUsuario();
+        if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password) {
+            this.props.saveCreateUsuario(false);
+        } else if (tipoAdmin && valido) {
+            this.props.saveCreateUsuario(true);
         }
     }
 
@@ -216,7 +225,7 @@ class Registro extends React.Component {
                                         type="number"
                                         onChange={(e) => this.onChangeUsuario(e)}
                                         placeholder="Ingrese DNI"
-                                        maxLength="9"
+                                        max="99999999"
                                         required={true}
                                     />
                                     <Form.Text className="text-muted">
@@ -233,8 +242,8 @@ class Registro extends React.Component {
                                         onChange={(e) => this.onChangeUsuario(e, true)}
                                     >
                                         <option value="">Seleccione un rol</option>
-                                        <option value="vendedor">Vendedor</option>
-                                        <option value="mozo">Mozo</option>
+                                        <option value={roles.ROL_VENDEDOR}>Vendedor</option>
+                                        <option value={roles.ROL_MOZO}>Mozo</option>
                                     </Form.Control>
                                 </Form.Group>
                             </div>
@@ -266,8 +275,8 @@ const mapDispatchToProps = (dispatch) => {
         createUsuario: (usuario) => {
             dispatch(createUsuario(usuario))
         },
-        saveCreateUsuario: () => {
-            dispatch(saveCreateUsuario())
+        saveCreateUsuario: (admin) => {
+            dispatch(saveCreateUsuario(admin))
         },
         resetPassword: (usuario) => {
             dispatch(resetPassword(usuario))
