@@ -73,7 +73,8 @@ export function saveCreateUsuario(admin) {
                 if (data.message) {
                     mensaje = data.message;
                 }
-                dispatch(reveiceCreateUsuario(mensaje, rutas.GESTION));
+                let ruta = data.admin ? rutas.GESTION : rutas.LOGIN;
+                dispatch(reveiceCreateUsuario(mensaje, ruta));
                 dispatch(changeLogin({
                     email: "",
                     password: ""
