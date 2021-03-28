@@ -4,23 +4,23 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 
 //Actions
-import {updateUsuario, saveUpdateUsuario, fetchUsuarioLogueadoIfNeeded} from "../../actions/UsuarioActions";
-import {resetPassword, validarToken} from "../../actions/AuthenticationActions";
+import {updateUsuario, saveUpdateUsuario, fetchUsuarioLogueadoIfNeeded} from "../../../actions/UsuarioActions";
+import {resetPassword, validarToken} from "../../../actions/AuthenticationActions";
 
 //Bootstrap
 import Form from "react-bootstrap/Form";
 
 //Constants
-import * as rutas from '../../constants/rutas.js';
+import * as rutas from '../../../constants/rutas.js';
 
 //Components
-import Loader from "../../components/elementos/Loader";
+import Loader from "../../elementos/Loader";
 
 //CSS
-import "../../assets/css/CambiarPassword.css";
+import "../../../assets/css/CambiarPassword.css";
 
 //Librerias
-import history from "../../history";
+import history from "../../../history";
 
 class CambiarPassword extends React.Component {
     constructor(props) {

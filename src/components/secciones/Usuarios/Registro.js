@@ -3,29 +3,29 @@ import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux';
 
 //Actions
-import {resetPassword} from "../../actions/AuthenticationActions";
-import {createUsuario, saveCreateUsuario} from "../../actions/UsuarioActions";
+import {resetPassword} from "../../../actions/AuthenticationActions";
+import {createUsuario, saveCreateUsuario} from "../../../actions/UsuarioActions";
 
 //Constants
-import * as rutas from '../../constants/rutas.js';
-import * as roles from '../../constants/roles.js';
+import * as rutas from '../../../constants/rutas.js';
+import * as roles from '../../../constants/roles.js';
 
 //Boostrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 //Components
-import Loader from "../elementos/Loader";
+import Loader from "../../elementos/Loader";
 
 //CSS
-import '../../assets/css/Registro.css';
+import '../../../assets/css/Registro.css';
 
 //Images
-import blackEye from "../../assets/img/eye.png";
-import whiteEye from "../../assets/img/view.png";
+import blackEye from "../../../assets/img/eye.png";
+import whiteEye from "../../../assets/img/view.png";
 
 //Librerias
-import history from "../../history";
+import history from "../../../history";
 import Swal from 'sweetalert2';
 
 class Registro extends React.Component {

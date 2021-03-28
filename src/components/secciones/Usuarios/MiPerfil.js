@@ -3,22 +3,22 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 //Actions
-import {saveUpdateUsuario, updateUsuario} from "../../actions/UsuarioActions";
+import {saveUpdateUsuario, updateUsuario} from "../../../actions/UsuarioActions";
 
 //Boostrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Loader from "../elementos/Loader";
+import Loader from "../../elementos/Loader";
 
 //CSS
-import "../../assets/css/MiPerfil.css";
+import "../../../assets/css/MiPerfil.css";
 
 //Images
-import blackEye from "../../assets/img/eye.png";
-import whiteEye from "../../assets/img/view.png";
+import blackEye from "../../../assets/img/eye.png";
+import whiteEye from "../../../assets/img/view.png";
 
 //Librerias
-import history from "../../history";
+import history from "../../../history";
 
 class MiPerfil extends React.Component {
     constructor(props) {

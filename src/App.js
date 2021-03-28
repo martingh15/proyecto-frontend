@@ -9,11 +9,11 @@ import * as rutas from './constants/rutas.js';
 //Components
 import Navegador from "./components/elementos/Navegador";
 import Inicio from "./components/secciones/Inicio";
-import Login from "./components/secciones/Login";
-import Registro from "./components/secciones/Registro";
-import MiPerfil from "./components/secciones/MiPerfil";
-import CambiarPassword from "./components/secciones/CambiarPassword";
-import ValidarEmail from "./components/secciones/ValidarEmail";
+import Login from "./components/secciones/Usuarios/Login";
+import Registro from "./components/secciones/Usuarios/Registro";
+import MiPerfil from "./components/secciones/Usuarios/MiPerfil";
+import CambiarPassword from "./components/secciones/Usuarios/CambiarPassword";
+import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
 import Gestion from "./components/secciones/Gestion";
 import NotFound from "./components/secciones/NotFound";
 
