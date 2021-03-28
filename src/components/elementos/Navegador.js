@@ -73,18 +73,25 @@ class Navegador extends React.Component {
 
     }
 
+    getRutaActiva(ruta) {
+        let rutaActual = window.location.pathname;
+        return rutaActual === ruta || (rutaActual === rutas.REGISTRO_ADMIN && ruta === rutas.GESTION);
+    }
+
     render() {
         const { nombre, esAdmin } = this.state;
         const logueado = this.props.authentication.token;
         const ItemMenu = props => {
-            let display = props.mostrar ? "" : "no-mostrar";
-            let grow    = props.grow ? "hvr-grow" : "";
-            let ruta    = props.ruta;
-            let tipo    = props.tipo;
+            let display     = props.mostrar ? "" : "no-mostrar";
+            let grow        = props.grow ? "hvr-grow" : "";
+            let ruta        = props.ruta;
+            let tipo        = props.tipo;
+            let activa      = this.getRutaActiva(props.ruta);
+            let claseActiva = activa ? "activo" : "";
             if (ruta === rutas.LOGOUT || tipo === 'boton') {
                 return (
                     <button
-                        className={`itemMenu ${display} ${grow}`}
+                        className={`itemMenu ${display} ${grow} ${claseActiva}`}
                         onClick={() => this.redirectTo(ruta)}
                         style={{cursor: props.grow ? "pointer" : "unset"}}
                     >
@@ -95,7 +102,7 @@ class Navegador extends React.Component {
             return(
                 <a
                     href={ruta}
-                    className={`itemMenu ${display} ${grow}`}
+                    className={`itemMenu ${display} ${grow} ${claseActiva}`}
                     onClick={() => this.redirectTo(ruta)}
                 >
                     {props.texto}

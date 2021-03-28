@@ -8,7 +8,8 @@ export const VALIDAR_EMAIL  = '/validar-email/:token';
 export const RESET_PASSWORD = '/reset-password/:token';
 
 //Registro
-export const REGISTRO            = '/registro/:tipo?';
+export const REGISTRO            = '/registro';
+export const REGISTRO_TIPO       = '/registro/:tipo?';
 export const REGISTRO_TIPO_ADMIN = 'admin';
 export const REGISTRO_ADMIN      = `/registro/${REGISTRO_TIPO_ADMIN}`;
 
@@ -16,6 +17,11 @@ export const MENU     = '/menu';
 export const ALMACEN  = '/almacen';
 export const GESTION  = '/gestion';
 export const COMPRAS  = '/compras';
+
+const RUTAS_GESTION = [
+    GESTION,
+    REGISTRO_ADMIN
+];
 
 const RUTAS = [
     LOGIN,
