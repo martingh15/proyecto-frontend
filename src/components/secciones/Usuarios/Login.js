@@ -9,7 +9,7 @@ import {changeLogin, login, olvideMiPassword} from "../../../actions/Authenticat
 import * as rutas from '../../../constants/rutas.js';
 
 //CSS
-import '../../../assets/css/Login.css';
+import '../../../assets/css/Usuarios/Login.css';
 
 //Boostrap
 import Form from "react-bootstrap/Form";

@@ -17,7 +17,7 @@ import * as rutas from '../../../constants/rutas.js';
 import Loader from "../../elementos/Loader";
 
 //CSS
-import "../../../assets/css/CambiarPassword.css";
+import "../../../assets/css/Usuarios/CambiarPassword.css";
 
 //Librerias
 import history from "../../../history";

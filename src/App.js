@@ -23,6 +23,7 @@ import {connect} from 'react-redux';
 //Router
 import { withRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
+import Listado from "./components/secciones/Usuarios/Listado";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                   <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
                   <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
                   <Route exact path={rutas.GESTION} component={Gestion} />
+                  <Route exact path={rutas.GESTION_USUARIOS} component={Listado} />
                   <Route exact path="*" component={NotFound} />
               </Switch>
           </div>

@@ -11,7 +11,7 @@ import * as rutas from '../constants/rutas.js';
 import * as errorMessages from '../constants/MessageConstants';
 
 //Normalizer
-import { normalizeDato } from "../normalizers/normalizeUsuarios";
+import {normalizeDato, normalizeDatos} from "../normalizers/normalizeUsuarios";
 
 //USUARIOLOGUEADO CREATE
 export const CREATE_USUARIO = 'CREATE_USUARIO';
@@ -273,6 +273,95 @@ export function fetchUsuarioLogueadoIfNeeded() {
     return (dispatch, getState) => {
         if (shouldFetchUsuarioLogueado(getState())) {
             return dispatch(fetchUsuarioLogueado())
+        }
+    }
+}
+
+//USUARIO LOGUEADO
+export const INVALIDATE_USUARIOS = 'INVALIDATE_USUARIOS';
+export const REQUEST_USUARIOS    = "REQUEST_USUARIOS";
+export const RECEIVE_USUARIOS    = "RECEIVE_USUARIOS";
+export const ERROR_USUARIOS      = "ERROR_USUARIOS";
+export const RESET_USUARIOS      = "RESET_USUARIOS";
+
+export function invalidateUsuarios() {
+    return {
+        type: INVALIDATE_USUARIOS,
+    }
+}
+
+export function resetUsuarios() {
+    return {
+        type: RESET_USUARIOS
+    }
+}
+
+function requestUsuarios() {
+    return {
+        type: REQUEST_USUARIOS,
+    }
+}
+
+function receiveUsuarios(json) {
+    return {
+        type: RECEIVE_USUARIOS,
+        usuarios: normalizeDatos(json),
+        receivedAt: Date.now()
+    }
+}
+
+function errorUsuarios(error) {
+    return {
+        type: ERROR_USUARIOS,
+        error: error,
+    }
+}
+
+export function fetchUsuarios() {
+    return dispatch => {
+        dispatch(requestUsuarios());
+        return usuarios.getUsuarios()
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    var data = response.json();
+                    return data;
+                }
+            })
+            .then(function (data) {
+                dispatch(receiveUsuarios(data));
+            })
+            .catch(function (error) {
+                dispatch(logout());
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorUsuarios(errorMessages.UNAUTHORIZED_TOKEN));
+                        return;
+                    default:
+                        dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
+                        return;
+                }
+            });
+    }
+}
+
+function shouldFetchUsuarios(state) {
+    const usuariosById   = state.usuarios.byId;
+    const usuariosAllIds = state.usuarios.allIds;
+    if (usuariosById.isFetching) {
+        return false;
+    } else if (usuariosAllIds.length === 0) {
+        return true;
+    } else {
+        return usuariosById.didInvalidate;
+    }
+}
+
+export function fetchUsuariosIfNeeded() {
+    return (dispatch, getState) => {
+        if (shouldFetchUsuarios(getState())) {
+            return dispatch(fetchUsuarios())
         }
     }
 }

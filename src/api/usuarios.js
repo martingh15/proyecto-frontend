@@ -63,6 +63,24 @@ var usuarios = {
         };
 
         return fetch(c.BASE_URL + '/usuarios/' + usuario.id, defaultOptions);
+    },
+
+    getUsuarios() {
+
+        let defaultOptions = {
+            url: '',
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.token
+            },
+            // cache: false,
+            dataType: 'json',
+        };
+
+        return fetch(c.BASE_URL + '/usuarios', defaultOptions);
     }
 };
 

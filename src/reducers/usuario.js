@@ -16,7 +16,12 @@ import {
     INVALIDATE_USUARIO_LOGUEADO,
     REQUEST_USUARIO_LOGUEADO,
     ERROR_USUARIO_LOGUEADO,
-    RECEIVE_USUARIO_LOGUEADO, RESET_USUARIO_LOGUEADO
+    RECEIVE_USUARIO_LOGUEADO,
+    RESET_USUARIO_LOGUEADO,
+    INVALIDATE_USUARIOS,
+    REQUEST_USUARIOS,
+    ERROR_USUARIOS,
+    RECEIVE_USUARIOS, RESET_USUARIOS
 
 } from '../actions/UsuarioActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
@@ -34,6 +39,38 @@ function usuariosById(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: true,
+                usuarios: [],
+            });
+        //USUARIOS
+        case INVALIDATE_USUARIOS:
+            return Object.assign({}, state, {
+                didInvalidate: true
+            });
+        case REQUEST_USUARIOS:
+            return Object.assign({}, state, {
+                isFetching: true,
+                didInvalidate: false
+            });
+        case RECEIVE_USUARIOS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                didInvalidate: false,
+                usuarios: action.usuarios.entities.usuarios,
+                lastUpdated: action.receivedAt,
+                error: null
+            });
+        case ERROR_USUARIOS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                didInvalidate: true,
+                error: action.error
+            });
+        case RESET_USUARIOS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                didInvalidate: true,
+                error: null,
+                lastUpdated: null,
                 usuarios: [],
             });
         default:
@@ -187,10 +224,10 @@ function update(state = {
 
 function usuariosAllIds(state = [], action) {
     switch (action.type) {
-        // case RECEIVE_USUARIOS:
-        //     return union(state, action.usuarios.result);
-        // case RESET_USUARIOS:
-        //     return [];
+        case RECEIVE_USUARIOS:
+            return action.usuarios.result ? action.usuarios.result : [];
+        case RESET_USUARIOS:
+             return [];
         default:
             return state
     }

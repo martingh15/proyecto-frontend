@@ -12,7 +12,7 @@ import * as rutas from '../../../constants/rutas.js';
 import Loader from "../../elementos/Loader";
 
 //CSS
-import "../../../assets/css/ValidarEmail.css";
+import "../../../assets/css/Usuarios/ValidarEmail.css";
 
 //Librerias
 import history from "../../../history";

@@ -18,7 +18,7 @@ import Form from "react-bootstrap/Form";
 import Loader from "../../elementos/Loader";
 
 //CSS
-import '../../../assets/css/Registro.css';
+import '../../../assets/css/Usuarios/Registro.css';
 
 //Images
 import blackEye from "../../../assets/img/eye.png";
