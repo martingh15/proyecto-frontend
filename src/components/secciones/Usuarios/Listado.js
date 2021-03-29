@@ -88,7 +88,7 @@ class Listado extends React.Component {
 
     getOperacionesUsuario(usuario) {
         let id = usuario.id;
-        let rutaEditar = `${rutas.GESTION_USUARIOS}/editar/${id}`;
+        let rutaEditar = `${rutas.GESTION_USUARIOS}/editar/${id}?volverA=${rutas.GESTION_USUARIOS}`;
         return (
             <div>
                 <a href={rutaEditar} title="Editar "
