@@ -108,8 +108,8 @@ class Alta extends React.Component {
         var valor   = true;
         var usuario = this.props.usuarios.create.nuevo;
         switch (id) {
-            case 'esAdministrador':
-                if (usuario.esAdministrador) {
+            case 'esAdmin':
+                if (usuario.esAdmin) {
                     valor = false;
                 }
         }
@@ -266,8 +266,8 @@ class Alta extends React.Component {
                                 </Form.Group>
                                 <Form.Group className="d-flex flex-column">
                                     <Form.Label>Roles</Form.Label>
-                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdministrador')}>
-                                        <input className="form-check-input" type="checkbox" id="esAdministrador" checked={usuario && usuario.esAdministrador ? usuario.esAdministrador : false} onChange={() => {}}/>
+                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
+                                        <input className="form-check-input" type="checkbox" id="esAdmin" checked={usuario && usuario.esAdmin ? usuario.esAdmin : false} onChange={() => {}}/>
                                             <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
                                     </div>
                                     <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>

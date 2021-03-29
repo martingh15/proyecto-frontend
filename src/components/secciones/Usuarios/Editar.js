@@ -234,6 +234,21 @@ class Editar extends React.Component {
                             <ToogleClave/>
                         </div>
                     </Form.Group>
+                    <Form.Group className="d-flex flex-column">
+                        <Form.Label>Roles</Form.Label>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
+                            <input className="form-check-input" type="checkbox" id="esAdmin" checked={usuario && usuario.esAdmin ? usuario.esAdmin : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
+                            <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
+                            <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
+                        </div>
+                    </Form.Group>
                     <Loader display={this.props.usuarios.update.isUpdating}/>
                     <div className="botones" style={{ display: this.props.usuarios.update.isUpdating ? "none" : "flex" }}>
                         <Button
