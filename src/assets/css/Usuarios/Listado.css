@@ -1,3 +1,28 @@
 .tabla-usuarios {
     margin: 0 30px;
 }
+
+.tabla-usuarios-titulo {
+    font-size: 23px;
+}
+
+.tabla-usuarios .operacion {
+    display: inline;
+    padding: 8px 5px;
+    margin-right: 10px;
+    margin-left: -1px;
+    background: transparent;
+    box-shadow: none;
+    color: #39a1f4;
+    border: none;
+    cursor: pointer;
+}
+
+.tabla-usuarios .operacion:hover {
+    text-decoration: underline;
+}
+
+.tabla-usuarios .icono-operacion {
+    width: 12px;
+    margin-right: 5px;
+}
