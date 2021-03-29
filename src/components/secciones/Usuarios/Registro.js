@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom'
+import {withRouter, useLocation} from 'react-router-dom'
 import {connect} from 'react-redux';
 
 //Actions
@@ -34,9 +34,24 @@ class Registro extends React.Component {
         this.state = {
             imgPassword: blackEye,
             tipo: 'password',
+            botonVolverA: '',
+            volverAValido: false
         };
 
         this.inputConfirmaPasw = React.createRef();
+    }
+
+    componentDidMount() {
+        const volverA    = this.getQuery('volverA');
+        const valido     = rutas.validarRuta(volverA);
+        let botonVolverA = "";
+        if (valido) {
+            botonVolverA =
+                <button className="boton-submit btn btn-light" onClick={() => history.push(volverA)} title="Volver">
+                    Volver
+                </button>;
+        }
+        this.setState({ botonVolverA: botonVolverA, volverAValido: valido });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -132,20 +147,26 @@ class Registro extends React.Component {
         }
     }
 
+    getQuery(query) {
+        const search = new URLSearchParams(window.location.search);
+        return search.get(query);
+    }
+
     submitForm(e) {
         e.preventDefault();
-        let tipoRuta  = this.props.match.params['tipo'];
-        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
-        let valido    = this.validarUsuario();
+        let tipoRuta   = this.props.match.params['tipo'];
+        let tipoAdmin  = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let valido     = this.validarUsuario();
+        let linkVolver = this.getQuery('volverA');
         if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password) {
-            this.props.saveCreateUsuario(false);
+            this.props.saveCreateUsuario(false, linkVolver);
         } else if (tipoAdmin && valido) {
-            this.props.saveCreateUsuario(true);
+            this.props.saveCreateUsuario(true, linkVolver);
         }
     }
 
     render() {
-        const {imgPassword, tipo} = this.state;
+        const {imgPassword, tipo, botonVolverA, volverAValido} = this.state;
         const tipoRuta  = this.props.match.params['tipo'];
         const tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
         const Ojo = () => {
@@ -252,9 +273,12 @@ class Registro extends React.Component {
                             this.props.usuarios.create.isCreating ?
                                 <Loader display={true}/>
                                 :
-                                <Button className="boton-submit" variant="primary" type="submit">
-                                    {!tipoAdmin ? "Registrarse" : "Guardar usuario"}
-                                </Button>
+                                <div className="d-flex">
+                                    <Button className="boton-submit" variant="primary" type="submit">
+                                        {!tipoAdmin ? "Registrarse" : "Guardar usuario"}
+                                    </Button>
+                                    {volverAValido ? botonVolverA : ""}
+                                </div>
                         }
                     </Form>
                 </div>
@@ -275,8 +299,8 @@ const mapDispatchToProps = (dispatch) => {
         createUsuario: (usuario) => {
             dispatch(createUsuario(usuario))
         },
-        saveCreateUsuario: (admin) => {
-            dispatch(saveCreateUsuario(admin))
+        saveCreateUsuario: (admin, volverA) => {
+            dispatch(saveCreateUsuario(admin, volverA))
         },
         resetPassword: (usuario) => {
             dispatch(resetPassword(usuario))

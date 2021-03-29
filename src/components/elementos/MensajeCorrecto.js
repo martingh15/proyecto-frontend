@@ -71,7 +71,6 @@ class MensajeCorrecto extends React.Component {
             let valida = rutas.validarRuta(ruta);
             if (valida) {
                 history.push(ruta);
-                window.location.reload();
             }
         }
     }

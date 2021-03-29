@@ -15,6 +15,7 @@ import MiPerfil from "./components/secciones/Usuarios/MiPerfil";
 import CambiarPassword from "./components/secciones/Usuarios/CambiarPassword";
 import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
 import Gestion from "./components/secciones/Gestion";
+import Listado from "./components/secciones/Usuarios/Listado";
 import NotFound from "./components/secciones/NotFound";
 
 //Redux
@@ -23,7 +24,6 @@ import {connect} from 'react-redux';
 //Router
 import { withRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
-import Listado from "./components/secciones/Usuarios/Listado";
 
 function App() {
   return (

@@ -1,8 +1,6 @@
-import { createBrowserHistory } from 'history';
-
-//Constants
-import * as rutas from './constants/rutas.js';
+import { createBrowserHistory } from 'history'
 
 export default createBrowserHistory({
-    basename: rutas.INICIO
+    /* pass a configuration object here if needed */
+    basename: "/"
 })

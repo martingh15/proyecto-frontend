@@ -188,7 +188,6 @@ class Navegador extends React.Component {
                     <NoLogueado mostrar={!logueado}/>
                     <Logueado mostrar={logueado}/>
                 </div>
-
             </nav>
         );
     }

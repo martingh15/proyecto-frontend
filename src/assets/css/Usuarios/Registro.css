@@ -8,3 +8,7 @@
 .registro-contenedor .tarjeta-body {
     width: 400px;
 }
+
+.registro .btn-light {
+    border: 1px solid #e6d3d3;
+}

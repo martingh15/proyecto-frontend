@@ -13,11 +13,12 @@ export const REGISTRO_TIPO       = '/registro/:tipo?';
 export const REGISTRO_TIPO_ADMIN = 'admin';
 export const REGISTRO_ADMIN      = `/registro/${REGISTRO_TIPO_ADMIN}`;
 
-export const MENU              = '/menu';
-export const ALMACEN           = '/almacen';
-export const GESTION           = '/gestion';
-export const GESTION_USUARIOS  = '/gestion/usuarios';
-export const COMPRAS           = '/compras';
+export const MENU                     = '/menu';
+export const ALMACEN                  = '/almacen';
+export const GESTION                  = '/gestion';
+export const GESTION_USUARIOS         = '/gestion/usuarios';
+export const GESTION_USUARIOS_ACCION  = '/gestion/usuarios/:accion?/:id?';
+export const COMPRAS                  = '/compras';
 
 const RUTAS_GESTION = [
     GESTION,

@@ -11,7 +11,7 @@ import MensajeCorrecto from "./components/elementos/MensajeCorrecto";
 import './index.css';
 
 //Router
-import {Router} from "react-router-dom";
+import {BrowserRouter, Router} from "react-router-dom";
 
 //Redux
 import appReducers from './reducers/index';
@@ -62,11 +62,13 @@ const store = createStoreWithMiddleware(appReducers);
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={history}>
-                <App />
-                <MensajeError />
-                <MensajeCorrecto />
-        </Router>
+        <BrowserRouter>
+            <Router history={history}>
+                    <App />
+                    <MensajeError />
+                    <MensajeCorrecto />
+            </Router>
+        </BrowserRouter>
     </Provider>,
     document.getElementById('root')
 );

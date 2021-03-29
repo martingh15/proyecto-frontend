@@ -14,8 +14,10 @@ import Loader from "../../elementos/Loader";
 //CSS
 import "../../../assets/css/Usuarios/Listado.css";
 
+//Icons
+import AddBoxIcon from '@material-ui/icons/AddBox';
+
 //Librerias
-import history from "../../../history";
 import Swal from 'sweetalert2';
 
 //Images
@@ -72,11 +74,14 @@ class Listado extends React.Component {
             icon: 'warning',
             showCloseButton: true,
             showCancelButton: true,
-            focusConfirm: false,
+            focusConfirm: true,
             confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'rgb(88, 219, 131)',
+            cancelButtonColor: '#bfbfbf',
         }).then((result) => {
             if (result.isConfirmed) {
                 //Hacer operación borrar usuario
+
             }
         })
     }
@@ -135,8 +140,14 @@ class Listado extends React.Component {
         </tr>;
         return (
             <div className="tabla-usuarios">
-                <div className="table-responsive tarjeta-body">
-                    <h1 className="tabla-usuarios-titulo">Usuarios</h1>
+                <div className="table-responsive tarjeta-body listado">
+                    <div className="d-flex justify-content-between">
+                        <h1 className="tabla-usuarios-titulo">Usuarios</h1>
+                        <a href={rutas.REGISTRO_ADMIN + `?volverA=${rutas.GESTION_USUARIOS}`}
+                           data-toggle="tooltip" data-original-title="" title="">
+                            <AddBoxIcon style={{ color:  '#5cb860'}}/>
+                        </a>
+                    </div>
                     <table className="table">
                         <thead>
                         <tr>

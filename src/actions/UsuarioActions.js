@@ -57,7 +57,7 @@ export function createUsuario(usuario) {
     }
 }
 
-export function saveCreateUsuario(admin) {
+export function saveCreateUsuario(admin, volverA) {
     return (dispatch, getState) => {
         dispatch(requestCreateUsuario());
         return usuarios.saveCreate(getState().usuarios.create.nuevo, admin)
@@ -74,12 +74,17 @@ export function saveCreateUsuario(admin) {
                     mensaje = data.message;
                 }
                 let ruta = data.admin ? rutas.GESTION : rutas.LOGIN;
+                if (volverA) {
+                    ruta = volverA;
+                }
                 dispatch(reveiceCreateUsuario(mensaje, ruta));
                 dispatch(changeLogin({
                     email: "",
                     password: ""
                 }));
-                if (data.admin) {
+                if (ruta) {
+                    history.push(ruta);
+                } else if(data.admin) {
                     history.push(rutas.GESTION);
                 } else {
                     history.push(rutas.LOGIN);
