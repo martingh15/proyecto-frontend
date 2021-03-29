@@ -133,15 +133,19 @@ function create(state = {
     }
 }
 
+let activoDefecto = {
+    nombre: '',
+    email: '',
+    password: '',
+    confirmaPass: '',
+    dni: ''
+};
+
 function update(state = {
     isFetchingUsuarioLogueado: false,
     isUpdating: false,
-    activo: {
-        nombre_modificado: '',
-        email: '',
-        password: '',
-        confirmaPass: ''
-    },
+    activo: activoDefecto,
+    logueado: {},
     success: "",
     error: null
 }, action) {
@@ -156,7 +160,7 @@ function update(state = {
         case RESET_UPDATE_USUARIO:
             return Object.assign({}, state, {
                 isUpdating: false,
-                activo: {},
+                activo: activoDefecto,
                 success: "",
                 error: null,
             });
@@ -206,7 +210,7 @@ function update(state = {
             usuario.rolesArray = arrayRoles;
             return Object.assign({}, state, {
                 isFetchingUsuarioLogueado: false,
-                activo: merge({}, state.activo, usuario),
+                logueado: merge({}, state.logueado, usuario),
                 lastUpdated: action.receivedAt,
                 success: action.message,
                 error: null
@@ -215,7 +219,7 @@ function update(state = {
             return Object.assign({}, state, {
                 isFetchingUsuarioLogueado: false,
                 didInvalidate: true,
-                activo: {}
+                logueado: {}
             });
         default:
             return state

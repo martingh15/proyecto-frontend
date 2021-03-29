@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 //Actions
-import {saveUpdateUsuario, updateUsuario, resetUsuarios, fetchUsuarios} from "../../../actions/UsuarioActions";
+import {saveUpdateUsuario, updateUsuario, resetUsuarios, fetchUsuarios, resetUpdateUsuario} from "../../../actions/UsuarioActions";
 
 //Boostrap
 import Button from "react-bootstrap/Button";
@@ -24,27 +24,21 @@ import whiteEye from "../../../assets/img/view.png";
 
 //Librerias
 import history from "../../../history";
-import clone from 'lodash/clone';
 
 class Editar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fueModificado: false,
-            imgPassword: blackEye,
             tipo: 'password',
-            usuario: {},
+            imgPassword: blackEye,
+            fueModificado: false
         }
 
         this.confirmaPass = React.createRef();
     }
 
     componentDidMount() {
-        if (this.props.usuarios.update.activo.nombre_modificado === undefined) {
-            var usuario = [];
-            usuario['nombre_modificado'] = this.props.usuarios.update.activo.nombre;
-            this.props.updateUsuario(usuario);
-        }
+        this.props.resetUpdateUsuario();
         let id = parseInt(this.props.match.params['id']);
         if (id > 0) {
             this.props.resetUsuarios();
@@ -63,11 +57,8 @@ class Editar extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.usuarios.update.activo.nombre !== this.props.usuarios.update.activo.nombre) {
-            var usuario = [];
-            usuario['nombre_modificado'] = this.props.usuarios.update.activo.nombre;
-            this.props.updateUsuario(usuario);
-        }
+        let id     = this.props.match.params['id'];
+        let activo = this.props.usuarios.update.activo;
         if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === blackEye) {
             this.toogleClave(false);
         }
@@ -75,13 +66,14 @@ class Editar extends React.Component {
             this.toogleClave(true);
         }
         if (prevProps.usuarios.byId.isFetching && !this.props.usuarios.byId.isFetching && this.props.usuarios.allIds.length > 0) {
-            let id      = this.props.match.params['id'];
             let usuario = this.props.usuarios.byId.usuarios[id];
-            if (usuario !== undefined) {
-                this.setState({
-                    usuario: usuario,
-                });
+            if (usuario && usuario.id) {
+                this.props.updateUsuario(usuario);
             }
+        }
+        let logueado = this.props.usuarios.update.logueado;
+        if (id === undefined && activo.id === undefined && logueado && logueado.id) {
+            this.props.updateUsuario(logueado);
         }
     }
 
@@ -127,7 +119,9 @@ class Editar extends React.Component {
     submitForm(e) {
         e.preventDefault();
         if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
-            this.props.saveUpdateUsuario();
+            let id           = parseInt(this.props.match.params['id']);
+            let noEsLogueado = id > 0;
+            this.props.saveUpdateUsuario(noEsLogueado);
         }
     }
 
@@ -148,20 +142,10 @@ class Editar extends React.Component {
         return "Editar usuario";
     }
 
-    getUsuarioEditar(usuario) {
-        usuario.password          = '';
-        usuario.confirmaPass      = '';
-        usuario.nombre_modificado = usuario.nombre;
-        return usuario;
-    }
-
     render() {
         const {fueModificado, imgPassword, tipo, volverAValido, botonVolverA } = this.state;
         let id      = parseInt(this.props.match.params['id']);
         let usuario = this.props.usuarios.update.activo;
-        if (id > 0) {
-            usuario = this.getUsuarioEditar(this.state.usuario);
-        }
         let passwordVacias = true;
         if (usuario) {
             passwordVacias =
@@ -184,9 +168,9 @@ class Editar extends React.Component {
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
-                            id="nombre_modificado"
+                            id="nombre"
                             type="nombre"
-                            value={usuario ? usuario.nombre_modificado : ""}
+                            value={usuario && usuario.nombre ? usuario.nombre : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Nombre"
                         />
@@ -196,7 +180,7 @@ class Editar extends React.Component {
                         <Form.Control
                             id="email"
                             type="email"
-                            value={usuario ? usuario.email : ""}
+                            value={usuario && usuario.email ? usuario.email : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Email"
                             disabled={true}
@@ -207,7 +191,7 @@ class Editar extends React.Component {
                         <Form.Control
                             id="dni"
                             type="dni"
-                            value={usuario ? usuario.dni : ""}
+                            value={usuario && usuario.dni ? usuario.dni : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Dni"
                         />
@@ -220,7 +204,7 @@ class Editar extends React.Component {
                                 className="form-control input-clave"
                                 type={tipo}
                                 onChange={(e) => this.onChangeUsuario(e)}
-                                value={usuario ? usuario.password : ""}
+                                value={usuario && usuario.password ? usuario.password : ""}
                                 required={!passwordVacias}
                                 autoComplete={"new-password"}
                                 placeholder="Contraseña"
@@ -241,7 +225,7 @@ class Editar extends React.Component {
                                 className="form-control input-clave"
                                 type={tipo}
                                 onChange={(e) => this.onChangeUsuario(e)}
-                                value={usuario ? usuario.confirmaPass : ""}
+                                value={usuario && usuario.confirmaPass ? usuario.confirmaPass : ""}
                                 required={!passwordVacias}
                                 autoComplete={"new-password"}
                                 placeholder="Confirmar Contraseña"
@@ -267,7 +251,8 @@ class Editar extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        usuarios: state.usuarios
+        usuarios: state.usuarios,
+        authentication: state.authentication
     };
 }
 
@@ -276,14 +261,17 @@ const mapDispatchToProps = (dispatch) => {
         updateUsuario: (usuario) => {
             dispatch(updateUsuario(usuario))
         },
-        saveUpdateUsuario: () => {
-            dispatch(saveUpdateUsuario())
+        saveUpdateUsuario: (noEsLogueado) => {
+            dispatch(saveUpdateUsuario(noEsLogueado))
         },
         fetchUsuarios: () => {
             dispatch(fetchUsuarios())
         },
         resetUsuarios: () => {
             dispatch(resetUsuarios())
+        },
+        resetUpdateUsuario: () => {
+            dispatch(resetUpdateUsuario())
         }
     }
 };

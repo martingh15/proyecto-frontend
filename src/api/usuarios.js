@@ -46,11 +46,13 @@ var usuarios = {
         return fetch(c.BASE_URL + '/usuarios/create', defaultOptions);
     },
 
-    saveUpdate(usuario) {
+    saveUpdate(usuario, noEsLogueado) {
+
+        let method = noEsLogueado ? 'POST' : 'PUT';
 
         let defaultOptions = {
             url: '',
-            method: 'PUT',
+            method: method,
             mode: 'cors',
             headers: {
                 'Access-Control-Allow-Origin': '*',

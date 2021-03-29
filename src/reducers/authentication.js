@@ -9,6 +9,7 @@ import {
     LOGOUT_SUCCESS
 } from '../actions/AuthenticationActions';
 import auth from '../api/authentication';
+import {RECEIVE_USUARIO_LOGUEADO} from "../actions/UsuarioActions";
 
 const assign = Object.assign || require('object.assign');
 

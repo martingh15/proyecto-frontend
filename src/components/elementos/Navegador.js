@@ -35,14 +35,14 @@ class Navegador extends React.Component {
         if (auth.idUsuario()) {
             this.props.fetchUsuarioLogueadoIfNeeded();
         }
-        if (this.props.usuarios.update.activo.nombre) {
+        if (this.props.usuarios.update.logueado.nombre) {
             this.setNombreUsuarioLogueado();
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let logueado = this.props.usuarios.update.activo;
-        if (prevProps.usuarios.update.activo.nombre !== logueado.nombre
+        let logueado = this.props.usuarios.update.logueado;
+        if (prevProps.usuarios.update.logueado.nombre !== logueado.nombre
             && (this.state.nombre === "" || this.state.nombre !== logueado.nombre)) {
             this.setNombreUsuarioLogueado();
         }
@@ -54,7 +54,7 @@ class Navegador extends React.Component {
     }
 
     setNombreUsuarioLogueado() {
-        let nombre = this.props.usuarios.update ? this.props.usuarios.update.activo.nombre : "";
+        let nombre = this.props.usuarios.update ? this.props.usuarios.update.logueado.nombre : "";
         this.setState({
             nombre: nombre ? nombre.trim() : ""
         });

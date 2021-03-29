@@ -31,7 +31,7 @@ class Gestion extends React.Component {
     }
 
     getOperacion(operacion, rol) {
-        let usuario      = this.props.usuarios.update.activo;
+        let usuario      = this.props.usuarios.update.logueado;
         let rolesUsuario = usuario && usuario.rolesArray ? usuario.rolesArray : [];
         let tieneRol     = rolesUsuario.includes(rol);
         if (!tieneRol) {
@@ -62,7 +62,7 @@ class Gestion extends React.Component {
     }
 
     getOperaciones(rol) {
-        const logueado         = this.props.usuarios.update.activo;
+        const logueado         = this.props.usuarios.update.logueado;
         const operaciones      = logueado && logueado.id ? logueado.operaciones : [];
         let   operacionesAdmin = [];
         operaciones.map((operacion) => {

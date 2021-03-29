@@ -153,10 +153,10 @@ export function updateUsuario(usuario) {
     }
 }
 
-export function saveUpdateUsuario() {
+export function saveUpdateUsuario(noEsLogueado) {
     return (dispatch, getState) => {
         dispatch(requestUpdateUsuario());
-        return usuarios.saveUpdate(getState().usuarios.update.activo)
+        return usuarios.saveUpdate(getState().usuarios.update.activo, noEsLogueado)
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
@@ -169,7 +169,6 @@ export function saveUpdateUsuario() {
                 let usuario = respuesta.usuario;
                 dispatch(resetUpdateUsuario());
                 dispatch(updateUsuario(usuario));
-                history.push(rutas.INICIO);
             })
             .catch(function (error) {
                 switch (error.status) {
