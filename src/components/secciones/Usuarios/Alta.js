@@ -28,7 +28,7 @@ import whiteEye from "../../../assets/img/view.png";
 import history from "../../../history";
 import Swal from 'sweetalert2';
 
-class Registro extends React.Component {
+class Alta extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -103,6 +103,20 @@ class Registro extends React.Component {
         }
     }
 
+    onChangeRolUsuario(id) {
+        var cambio  = {};
+        var valor   = true;
+        var usuario = this.props.usuarios.create.nuevo;
+        switch (id) {
+            case 'esAdministrador':
+                if (usuario.esAdministrador) {
+                    valor = false;
+                }
+        }
+        cambio[id] = valor;
+        this.props.createUsuario(cambio);
+    }
+
     showErrores(errores) {
         let texto = "";
         errores.map((e) => {
@@ -135,10 +149,6 @@ class Registro extends React.Component {
         if (tipoAdmin && (usuario.dni === undefined || usuario.dni === "")) {
             errores.push("Dni");
         }
-        if (tipoAdmin && (usuario.rol === undefined || usuario.rol === "")) {
-            errores.push("Rol");
-        }
-
         if (errores.length > 0) {
             this.showErrores(errores);
             return false;
@@ -168,6 +178,7 @@ class Registro extends React.Component {
     render() {
         const {imgPassword, tipo, botonVolverA, volverAValido} = this.state;
         const tipoRuta  = this.props.match.params['tipo'];
+        const usuario   = this.props.usuarios.create.nuevo;
         const tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
         const Ojo = () => {
             return(
@@ -253,19 +264,20 @@ class Registro extends React.Component {
                                         Esta será la contraseña del usuario que está creando.
                                     </Form.Text>
                                 </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Rol</Form.Label>
-                                    <Form.Control
-                                        id="rol"
-                                        as="select"
-                                        defaultValue=""
-                                        className="form-control"
-                                        onChange={(e) => this.onChangeUsuario(e, true)}
-                                    >
-                                        <option value="">Seleccione un rol</option>
-                                        <option value={roles.ROL_VENDEDOR}>Vendedor</option>
-                                        <option value={roles.ROL_MOZO}>Mozo</option>
-                                    </Form.Control>
+                                <Form.Group className="d-flex flex-column">
+                                    <Form.Label>Roles</Form.Label>
+                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdministrador')}>
+                                        <input className="form-check-input" type="checkbox" id="esAdministrador" checked={usuario && usuario.esAdministrador ? usuario.esAdministrador : false} onChange={() => {}}/>
+                                            <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
+                                    </div>
+                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
+                                        <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
+                                            <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
+                                    </div>
+                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
+                                        <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
+                                            <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
+                                    </div>
                                 </Form.Group>
                             </div>
                         }
@@ -307,4 +319,4 @@ const mapDispatchToProps = (dispatch) => {
         },
     }
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Registro));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Alta));

@@ -10,7 +10,7 @@ import * as rutas from './constants/rutas.js';
 import Navegador from "./components/elementos/Navegador";
 import Inicio from "./components/secciones/Inicio";
 import Login from "./components/secciones/Usuarios/Login";
-import Registro from "./components/secciones/Usuarios/Registro";
+import Registro from "./components/secciones/Usuarios/Alta";
 import MiPerfil from "./components/secciones/Usuarios/Editar";
 import CambiarPassword from "./components/secciones/Usuarios/CambiarPassword";
 import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
