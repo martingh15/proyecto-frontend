@@ -55,17 +55,20 @@ class Listado extends React.Component {
     }
 
     getRolesUsuario(usuario) {
-        let roles = "";
-        usuario.roles.map(rol => {
-            let nombreRol = rol.nombre;
-            let rolUpper = nombreRol.charAt(0).toUpperCase() + nombreRol.slice(1);
-            roles += rolUpper;
-            if (roles !== "") {
-                roles += ", ";
-            }
-        });
-        roles = roles.slice(0, -2);
-        return roles;
+        let roles = [];
+        let esAdmin    = usuario.esAdmin;
+        if (esAdmin) {
+            roles.push('Administrador');
+        }
+        let esVendedor = usuario.esVendedor;
+        if (esVendedor) {
+            roles.push('Vendedor');
+        }
+        let esMozo     = usuario.esMozo;
+        if (esMozo) {
+            roles.push('Mozo');
+        }
+        return roles.join(", ");
     }
 
     modalBorrar(usuario) {
