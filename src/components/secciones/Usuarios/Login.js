@@ -38,6 +38,15 @@ class Login extends React.Component {
         if (this.props.authentication.token) {
             history.push(rutas.INICIO);
         }
+        this.resetUsuario();
+    }
+
+    resetUsuario() {
+        const cambio = {
+            'email': '',
+            'password': ''
+        };
+        this.props.changeLogin(cambio);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
