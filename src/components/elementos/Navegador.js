@@ -80,8 +80,8 @@ class Navegador extends React.Component {
     }
 
     comprobarEsRutaGestion(rutaActual, ruta) {
-        let esAltaUsuarios    = rutaActual === rutas.REGISTRO_ADMIN && ruta === rutas.GESTION;
-        let esListadoUsuarios = rutaActual === rutas.GESTION_USUARIOS && ruta === rutas.GESTION;
+        let esAltaUsuarios    = rutaActual === rutas.USUARIOS_ALTA;
+        let esListadoUsuarios = rutaActual === rutas.USUARIOS_LISTAR;
         return esAltaUsuarios || esListadoUsuarios;
     }
 
@@ -129,7 +129,7 @@ class Navegador extends React.Component {
                     mostrar={props.mostrar}
                     grow={false}
                     texto={"Registro"}
-                    ruta={rutas.REGISTRO}
+                    ruta={rutas.USUARIOS_ALTA_COMUN}
                 />
             </>
         );
@@ -146,7 +146,7 @@ class Navegador extends React.Component {
                     mostrar={props.mostrar}
                     grow={true}
                     texto={"Mi perfil"}
-                    ruta={rutas.PERFIL}
+                    ruta={rutas.USUARIOS_EDITAR_COMUN}
                 />
                 <ItemMenu
                     mostrar={props.mostrar}

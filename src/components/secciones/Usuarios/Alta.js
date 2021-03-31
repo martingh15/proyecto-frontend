@@ -57,7 +57,7 @@ class Alta extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         let tipoRuta  = this.props.match.params['tipo'];
         let logueado  = this.props.usuarios.update.activo;
-        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let tipoAdmin = tipoRuta === rutas.TIPO_ADMIN;
         if ((!tipoAdmin && this.props.authentication.token) || (tipoAdmin && logueado && logueado.id && !logueado.esAdmin) ) {
             history.push(rutas.INICIO);
         }
@@ -87,7 +87,7 @@ class Alta extends React.Component {
         var mensaje         = "";
         cambio[e.target.id] = e.target.value;
         let tipoRuta  = this.props.match.params['tipo'];
-        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let tipoAdmin = tipoRuta === rutas.TIPO_ADMIN;
         let logueado = this.props.usuarios.create.nuevo;
         if (logueado.tipoRegistro === undefined || logueado.tipoRegistro === "") {
             cambio["tipoRegistro"] = tipoAdmin ? "admin" : "comun";
@@ -112,6 +112,17 @@ class Alta extends React.Component {
                 if (usuario.esAdmin) {
                     valor = false;
                 }
+                break;
+            case 'esMozo':
+                if (usuario.esMozo) {
+                    valor = false;
+                }
+                break;
+            case 'esVendedor':
+                if (usuario.esVendedor) {
+                    valor = false;
+                }
+                break;
         }
         cambio[id] = valor;
         this.props.createUsuario(cambio);
@@ -139,7 +150,7 @@ class Alta extends React.Component {
         let errores = [];
         let usuario = this.props.usuarios.create.nuevo;
         let tipoRuta  = this.props.match.params['tipo'];
-        let tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let tipoAdmin = tipoRuta === rutas.TIPO_ADMIN;
         if (usuario.nombre === undefined || usuario.nombre === "") {
             errores.push("Nombre");
         }
@@ -165,7 +176,7 @@ class Alta extends React.Component {
     submitForm(e) {
         e.preventDefault();
         let tipoRuta   = this.props.match.params['tipo'];
-        let tipoAdmin  = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        let tipoAdmin  = tipoRuta === rutas.TIPO_ADMIN;
         let valido     = this.validarUsuario();
         let linkVolver = this.getQuery('volverA');
         if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password) {
@@ -179,7 +190,7 @@ class Alta extends React.Component {
         const {imgPassword, tipo, botonVolverA, volverAValido} = this.state;
         const tipoRuta  = this.props.match.params['tipo'];
         const usuario   = this.props.usuarios.create.nuevo;
-        const tipoAdmin = tipoRuta === rutas.REGISTRO_TIPO_ADMIN;
+        const tipoAdmin = tipoRuta === rutas.TIPO_ADMIN;
         const Ojo = () => {
             return(
                 <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>

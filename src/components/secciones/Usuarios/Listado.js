@@ -90,8 +90,8 @@ class Listado extends React.Component {
     }
 
     getOperacionesUsuario(usuario) {
-        let id = usuario.id;
-        let rutaEditar = `${rutas.GESTION_USUARIOS}/editar/${id}?volverA=${rutas.GESTION_USUARIOS}`;
+        let id         = usuario.id;
+        let rutaEditar = rutas.getUrlUsuario(id, rutas.ACCION_EDITAR, rutas.TIPO_ADMIN, rutas.USUARIOS_LISTAR);
         return (
             <div>
                 <a href={rutaEditar} title="Editar "
@@ -146,7 +146,7 @@ class Listado extends React.Component {
                 <div className="table-responsive tarjeta-body listado">
                     <div className="d-flex justify-content-between">
                         <h1 className="tabla-usuarios-titulo">Usuarios</h1>
-                        <a href={rutas.REGISTRO_ADMIN + `?volverA=${rutas.GESTION_USUARIOS}`}
+                        <a href={rutas.USUARIOS_ALTA_ADMIM + `?volverA=${rutas.USUARIOS_LISTAR}`}
                            data-toggle="tooltip" data-original-title="" title="">
                             <AddBoxIcon style={{ color:  '#5cb860'}}/>
                         </a>

@@ -24,6 +24,7 @@ import whiteEye from "../../../assets/img/view.png";
 
 //Librerias
 import history from "../../../history";
+import Swal from "sweetalert2";
 
 class Editar extends React.Component {
     constructor(props) {
@@ -69,6 +70,8 @@ class Editar extends React.Component {
             let usuario = this.props.usuarios.byId.usuarios[id];
             if (usuario && usuario.id) {
                 this.props.updateUsuario(usuario);
+            } else {
+                this.redirigirListado();
             }
         }
         let logueado = this.props.usuarios.update.logueado;
@@ -83,6 +86,20 @@ class Editar extends React.Component {
         cambio['confirmaPass']          = "";
         cambio['password_confirmation'] = "";
         this.props.updateUsuario(cambio);
+    }
+
+    redirigirListado() {
+        Swal.fire({
+            title: `No se ha encontrado el usuario a editar`,
+            icon: 'warning',
+            showCloseButton: true,
+            showCancelButton: false,
+            focusConfirm: true,
+            confirmButtonText: 'Continuar',
+            confirmButtonColor: 'rgb(88, 219, 131)',
+        }).then(() => {
+            history.push(rutas.USUARIOS_LISTAR);
+        })
     }
 
     getQuery(query) {
@@ -109,10 +126,19 @@ class Editar extends React.Component {
             error = "Las contraseñas no coinciden";
         }
         this.confirmaPass.current.setCustomValidity(error);
-        if (!this.state.fueModificado) {
-            this.setState({
-                fueModificado: true
-            });
+        this.setState({
+            fueModificado: true
+        });
+    }
+
+    validarRoles() {
+        let usuario    = this.props.usuarios.update.activo;
+        let esMozo     = usuario.esMozo;
+        let esAdmin    = usuario.esAdmin;
+        let esVendedor = usuario.esVendedor;
+        let esComensal = usuario.esComensal;
+        if (!esMozo && !esAdmin && !esVendedor && !esComensal) {
+            this.redirigirListado();
         }
     }
 
@@ -120,8 +146,12 @@ class Editar extends React.Component {
         e.preventDefault();
         if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
             let id           = parseInt(this.props.match.params['id']);
+            let editar       = this.props.match.params['accion'] === 'editar';
             let noEsLogueado = id > 0;
-            this.props.saveUpdateUsuario(noEsLogueado);
+            let rolesValidos = this.validarRoles();
+            if (rolesValidos) {
+                this.props.saveUpdateUsuario(noEsLogueado);
+            }
         }
     }
 
@@ -132,14 +162,49 @@ class Editar extends React.Component {
     }
 
     getTituloPorRuta() {
-        let actual = this.props.location.pathname;
-        switch (actual) {
-            case rutas.GESTION_USUARIOS:
+        let accion = this.props.match.params['accion'];
+        switch (accion) {
+            case rutas.ACCION_ALTA:
+                return "Crear usuario";
+            case rutas.ACCION_EDITAR:
                 return "Editar usuario";
-            case rutas.MI_PERFIL:
-                return "Mi perfil";
         }
-        return "Editar usuario";
+        return "Mi perfil";
+    }
+
+    onChangeRolUsuario(id) {
+        var cambio  = {};
+        var valor   = true;
+        var usuario = this.props.usuarios.update.activo;
+        switch (id) {
+            case 'esAdmin':
+                if (usuario.esAdmin) {
+                    valor = false;
+                }
+                break;
+            case 'esMozo':
+                if (usuario.esMozo) {
+                    valor = false;
+                }
+                break;
+            case 'esVendedor':
+                if (usuario.esVendedor) {
+                    valor = false;
+                }
+                break;
+            case 'esComensal':
+                if (usuario.esComensal) {
+                    valor = false;
+                }
+                break;
+        }
+        if (usuario.esAdmin && !usuario.logueado || !usuario.esAdmin) {
+            cambio[id] = valor;
+        }
+        this.props.updateUsuario(cambio);
+        this.setState({
+            fueModificado: true
+        });
     }
 
     render() {
@@ -159,6 +224,7 @@ class Editar extends React.Component {
             );
         };
         let titulo = this.getTituloPorRuta();
+        let esAdmin = usuario && usuario.esAdmin ? usuario.esAdmin : false;
         return (
             <div className="datos-usuario">
                 <Form className="tarjeta-body" onSubmit={(e) => {
@@ -237,7 +303,7 @@ class Editar extends React.Component {
                     <Form.Group className="d-flex flex-column">
                         <Form.Label>Roles</Form.Label>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
-                            <input className="form-check-input" type="checkbox" id="esAdmin" checked={usuario && usuario.esAdmin ? usuario.esAdmin : false} onChange={() => {}}/>
+                            <input className="form-check-input" type="checkbox" id="esAdmin" disabled={esAdmin && usuario.logueado} checked={esAdmin} onChange={() => {}}/>
                             <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
                         </div>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
@@ -247,6 +313,10 @@ class Editar extends React.Component {
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
                             <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
                             <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esComensal')}>
+                            <input className="form-check-input" type="checkbox" id="esComensal" checked={usuario && usuario.esComensal ? usuario.esComensal : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
                         </div>
                     </Form.Group>
                     <Loader display={this.props.usuarios.update.isUpdating}/>

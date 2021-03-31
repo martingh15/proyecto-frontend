@@ -11,7 +11,7 @@ import Navegador from "./components/elementos/Navegador";
 import Inicio from "./components/secciones/Inicio";
 import Login from "./components/secciones/Usuarios/Login";
 import Registro from "./components/secciones/Usuarios/Alta";
-import MiPerfil from "./components/secciones/Usuarios/Editar";
+import Editar from "./components/secciones/Usuarios/Editar";
 import CambiarPassword from "./components/secciones/Usuarios/CambiarPassword";
 import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
 import Gestion from "./components/secciones/Gestion";
@@ -33,15 +33,12 @@ function App() {
               <Switch>
                   <Route exact path={rutas.INICIO} component={Inicio} />
                   <Route exact path={rutas.LOGIN} component={Login} />
-                  <Route exact path={rutas.REGISTRO_TIPO} component={Registro} />
                   <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
                   <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
                   <Route exact path={rutas.GESTION} component={Gestion} />
-                  <Route exact path={rutas.GESTION_USUARIOS} component={Listado} />
-                  <Route exact path={[
-                      rutas.MI_PERFIL,
-                      rutas.GESTION_USUARIOS_ACCION
-                  ]} component={MiPerfil} />
+                  <Route exact path={rutas.USUARIOS_ALTA} component={Registro} />
+                  <Route exact path={rutas.USUARIOS_LISTAR} component={Listado} />
+                  <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
                   <Route exact path="*" component={NotFound} />
               </Switch>
           </div>
