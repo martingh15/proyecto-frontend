@@ -94,7 +94,7 @@ class Gestion extends React.Component {
             <div className="gestion">
                 {buscando ?
                         <div className="tarjeta-body">
-                            <span className="mb-5">Buscando operaciones de gestión...</span>
+                            <b className="mb-5">Buscando operaciones de gestión...</b>
                             <Loader display={buscando} />
                         </div>
                     :
