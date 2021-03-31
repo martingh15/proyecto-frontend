@@ -161,7 +161,6 @@ class Editar extends React.Component {
         e.preventDefault();
         if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
             let id           = parseInt(this.props.match.params['id']);
-            let editar       = this.props.match.params['accion'] === 'editar';
             let noEsLogueado = id > 0;
             let rolesValidos = this.validarRoles();
             if (rolesValidos) {
@@ -221,12 +220,15 @@ class Editar extends React.Component {
 
     render() {
         const {fueModificado, imgPassword, tipoInput, botonVolverA } = this.state;
-        let tipo           = this.props.match.params['tipo'];
-        let titulo         = this.getTituloPorRuta();
-        let usuario        = this.props.usuarios.update.activo;
-        let esAdmin        = usuario && usuario.esAdmin ? usuario.esAdmin : false;
-        let tipoComun      = tipo === rutas.TIPO_COMUN;
-        let passwordVacias = true;
+        let id                = parseInt(this.props.match.params['id']);
+        let tipo              = this.props.match.params['tipo'];
+        let titulo            = this.getTituloPorRuta();
+        let usuario           = this.props.usuarios.update.activo;
+        let logueado          = this.props.usuarios.update.logueado;
+        let esAdmin           = usuario && usuario.esAdmin ? usuario.esAdmin : false;
+        let tipoComun         = tipo === rutas.TIPO_COMUN;
+        let passwordVacias    = true;
+        let deshabilitarAdmin = logueado.id === id;
         if (usuario) {
             passwordVacias =
                 (usuario.password === "" || usuario.password === undefined)
@@ -277,7 +279,7 @@ class Editar extends React.Component {
                     <Form.Group className="flex-column" style={{display: tipoComun ? "none" : "flex"}}>
                         <Form.Label>Roles</Form.Label>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
-                            <input className="form-check-input" type="checkbox" id="esAdmin" disabled={esAdmin && usuario.logueado} checked={esAdmin} onChange={() => {}}/>
+                            <input className="form-check-input" type="checkbox" id="esAdmin" disabled={deshabilitarAdmin} checked={esAdmin} onChange={() => {}}/>
                             <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
                         </div>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
