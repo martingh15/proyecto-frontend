@@ -166,9 +166,13 @@ export function saveUpdateUsuario(noEsLogueado) {
                 }
             })
             .then((respuesta) => {
-                let usuario = respuesta.usuario;
+                let usuario  = respuesta.usuario;
+                let logueado = getState().usuarios.update.logueado;
                 dispatch(resetUpdateUsuario());
                 dispatch(updateUsuario(usuario));
+                if (logueado.id === usuario.id) {
+                    dispatch(receiveUsuarioLogueado(usuario));
+                }
                 if (usuario.tipoRuta === rutas.TIPO_ADMIN) {
                     history.push(rutas.USUARIOS_LISTAR);
                 } else {
