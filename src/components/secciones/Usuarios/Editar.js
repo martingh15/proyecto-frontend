@@ -108,17 +108,7 @@ class Editar extends React.Component {
     }
 
     redirigirListado() {
-        Swal.fire({
-            title: `No se ha encontrado el usuario a editar`,
-            icon: 'warning',
-            showCloseButton: true,
-            showCancelButton: false,
-            focusConfirm: true,
-            confirmButtonText: 'Continuar',
-            confirmButtonColor: 'rgb(88, 219, 131)',
-        }).then(() => {
-            history.push(rutas.USUARIOS_LISTAR);
-        })
+
     }
 
     toogleClave(mostrar) {
@@ -145,16 +135,27 @@ class Editar extends React.Component {
         });
     }
 
-    validarRoles() {
+    comprobarRolesValidos() {
         let tipo       = this.props.match.params['tipo'];
+        let tipoAdmin  = tipo === rutas.TIPO_ADMIN;
         let usuario    = this.props.usuarios.update.activo;
         let esMozo     = usuario.esMozo;
         let esAdmin    = usuario.esAdmin;
         let esVendedor = usuario.esVendedor;
         let esComensal = usuario.esComensal;
-        if (!esMozo && !esAdmin && !esVendedor && !esComensal && tipo === rutas.TIPO_ADMIN) {
-            this.redirigirListado();
+        if (!esMozo && !esAdmin && !esVendedor && !esComensal && tipoAdmin) {
+            Swal.fire({
+                title: `Debe seleccionar al menos un rol para el usuario`,
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: false,
+                focusConfirm: true,
+                confirmButtonText: 'Continuar',
+                confirmButtonColor: 'rgb(88, 219, 131)',
+            });
+            return false;
         }
+        return true;
     }
 
     submitForm(e) {
@@ -162,8 +163,8 @@ class Editar extends React.Component {
         if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
             let id           = parseInt(this.props.match.params['id']);
             let noEsLogueado = id > 0;
-            let rolesValidos = this.validarRoles();
-            if (rolesValidos) {
+            let validos = this.comprobarRolesValidos();
+            if (validos) {
                 this.props.saveUpdateUsuario(noEsLogueado);
             }
         }
