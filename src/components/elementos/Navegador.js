@@ -32,7 +32,8 @@ class Navegador extends React.Component {
 
     componentDidMount() {
         window.scroll(0, 0);
-        if (auth.idUsuario()) {
+        let logueado = this.props.usuarios.update.logueado;
+        if (auth.idUsuario() && logueado.id === undefined) {
             this.props.fetchUsuarioLogueadoIfNeeded();
         }
         if (this.props.usuarios.update.logueado.nombre) {
@@ -97,25 +98,14 @@ class Navegador extends React.Component {
             let tipo        = props.tipo;
             let activa      = this.getRutaActiva(props.ruta);
             let claseActiva = activa ? "activo" : "";
-            if (ruta === rutas.LOGOUT || tipo === 'boton') {
-                return (
-                    <button
-                        className={`itemMenu ${display} ${grow} ${claseActiva}`}
-                        onClick={() => this.redirectTo(ruta)}
-                        style={{cursor: props.grow ? "pointer" : "unset"}}
-                    >
-                        {props.texto}
-                    </button>
-                );
-            }
             return(
-                <a
-                    href={ruta}
+                <button
                     className={`itemMenu ${display} ${grow} ${claseActiva}`}
                     onClick={() => this.redirectTo(ruta)}
+                    style={{cursor: props.grow ? "pointer" : "unset"}}
                 >
                     {props.texto}
-                </a>
+                </button>
             )
         };
 

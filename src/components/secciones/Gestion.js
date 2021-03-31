@@ -18,6 +18,7 @@ import TarjetaMenu from "../elementos/TarjetaMenu";
 //Imagenes
 import imgUsuarios from "../../assets/img/menu/gestion-usuario.svg";
 import imgCompras from "../../assets/img/menu/compras.svg";
+import imgProductos from "../../assets/img/menu/productos.png";
 
 class Gestion extends React.Component {
     constructor(props) {
@@ -30,6 +31,8 @@ class Gestion extends React.Component {
                 return imgCompras;
             case rutas.USUARIOS_LISTAR:
                 return imgUsuarios;
+            case rutas.PRODUCTOS_LISTAR:
+                return imgProductos;
         }
     }
 
