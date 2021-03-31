@@ -18,6 +18,7 @@ export const ACCION_EDITAR = 'editar';
 export const TIPO_COMUN = 'comun';
 export const TIPO_ADMIN = 'admin';
 
+//Gestión de usuarios
 export const USUARIOS              = '/usuarios';
 export const USUARIOS_ALTA         = '/usuarios/alta/:tipo';
 export const USUARIOS_ALTA_ADMIN   = '/usuarios/alta/admin';
@@ -27,6 +28,18 @@ export const USUARIOS_EDITAR       = '/usuarios/editar/:tipo?/:id?';
 export const USUARIOS_EDITAR_ADMIN = '/usuarios/editar/admin';
 export const USUARIOS_EDITAR_COMUN = '/usuarios/editar/comun';
 
+//Gestión de productos
+export const PRODUCTOS_LISTAR = '/productos/listar';
+
+/**
+ * Devuelve la url de usuarios
+ *
+ * @param id
+ * @param accion ver constantes ACCION_*
+ * @param tipo ver constantes TIPO_*
+ * @param volverA query para volver a la ruta anterior
+ * @returns {string}
+ */
 export function getUrlUsuario(id, accion, tipo, volverA) {
     let ruta = `${USUARIOS}/${accion}/${tipo}/${id}`;
     if (volverA) {
@@ -35,15 +48,16 @@ export function getUrlUsuario(id, accion, tipo, volverA) {
     return ruta;
 }
 
+/**
+ * Permite obtener la query de la url
+ *
+ * @param query
+ * @returns {string}
+ */
 export function getQuery(query) {
     const search = new URLSearchParams(window.location.search);
     return search.get(query);
 }
-
-const RUTAS_GESTION = [
-    GESTION,
-    USUARIOS_LISTAR,
-];
 
 const RUTAS = [
     LOGIN,
@@ -56,14 +70,16 @@ const RUTAS = [
     COMPRAS,
     USUARIOS_LISTAR,
     USUARIOS_ALTA_ADMIN,
-    USUARIOS_ALTA_COMUN
+    USUARIOS_ALTA_COMUN,
+    PRODUCTOS_LISTAR
 ];
 
-const RUTAS_PARCIALES = [
-    USUARIOS_EDITAR_ADMIN,
-    USUARIOS_EDITAR_COMUN
-];
-
+/**
+ * Valida que la ruta exista
+ *
+ * @param ruta
+ * @returns {boolean}
+ */
 export function validarRuta(ruta) {
     return RUTAS.includes(ruta);
 }
