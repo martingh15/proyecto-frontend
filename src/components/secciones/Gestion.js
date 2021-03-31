@@ -6,6 +6,9 @@ import {connect} from "react-redux";
 import * as rutas from '../../constants/rutas.js';
 import * as roles from '../../constants/roles.js';
 
+//Components
+import Loader from "../elementos/Loader";
+
 //CSS
 import "../../assets/css/Gestion.css";
 
@@ -86,9 +89,16 @@ class Gestion extends React.Component {
 
     render() {
         let operacionesAdmin = this.getOperaciones(roles.ROL_ADMIN);
+        let buscando = this.props.usuarios.update.isFetchingUsuarioLogueado;
         return (
             <div className="gestion">
-                {operacionesAdmin}
+                {buscando ?
+                        <div className="tarjeta-body">
+                            <span className="mb-5">Buscando operaciones de gestión...</span>
+                            <Loader display={buscando} />
+                        </div>
+                    :
+                        operacionesAdmin}
             </div>
         )
     }
