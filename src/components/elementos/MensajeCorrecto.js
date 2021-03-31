@@ -51,7 +51,11 @@ class MensajeCorrecto extends React.Component {
                     procesoFinalizado = true;
                 }
                 if (value.delete && valuePrev && valuePrev.delete && !value.delete.isDeleting && valuePrev.delete.isDeleting && !value.delete.error) {
-                    mensajes.push(key.toUpperCase() + " borrados correctamente");
+                    let mensaje = key.charAt(0).toUpperCase() + key.slice(1, key.length - 1) + " borrado correctamente";
+                    if (value.delete.success) {
+                        mensaje = value.delete.success;
+                    }
+                    mensajes.push(mensaje);
                     procesoFinalizado = true;
                 }
             }

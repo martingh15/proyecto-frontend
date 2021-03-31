@@ -465,3 +465,76 @@ export function fetchUsuarioByIdIfNeeded(id) {
         }
     }
 }
+
+//USUARIO DELETE
+export const RESET_DELETE_USUARIO   = "RESET_DELETE_USUARIO";
+export const REQUEST_DELETE_USUARIO = "REQUEST_DELETE_USUARIO";
+export const RECEIVE_DELETE_USUARIO = "RECEIVE_DELETE_USUARIO";
+export const ERROR_DELETE_USUARIO   = "ERROR_DELETE_USUARIO";
+
+function requestDeleteUsuario() {
+    return {
+        type: REQUEST_DELETE_USUARIO,
+    }
+}
+
+function receiveDeleteUsuario(mensaje) {
+    return {
+        type: RECEIVE_DELETE_USUARIO,
+        receivedAt: Date.now(),
+        success: mensaje
+    }
+}
+
+function errorDeleteUsuario(error) {
+    return {
+        type: ERROR_DELETE_USUARIO,
+        error: error,
+    }
+}
+
+export function resetDeleteUsuario() {
+    return {
+        type: RESET_DELETE_USUARIO,
+    }
+}
+
+export function saveDeleteUsuario(id) {
+    return (dispatch, getState) => {
+        dispatch(requestDeleteUsuario());
+        return usuarios.borrarUsuario(id)
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    return response.json();
+                }
+            })
+            .then((respuesta) => {
+                let mensaje = respuesta.message;
+                dispatch(receiveDeleteUsuario(mensaje));
+                dispatch(resetDeleteUsuario());
+                history.push(rutas.USUARIOS_LISTAR);
+            })
+            .catch(function (error) {
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorDeleteUsuario(errorMessages.UNAUTHORIZED_TOKEN));
+                        //dispatch(logout());
+                        return Promise.reject(error);
+                    default:
+                        error.json()
+                            .then(error => {
+                                if (error.message !== "")
+                                    dispatch(errorDeleteUsuario(error.message));
+                                else
+                                    dispatch(errorDeleteUsuario(errorMessages.GENERAL_ERROR));
+                            })
+                            .catch(error => {
+                                dispatch(errorDeleteUsuario(errorMessages.GENERAL_ERROR));
+                            });
+                        return;
+                }
+            });
+    }
+}

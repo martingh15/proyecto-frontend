@@ -27,7 +27,7 @@ import {
     REQUEST_USUARIO_ID,
     RECEIVE_USUARIO_ID,
     ERROR_USUARIO_ID,
-    RESET_USUARIO_ID
+    RESET_USUARIO_ID, RESET_DELETE_USUARIO, REQUEST_DELETE_USUARIO, RECEIVE_DELETE_USUARIO, ERROR_DELETE_USUARIO
 
 } from '../actions/UsuarioActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
@@ -191,6 +191,7 @@ function update(state = {
     error: null
 }, action) {
     switch (action.type) {
+        //UPDATE USUARIO
         case UPDATE_USUARIO:
             return Object.assign({}, state, {
                 isUpdating: false,
@@ -267,6 +268,42 @@ function update(state = {
     }
 }
 
+function borrar(state = {
+    isDeleting: false,
+    success: "",
+    error: null
+}, action) {
+    switch (action.type) {
+        //DELETE
+        case RESET_DELETE_USUARIO:
+            return Object.assign({}, state, {
+                isDeleting: false,
+                success: "",
+                error: null,
+            });
+        case REQUEST_DELETE_USUARIO:
+            return Object.assign({}, state, {
+                isDeleting: true,
+                success: "",
+                error: null,
+            });
+        case RECEIVE_DELETE_USUARIO:
+            return Object.assign({}, state, {
+                isDeleting: false,
+                success: action.success,
+                error: null,
+            });
+        case ERROR_DELETE_USUARIO:
+            return Object.assign({}, state, {
+                isDeleting: false,
+                success: "",
+                error: action.error
+            });
+        default:
+            return state
+    }
+}
+
 function usuariosAllIds(state = [], action) {
     switch (action.type) {
         case RECEIVE_USUARIOS:
@@ -281,9 +318,10 @@ function usuariosAllIds(state = [], action) {
 
 const usuarios = combineReducers({
     allIds: usuariosAllIds,
-    byId: usuariosById,
+    byId:   usuariosById,
     create: create,
-    update: update
+    update: update,
+    delete: borrar,
 });
 
 export default usuarios;

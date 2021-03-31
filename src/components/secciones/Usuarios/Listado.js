@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 //Actions
-import {resetUsuarios, fetchUsuarios} from "../../../actions/UsuarioActions";
+import {resetUsuarios, fetchUsuarios, saveDeleteUsuario} from "../../../actions/UsuarioActions";
 
 //Constants
 import * as rutas from '../../../constants/rutas.js';
@@ -76,6 +76,7 @@ class Listado extends React.Component {
     }
 
     modalBorrar(usuario) {
+        let logueado = this.props.usuarios.update.logueado;
         Swal.fire({
             title: `Está seguro de borrar el usuario '${usuario.nombre}'`,
             icon: 'warning',
@@ -86,16 +87,32 @@ class Listado extends React.Component {
             confirmButtonColor: 'rgb(88, 219, 131)',
             cancelButtonColor: '#bfbfbf',
         }).then((result) => {
-            if (result.isConfirmed) {
-                //Hacer operación borrar usuario
-
+            if (result.isConfirmed && logueado.id !== usuario.id) {
+                this.props.saveDeleteUsuario(usuario.id);
+            } else if (result.isConfirmed) {
+                Swal.fire({
+                    title: `No es posible borrar al usuario logueado`,
+                    icon: 'warning',
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    focusConfirm: true,
+                    confirmButtonText: 'Continuar',
+                    confirmButtonColor: 'rgb(88, 219, 131)',
+                })
             }
         })
     }
 
     getOperacionesUsuario(usuario) {
         let id         = usuario.id;
+        let logueado   = this.props.usuarios.update.logueado;
         let rutaEditar = rutas.getUrlUsuario(id, rutas.ACCION_EDITAR, rutas.TIPO_ADMIN, rutas.USUARIOS_LISTAR);
+        let borrar =
+            <p onClick={() => this.modalBorrar(usuario)} title="Borrar"
+               className="operacion">
+                <img src={tacho} className="icono-operacion" alt="Borrar usuario"/>
+                Borrar
+            </p>;
         return (
             <div>
                 <a href={rutaEditar} title="Editar "
@@ -103,11 +120,7 @@ class Listado extends React.Component {
                     <img src={lapiz} className="icono-operacion" alt="Editar usuario"/>
                     Editar
                 </a>
-                <p onClick={() => this.modalBorrar(usuario)} title="Borrar"
-                   className="operacion">
-                    <img src={tacho} className="icono-operacion" alt="Borrar usuario"/>
-                    Borrar
-                </p>
+                {id !== logueado.id ? borrar : ""}
             </div>
         );
     }
@@ -188,6 +201,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         resetUsuarios: () => {
             dispatch(resetUsuarios())
+        },
+        saveDeleteUsuario: (id) => {
+            dispatch(saveDeleteUsuario(id))
         }
     }
 };
