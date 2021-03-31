@@ -1,7 +1,7 @@
 import { normalize, schema } from 'normalizr';
 
 export function normalizeDato(myData){
-    const usuario = new schema.Entity('usuarios',{},{idAttribute: "id"});
+    const usuario = new schema.Entity('usuario',{},{idAttribute: "id"});
 
     const mySchema = usuario;
 

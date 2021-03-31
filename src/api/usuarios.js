@@ -83,7 +83,25 @@ var usuarios = {
         };
 
         return fetch(c.BASE_URL + '/usuarios', defaultOptions);
-    }
+    },
+
+    getUsuario(id) {
+
+        let defaultOptions = {
+            url: '',
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.token
+            },
+            // cache: false,
+            dataType: 'json',
+        };
+
+        return fetch(c.BASE_URL + '/usuario/' + id, defaultOptions);
+    },
 };
 
 export default usuarios;

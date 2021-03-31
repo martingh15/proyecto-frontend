@@ -168,17 +168,12 @@ class Alta extends React.Component {
         }
     }
 
-    getQuery(query) {
-        const search = new URLSearchParams(window.location.search);
-        return search.get(query);
-    }
-
     submitForm(e) {
         e.preventDefault();
         let tipoRuta   = this.props.match.params['tipo'];
         let tipoAdmin  = tipoRuta === rutas.TIPO_ADMIN;
         let valido     = this.validarUsuario();
-        let linkVolver = this.getQuery('volverA');
+        let linkVolver = rutas.getQuery('volverA');
         if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password) {
             this.props.saveCreateUsuario(false, linkVolver);
         } else if (tipoAdmin && valido) {

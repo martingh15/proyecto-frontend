@@ -21,7 +21,13 @@ import {
     INVALIDATE_USUARIOS,
     REQUEST_USUARIOS,
     ERROR_USUARIOS,
-    RECEIVE_USUARIOS, RESET_USUARIOS
+    RECEIVE_USUARIOS,
+    RESET_USUARIOS,
+    INVALIDATE_USUARIO_ID,
+    REQUEST_USUARIO_ID,
+    RECEIVE_USUARIO_ID,
+    ERROR_USUARIO_ID,
+    RESET_USUARIO_ID
 
 } from '../actions/UsuarioActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
@@ -29,8 +35,11 @@ import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
 
 function usuariosById(state = {
     isFetching: false,
+    isFetchingUsuario: false,
     didInvalidate: true,
+    didInvalidateUsuario: true,
     usuarios: [],
+    usuario: {},
     error: null,
     success: "",
 }, action) {
@@ -69,6 +78,38 @@ function usuariosById(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: true,
+                error: null,
+                lastUpdated: null,
+                usuarios: [],
+            });
+        //USUARIO
+        case INVALIDATE_USUARIO_ID:
+            return Object.assign({}, state, {
+                didInvalidateUsuario: true
+            });
+        case REQUEST_USUARIO_ID:
+            return Object.assign({}, state, {
+                isFetchingUsuario: true,
+                didInvalidateUsuario: false
+            });
+        case RECEIVE_USUARIO_ID:
+            return Object.assign({}, state, {
+                isFetchingUsuario: false,
+                didInvalidateUsuario: false,
+                usuario: action.usuario.entities.usuario,
+                lastUpdated: action.receivedAt,
+                error: null
+            });
+        case ERROR_USUARIO_ID:
+            return Object.assign({}, state, {
+                isFetchingUsuario: false,
+                didInvalidateUsuario: true,
+                error: action.error
+            });
+        case RESET_USUARIO_ID:
+            return Object.assign({}, state, {
+                isFetchingUsuario: false,
+                didInvalidateUsuario: true,
                 error: null,
                 lastUpdated: null,
                 usuarios: [],
@@ -201,7 +242,7 @@ function update(state = {
                 error: action.error,
             });
         case RECEIVE_USUARIO_LOGUEADO:
-            let usuario    = action.usuario ? action.usuario.entities.usuarios[action.usuario.result] : {};
+            let usuario    = action.usuario ? action.usuario.entities.usuario[action.usuario.result] : {};
             let roles      = usuario.roles;
             let arrayRoles = [];
             roles.forEach(rol => {

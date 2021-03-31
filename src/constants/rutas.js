@@ -35,6 +35,11 @@ export function getUrlUsuario(id, accion, tipo, volverA) {
     return ruta;
 }
 
+export function getQuery(query) {
+    const search = new URLSearchParams(window.location.search);
+    return search.get(query);
+}
+
 const RUTAS_GESTION = [
     GESTION,
     USUARIOS_LISTAR,

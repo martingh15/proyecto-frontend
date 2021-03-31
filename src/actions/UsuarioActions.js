@@ -369,3 +369,93 @@ export function fetchUsuariosIfNeeded() {
         }
     }
 }
+
+//USUARIO LOGUEADO
+export const INVALIDATE_USUARIO_ID = 'INVALIDATE_USUARIO_ID';
+export const REQUEST_USUARIO_ID    = "REQUEST_USUARIO_ID";
+export const RECEIVE_USUARIO_ID    = "RECEIVE_USUARIO_ID";
+export const ERROR_USUARIO_ID      = "ERROR_USUARIO_ID";
+export const RESET_USUARIO_ID      = "RESET_USUARIO_ID";
+
+export function invalidateUsuarioById() {
+    return {
+        type: INVALIDATE_USUARIO_ID,
+    }
+}
+
+export function resetUsuarioById() {
+    return {
+        type: RESET_USUARIO_ID
+    }
+}
+
+function requestUsuarioById() {
+    return {
+        type: REQUEST_USUARIO_ID,
+    }
+}
+
+function receiveUsuarioById(json) {
+    return {
+        type: RECEIVE_USUARIO_ID,
+        usuario: normalizeDato(json),
+        receivedAt: Date.now()
+    }
+}
+
+function errorUsuarioById(error) {
+    return {
+        type: ERROR_USUARIO_ID,
+        error: error,
+    }
+}
+
+export function fetchUsuarioById(id) {
+    return dispatch => {
+        dispatch(requestUsuarioById());
+        return usuarios.getUsuario(id)
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    var data = response.json();
+                    return data;
+                }
+            })
+            .then(function (data) {
+                dispatch(receiveUsuarioById(data));
+                dispatch(updateUsuario(data));
+            })
+            .catch(function (error) {
+                //dispatch(logout());
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorUsuarios(errorMessages.UNAUTHORIZED_TOKEN));
+                        return;
+                    default:
+                        dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
+                        return;
+                }
+            });
+    }
+}
+
+function shouldFetchUsuarioById(id, state) {
+    const usuariosById   = state.usuarios.byId;
+    const usuariosAllIds = state.usuarios.allIds;
+    if (usuariosById.isFetchingUsuario) {
+        return false;
+    } else if (usuariosAllIds.length === 0) {
+        return true;
+    } else {
+        return usuariosById.didInvalidateUsuario;
+    }
+}
+
+export function fetchUsuarioByIdIfNeeded(id) {
+    return (dispatch, getState) => {
+        if (shouldFetchUsuarios(id, getState())) {
+            return dispatch(fetchUsuarios())
+        }
+    }
+}

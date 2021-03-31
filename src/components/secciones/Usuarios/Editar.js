@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 //Actions
-import {saveUpdateUsuario, updateUsuario, resetUsuarios, fetchUsuarios, resetUpdateUsuario} from "../../../actions/UsuarioActions";
+import {saveUpdateUsuario, updateUsuario, fetchUsuarioById, resetUpdateUsuario} from "../../../actions/UsuarioActions";
 
 //Boostrap
 import Button from "react-bootstrap/Button";
@@ -25,13 +25,15 @@ import whiteEye from "../../../assets/img/view.png";
 //Librerias
 import history from "../../../history";
 import Swal from "sweetalert2";
+import auth from "../../../api/authentication";
 
 class Editar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tipo: 'password',
-            imgPassword: blackEye,
+            tipoInput:     'password',
+            imgPassword:   blackEye,
+            botonVolverA:  "",
             fueModificado: false
         }
 
@@ -39,44 +41,31 @@ class Editar extends React.Component {
     }
 
     componentDidMount() {
+        if (!auth.idUsuario()) {
+            history.push(rutas.LOGIN);
+        }
         this.props.resetUpdateUsuario();
-        let id = parseInt(this.props.match.params['id']);
-        if (id > 0) {
-            this.props.resetUsuarios();
-            this.props.fetchUsuarios();
+        this.actualizarUsuarioActivo();
+        const volverA = rutas.getQuery('volverA');
+        const valido  = rutas.validarRuta(volverA);
+        if (volverA !== "" && valido && this.state.botonVolverA === "") {
+            this.renderizarVolverA(volverA);
         }
-        const volverA    = this.getQuery('volverA');
-        const valido     = rutas.validarRuta(volverA);
-        let botonVolverA = "";
-        if (valido) {
-            botonVolverA =
-                <button className="boton-submit btn btn-light" onClick={() => history.push(volverA)} title="Volver">
-                    Volver
-                </button>;
-        }
-        this.setState({ botonVolverA: botonVolverA, volverAValido: valido });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let id     = this.props.match.params['id'];
-        let activo = this.props.usuarios.update.activo;
         if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === blackEye) {
             this.toogleClave(false);
         }
         if (prevState.imgPassword !== this.state.imgPassword && this.state.imgPassword === whiteEye) {
             this.toogleClave(true);
         }
-        if (prevProps.usuarios.byId.isFetching && !this.props.usuarios.byId.isFetching && this.props.usuarios.allIds.length > 0) {
-            let usuario = this.props.usuarios.byId.usuarios[id];
-            if (usuario && usuario.id) {
-                this.props.updateUsuario(usuario);
-            } else {
-                this.redirigirListado();
-            }
-        }
-        let logueado = this.props.usuarios.update.logueado;
-        if (id === undefined && activo.id === undefined && logueado && logueado.id) {
-            this.props.updateUsuario(logueado);
+        let tipoPrevio = prevProps.match.params['tipo'];
+        this.actualizarUsuarioActivo(tipoPrevio);
+        const volverA = rutas.getQuery('volverA');
+        const valido  = rutas.validarRuta(volverA);
+        if (volverA !== "" && valido && this.state.botonVolverA === "") {
+            this.renderizarVolverA(volverA);
         }
     }
 
@@ -86,6 +75,36 @@ class Editar extends React.Component {
         cambio['confirmaPass']          = "";
         cambio['password_confirmation'] = "";
         this.props.updateUsuario(cambio);
+    }
+
+    actualizarUsuarioActivo(tipoPrevio) {
+        if (!auth.idUsuario()) {
+            history.push(rutas.LOGIN);
+        }
+        let tipo            = this.props.match.params['tipo'];
+        let activo          = this.props.usuarios.update.activo;
+        let cambioTipo      = tipoPrevio !== undefined && tipoPrevio !== tipo;
+        let activoUndefined = activo === undefined || activo.id === undefined;
+        if (activoUndefined || cambioTipo) {
+            let id        = parseInt(this.props.match.params['id']);
+            let tipo      = this.props.match.params['tipo'];
+            let logueado  = this.props.usuarios.update.logueado;
+            let tipoComun = tipo === rutas.TIPO_COMUN;
+            if (id > 0 && !this.props.usuarios.byId.isFetchingUsuario) {
+                this.props.fetchUsuarioById(id);
+            }
+            if (tipoComun && logueado && logueado.id) {
+                this.props.updateUsuario(logueado);
+            }
+        }
+    }
+
+    renderizarVolverA(volverA) {
+        let botonVolverA =
+            <button className="boton-submit btn btn-light" onClick={() => history.push(volverA)} title="Volver">
+                Volver
+            </button>;
+        this.setState({ botonVolverA: botonVolverA });
     }
 
     redirigirListado() {
@@ -102,14 +121,9 @@ class Editar extends React.Component {
         })
     }
 
-    getQuery(query) {
-        const search = new URLSearchParams(window.location.search);
-        return search.get(query);
-    }
-
     toogleClave(mostrar) {
         this.setState(prevState => ({
-            tipo: mostrar ? 'text' : 'password'
+            tipoInput: mostrar ? 'text' : 'password'
         }))
     }
 
@@ -132,12 +146,13 @@ class Editar extends React.Component {
     }
 
     validarRoles() {
+        let tipo       = this.props.match.params['tipo'];
         let usuario    = this.props.usuarios.update.activo;
         let esMozo     = usuario.esMozo;
         let esAdmin    = usuario.esAdmin;
         let esVendedor = usuario.esVendedor;
         let esComensal = usuario.esComensal;
-        if (!esMozo && !esAdmin && !esVendedor && !esComensal) {
+        if (!esMozo && !esAdmin && !esVendedor && !esComensal && tipo === rutas.TIPO_ADMIN) {
             this.redirigirListado();
         }
     }
@@ -162,14 +177,11 @@ class Editar extends React.Component {
     }
 
     getTituloPorRuta() {
-        let accion = this.props.match.params['accion'];
-        switch (accion) {
-            case rutas.ACCION_ALTA:
-                return "Crear usuario";
-            case rutas.ACCION_EDITAR:
-                return "Editar usuario";
+        let tipo = this.props.match.params['tipo'];
+        if (tipo === rutas.TIPO_COMUN) {
+            return "Mi perfil";
         }
-        return "Mi perfil";
+        return "Editar usuario";
     }
 
     onChangeRolUsuario(id) {
@@ -208,23 +220,23 @@ class Editar extends React.Component {
     }
 
     render() {
-        const {fueModificado, imgPassword, tipo, volverAValido, botonVolverA } = this.state;
-        let id      = parseInt(this.props.match.params['id']);
-        let usuario = this.props.usuarios.update.activo;
+        const {fueModificado, imgPassword, tipoInput, botonVolverA } = this.state;
+        let tipo           = this.props.match.params['tipo'];
+        let titulo         = this.getTituloPorRuta();
+        let usuario        = this.props.usuarios.update.activo;
+        let esAdmin        = usuario && usuario.esAdmin ? usuario.esAdmin : false;
+        let tipoComun      = tipo === rutas.TIPO_COMUN;
         let passwordVacias = true;
         if (usuario) {
             passwordVacias =
                 (usuario.password === "" || usuario.password === undefined)
                 || (usuario.password_confirmation === "" || usuario.password_confirmation === undefined);
         }
-
         const ToogleClave = () => {
             return(
                 <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
             );
         };
-        let titulo = this.getTituloPorRuta();
-        let esAdmin = usuario && usuario.esAdmin ? usuario.esAdmin : false;
         return (
             <div className="datos-usuario">
                 <Form className="tarjeta-body" onSubmit={(e) => {
@@ -252,15 +264,34 @@ class Editar extends React.Component {
                             disabled={true}
                         />
                     </Form.Group>
-                    <Form.Group style={{display: id > 0 ? "block" : "none"}}>
+                    <Form.Group>
                         <Form.Label>DNI</Form.Label>
                         <Form.Control
                             id="dni"
                             type="dni"
                             value={usuario && usuario.dni ? usuario.dni : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
-                            placeholder="Dni"
+                            placeholder="Documento Nacional de Identidad"
                         />
+                    </Form.Group>
+                    <Form.Group className="flex-column" style={{display: tipoComun ? "none" : "flex"}}>
+                        <Form.Label>Roles</Form.Label>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
+                            <input className="form-check-input" type="checkbox" id="esAdmin" disabled={esAdmin && usuario.logueado} checked={esAdmin} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
+                            <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
+                            <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esComensal')}>
+                            <input className="form-check-input" type="checkbox" id="esComensal" checked={usuario && usuario.esComensal ? usuario.esComensal : false} onChange={() => {}}/>
+                            <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
+                        </div>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Contraseña</Form.Label>
@@ -268,7 +299,7 @@ class Editar extends React.Component {
                             <input
                                 id="password"
                                 className="form-control input-clave"
-                                type={tipo}
+                                type={tipoInput}
                                 onChange={(e) => this.onChangeUsuario(e)}
                                 value={usuario && usuario.password ? usuario.password : ""}
                                 required={!passwordVacias}
@@ -289,7 +320,7 @@ class Editar extends React.Component {
                                 id="confirmaPass"
                                 ref={this.confirmaPass}
                                 className="form-control input-clave"
-                                type={tipo}
+                                type={tipoInput}
                                 onChange={(e) => this.onChangeUsuario(e)}
                                 value={usuario && usuario.confirmaPass ? usuario.confirmaPass : ""}
                                 required={!passwordVacias}
@@ -300,33 +331,14 @@ class Editar extends React.Component {
                             <ToogleClave/>
                         </div>
                     </Form.Group>
-                    <Form.Group className="d-flex flex-column">
-                        <Form.Label>Roles</Form.Label>
-                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
-                            <input className="form-check-input" type="checkbox" id="esAdmin" disabled={esAdmin && usuario.logueado} checked={esAdmin} onChange={() => {}}/>
-                            <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
-                        </div>
-                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
-                            <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
-                            <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
-                        </div>
-                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
-                            <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
-                            <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
-                        </div>
-                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esComensal')}>
-                            <input className="form-check-input" type="checkbox" id="esComensal" checked={usuario && usuario.esComensal ? usuario.esComensal : false} onChange={() => {}}/>
-                            <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
-                        </div>
-                    </Form.Group>
                     <Loader display={this.props.usuarios.update.isUpdating}/>
                     <div className="botones" style={{ display: this.props.usuarios.update.isUpdating ? "none" : "flex" }}>
                         <Button
                             className="boton-submit" variant="primary" type="submit"
                             disabled={!fueModificado}>
-                            Actualizar datos
+                            Guardar
                         </Button>
-                        {volverAValido ? botonVolverA : ""}
+                        {botonVolverA}
                     </div>
                 </Form>
             </div>
@@ -349,11 +361,8 @@ const mapDispatchToProps = (dispatch) => {
         saveUpdateUsuario: (noEsLogueado) => {
             dispatch(saveUpdateUsuario(noEsLogueado))
         },
-        fetchUsuarios: () => {
-            dispatch(fetchUsuarios())
-        },
-        resetUsuarios: () => {
-            dispatch(resetUsuarios())
+        fetchUsuarioById: (id) => {
+            dispatch(fetchUsuarioById(id))
         },
         resetUpdateUsuario: () => {
             dispatch(resetUpdateUsuario())
