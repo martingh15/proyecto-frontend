@@ -234,6 +234,7 @@ class Editar extends React.Component {
         let usuario           = this.props.usuarios.update.activo;
         let tipoComun         = tipo === rutas.TIPO_COMUN;
         let passwordVacias    = true;
+        let buscando          = this.props.usuarios.update.isFetching || this.props.usuarios.update.isFetchingUsuarioLogueado;
         if (usuario) {
             passwordVacias =
                 (usuario.password === "" || usuario.password === undefined)
@@ -258,6 +259,7 @@ class Editar extends React.Component {
                             value={usuario && usuario.nombre ? usuario.nombre : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Nombre"
+                            disabled={buscando}
                         />
                     </Form.Group>
                     <Form.Group>
@@ -279,20 +281,36 @@ class Editar extends React.Component {
                             value={usuario && usuario.dni ? usuario.dni : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Documento Nacional de Identidad"
+                            disabled={buscando}
                         />
                     </Form.Group>
                     <Form.Group className="flex-column" style={{display: tipoComun ? "none" : "flex"}}>
                         <Form.Label>Roles</Form.Label>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
-                            <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
+                            <input
+                                className="form-check-input" type="checkbox" id="esMozo"
+                                checked={usuario && usuario.esMozo ? usuario.esMozo : false}
+                                onChange={() => {}}
+                                disabled={buscando}
+                            />
                             <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
                         </div>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
-                            <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
+                            <input
+                                className="form-check-input" type="checkbox" id="esVendedor"
+                                checked={usuario && usuario.esVendedor ? usuario.esVendedor : false}
+                                onChange={() => {}}
+                                disabled={buscando}
+                            />
                             <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
                         </div>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esComensal')}>
-                            <input className="form-check-input" type="checkbox" id="esComensal" checked={usuario && usuario.esComensal ? usuario.esComensal : false} onChange={() => {}}/>
+                            <input
+                                className="form-check-input" type="checkbox" id="esComensal"
+                                checked={usuario && usuario.esComensal ? usuario.esComensal : false}
+                                onChange={() => {}}
+                                disabled={buscando}
+                            />
                             <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
                         </div>
                     </Form.Group>
@@ -309,6 +327,7 @@ class Editar extends React.Component {
                                 autoComplete={"new-password"}
                                 placeholder="Contraseña"
                                 minLength="8"
+                                disabled={buscando}
                             />
                             <ToogleClave/>
                         </div>
@@ -330,6 +349,7 @@ class Editar extends React.Component {
                                 autoComplete={"new-password"}
                                 placeholder="Confirmar Contraseña"
                                 minLength="8"
+                                disabled={buscando}
                             />
                             <ToogleClave/>
                         </div>
@@ -338,7 +358,7 @@ class Editar extends React.Component {
                     <div className="botones" style={{ display: this.props.usuarios.update.isUpdating ? "none" : "flex" }}>
                         <Button
                             className="boton-submit" variant="primary" type="submit"
-                            disabled={!fueModificado}>
+                            disabled={!fueModificado || buscando}>
                             Guardar
                         </Button>
                         {botonVolverA}

@@ -278,15 +278,28 @@ class Alta extends React.Component {
                                 <Form.Group className="d-flex flex-column">
                                     <Form.Label>Roles</Form.Label>
                                     <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
-                                        <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
-                                            <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
+                                        <input
+                                            className="form-check-input" type="checkbox" id="esMozo"
+                                            checked={usuario && usuario.esMozo ? usuario.esMozo : false}
+                                            onChange={() => {}}
+                                        />
+                                        <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
                                     </div>
                                     <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
-                                        <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
-                                            <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
+                                        <input
+                                            className="form-check-input" type="checkbox" id="esVendedor"
+                                            checked={usuario && usuario.esVendedor ? usuario.esVendedor : false}
+                                            onChange={() => {}}
+                                        />
+                                        <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
                                     </div>
                                     <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esComensal')}>
-                                        <input className="form-check-input" type="checkbox" id="esComensal" checked={usuario && usuario.esComensal ? usuario.esComensal : false} onChange={() => {}}/>
+                                        <input
+                                            className="form-check-input" type="checkbox" id="esComensal"
+                                            checked={usuario && usuario.esComensal ? usuario.esComensal : false}
+                                            onChange={() => {}}
+
+                                        />
                                         <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
                                     </div>
                                 </Form.Group>
@@ -297,7 +310,7 @@ class Alta extends React.Component {
                                 <Loader display={true}/>
                                 :
                                 <div className="d-flex">
-                                    <Button className="boton-submit" variant="primary" type="submit">
+                                    <Button className="boton-submit" variant="primary" type="submit" >
                                         {!tipoAdmin ? "Registrarse" : "Guardar usuario"}
                                     </Button>
                                     {volverAValido ? botonVolverA : ""}
