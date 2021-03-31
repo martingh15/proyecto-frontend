@@ -42,7 +42,7 @@ class Alta extends React.Component {
     }
 
     componentDidMount() {
-        const volverA    = this.getQuery('volverA');
+        const volverA    = rutas.getQuery('volverA');
         const valido     = rutas.validarRuta(volverA);
         let botonVolverA = "";
         if (valido) {
