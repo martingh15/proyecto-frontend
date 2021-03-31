@@ -169,6 +169,11 @@ export function saveUpdateUsuario(noEsLogueado) {
                 let usuario = respuesta.usuario;
                 dispatch(resetUpdateUsuario());
                 dispatch(updateUsuario(usuario));
+                if (usuario.tipoRuta === rutas.TIPO_ADMIN) {
+                    history.push(rutas.USUARIOS_LISTAR);
+                } else {
+                    history.push(rutas.INICIO);
+                }
             })
             .catch(function (error) {
                 switch (error.status) {

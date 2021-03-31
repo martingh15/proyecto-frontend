@@ -43,7 +43,6 @@ export function getQuery(query) {
 const RUTAS_GESTION = [
     GESTION,
     USUARIOS_LISTAR,
-
 ];
 
 const RUTAS = [
