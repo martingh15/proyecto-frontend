@@ -135,7 +135,10 @@ class Editar extends React.Component {
         });
     }
 
-    comprobarRolesValidos() {
+    validarUsuario() {
+        let valido   = true;
+        let mensajes = [];
+
         let tipo       = this.props.match.params['tipo'];
         let tipoAdmin  = tipo === rutas.TIPO_ADMIN;
         let usuario    = this.props.usuarios.update.activo;
@@ -144,8 +147,25 @@ class Editar extends React.Component {
         let esVendedor = usuario.esVendedor;
         let esComensal = usuario.esComensal;
         if (!esMozo && !esAdmin && !esVendedor && !esComensal && tipoAdmin) {
+            valido = false;
+            mensajes.push("* Debe seleccionar al menos un rol para el usuario");
+        }
+
+        let dni = parseInt(usuario.dni);
+        if (dni <= 0) {
+            valido = false;
+            mensajes.push("* El dni del usuario debe ser mayor a cero");
+        }
+        if (dni > 99999999) {
+            valido = false;
+            mensajes.push("* El dni del usuario tener 8 dígitos o menos");
+        }
+
+        if (mensajes.length > 0) {
+            let texto = `<p class="text-left">${mensajes.join("<br/>")}</p>`;
             Swal.fire({
-                title: `Debe seleccionar al menos un rol para el usuario`,
+                title: 'Error al guardar',
+                html: texto,
                 icon: 'warning',
                 showCloseButton: true,
                 showCancelButton: false,
@@ -153,9 +173,8 @@ class Editar extends React.Component {
                 confirmButtonText: 'Continuar',
                 confirmButtonColor: 'rgb(88, 219, 131)',
             });
-            return false;
         }
-        return true;
+        return valido;
     }
 
     submitForm(e) {
@@ -163,7 +182,7 @@ class Editar extends React.Component {
         if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
             let id           = parseInt(this.props.match.params['id']);
             let noEsLogueado = id > 0;
-            let validos = this.comprobarRolesValidos();
+            let validos = this.validarUsuario();
             if (validos) {
                 this.props.saveUpdateUsuario(noEsLogueado);
             }
