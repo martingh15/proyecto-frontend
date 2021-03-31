@@ -32,9 +32,9 @@ class Alta extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            imgPassword: blackEye,
-            tipo: 'password',
-            botonVolverA: '',
+            tipo:          'password',
+            imgPassword:   blackEye,
+            botonVolverA:  '',
             volverAValido: false
         };
 
@@ -104,12 +104,12 @@ class Alta extends React.Component {
     }
 
     onChangeRolUsuario(id) {
-        var cambio  = {};
         var valor   = true;
+        var cambio  = {};
         var usuario = this.props.usuarios.create.nuevo;
         switch (id) {
-            case 'esAdmin':
-                if (usuario.esAdmin) {
+            case 'esComensal':
+                if (usuario.esComensal) {
                     valor = false;
                 }
                 break;
@@ -128,44 +128,46 @@ class Alta extends React.Component {
         this.props.createUsuario(cambio);
     }
 
-    showErrores(errores) {
-        let texto = "";
-        errores.map((e) => {
-            texto = texto + `<li style="width: fit-content;text-align: initial;">${e}</li>`;
-            return true;
-        });
-        Swal.fire({
-            title: 'Faltan completar campos',
-            icon: 'info',
-            html:
-                `Le ha faltado completar los siguientes campos,` +
-                `<ul style="margin-left: 30px;">${texto}</ul>`,
-            showCloseButton: true,
-            focusConfirm: false,
-            confirmButtonText: 'Aceptar',
-        });
-    }
-
     validarUsuario() {
-        let errores = [];
-        let usuario = this.props.usuarios.create.nuevo;
-        let tipoRuta  = this.props.match.params['tipo'];
-        let tipoAdmin = tipoRuta === rutas.TIPO_ADMIN;
-        if (usuario.nombre === undefined || usuario.nombre === "") {
-            errores.push("Nombre");
+        let valido   = true;
+        let mensajes = [];
+
+        let tipo       = this.props.match.params['tipo'];
+        let tipoAdmin  = tipo === rutas.TIPO_ADMIN;
+        let usuario    = this.props.usuarios.create.nuevo;
+        let esMozo     = usuario.esMozo;
+        let esAdmin    = usuario.esAdmin;
+        let esVendedor = usuario.esVendedor;
+        let esComensal = usuario.esComensal;
+        if (!esMozo && !esAdmin && !esVendedor && !esComensal && tipoAdmin) {
+            valido = false;
+            mensajes.push("* Debe seleccionar al menos un rol para el usuario");
         }
-        if (usuario.email === undefined || usuario.email === "") {
-            errores.push("Correo");
+
+        let dni = parseInt(usuario.dni);
+        if (dni <= 0) {
+            valido = false;
+            mensajes.push("* El dni del usuario debe ser mayor a cero");
         }
-        if (tipoAdmin && (usuario.dni === undefined || usuario.dni === "")) {
-            errores.push("Dni");
+        if (dni > 99999999) {
+            valido = false;
+            mensajes.push("* El dni del usuario tener 8 dígitos o menos");
         }
-        if (errores.length > 0) {
-            this.showErrores(errores);
-            return false;
-        } else {
-            return true;
+
+        if (mensajes.length > 0) {
+            let texto = `<p class="text-left">${mensajes.join("<br/>")}</p>`;
+            Swal.fire({
+                title: 'Error al guardar',
+                html: texto,
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: false,
+                focusConfirm: true,
+                confirmButtonText: 'Continuar',
+                confirmButtonColor: 'rgb(88, 219, 131)',
+            });
         }
+        return valido;
     }
 
     submitForm(e) {
@@ -174,9 +176,12 @@ class Alta extends React.Component {
         let tipoAdmin  = tipoRuta === rutas.TIPO_ADMIN;
         let valido     = this.validarUsuario();
         let linkVolver = rutas.getQuery('volverA');
+        if (!valido) {
+            return;
+        }
         if (!tipoAdmin && this.props.usuarios.create.nuevo.password_confirmation === this.props.usuarios.create.nuevo.password) {
             this.props.saveCreateUsuario(false, linkVolver);
-        } else if (tipoAdmin && valido) {
+        } else if (tipoAdmin) {
             this.props.saveCreateUsuario(true, linkVolver);
         }
     }
@@ -272,10 +277,6 @@ class Alta extends React.Component {
                                 </Form.Group>
                                 <Form.Group className="d-flex flex-column">
                                     <Form.Label>Roles</Form.Label>
-                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
-                                        <input className="form-check-input" type="checkbox" id="esAdmin" checked={usuario && usuario.esAdmin ? usuario.esAdmin : false} onChange={() => {}}/>
-                                            <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
-                                    </div>
                                     <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
                                         <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
                                             <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
@@ -283,6 +284,10 @@ class Alta extends React.Component {
                                     <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esVendedor')}>
                                         <input className="form-check-input" type="checkbox" id="esVendedor" checked={usuario && usuario.esVendedor ? usuario.esVendedor : false} onChange={() => {}}/>
                                             <label className="form-check-label" htmlFor="inlineCheckbox3">Vendedor</label>
+                                    </div>
+                                    <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esComensal')}>
+                                        <input className="form-check-input" type="checkbox" id="esComensal" checked={usuario && usuario.esComensal ? usuario.esComensal : false} onChange={() => {}}/>
+                                        <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
                                     </div>
                                 </Form.Group>
                             </div>

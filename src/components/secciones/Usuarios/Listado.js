@@ -68,6 +68,10 @@ class Listado extends React.Component {
         if (esMozo) {
             roles.push('Mozo');
         }
+        let esComensal     = usuario.esComensal;
+        if (esComensal) {
+            roles.push('Comensal');
+        }
         return roles.join(", ");
     }
 

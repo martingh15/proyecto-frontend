@@ -78,10 +78,7 @@ export function saveCreateUsuario(admin, volverA) {
                     ruta = volverA;
                 }
                 dispatch(reveiceCreateUsuario(mensaje, ruta));
-                dispatch(changeLogin({
-                    email: "",
-                    password: ""
-                }));
+                dispatch(resetCreateUsuario());
                 if (ruta) {
                     history.push(ruta);
                 } else if(data.admin) {
