@@ -146,7 +146,7 @@ class Listado extends React.Component {
                 <div className="table-responsive tarjeta-body listado">
                     <div className="d-flex justify-content-between">
                         <h1 className="tabla-usuarios-titulo">Usuarios</h1>
-                        <a href={rutas.USUARIOS_ALTA_ADMIM + `?volverA=${rutas.USUARIOS_LISTAR}`}
+                        <a href={rutas.USUARIOS_ALTA_ADMIN + `?volverA=${rutas.USUARIOS_LISTAR}`}
                            data-toggle="tooltip" data-original-title="" title="">
                             <AddBoxIcon style={{ color:  '#5cb860'}}/>
                         </a>

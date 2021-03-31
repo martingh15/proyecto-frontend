@@ -20,7 +20,7 @@ export const TIPO_ADMIN = 'admin';
 
 export const USUARIOS              = '/usuarios';
 export const USUARIOS_ALTA         = '/usuarios/alta/:tipo';
-export const USUARIOS_ALTA_ADMIM   = '/usuarios/alta/admin';
+export const USUARIOS_ALTA_ADMIN   = '/usuarios/alta/admin';
 export const USUARIOS_ALTA_COMUN   = '/usuarios/alta/comun';
 export const USUARIOS_LISTAR       = '/usuarios/listar';
 export const USUARIOS_EDITAR       = '/usuarios/editar/:tipo?/:id?';
@@ -55,7 +55,7 @@ const RUTAS = [
     GESTION,
     COMPRAS,
     USUARIOS_LISTAR,
-    USUARIOS_ALTA_ADMIM,
+    USUARIOS_ALTA_ADMIN,
     USUARIOS_ALTA_COMUN
 ];
 

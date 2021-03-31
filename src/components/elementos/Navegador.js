@@ -75,14 +75,16 @@ class Navegador extends React.Component {
 
     getRutaActiva(ruta) {
         let rutaActual = window.location.pathname;
-        let esRutaGestion = this.comprobarEsRutaGestion(rutaActual, ruta);
-        return rutaActual === ruta || esRutaGestion;
+        let esActual   = rutaActual === ruta;
+        let esRutaGestion = this.comprobarEsRutaGestion(ruta, rutaActual);
+        return esActual || esRutaGestion;
     }
 
-    comprobarEsRutaGestion(rutaActual, ruta) {
-        let esAltaUsuarios    = rutaActual === rutas.USUARIOS_ALTA;
+    comprobarEsRutaGestion(ruta, rutaActual) {
+        let esAltaUsuarios    = rutaActual === rutas.USUARIOS_ALTA_ADMIN;
+        let esEditarUsuarios  = rutaActual.indexOf(rutas.USUARIOS_EDITAR_ADMIN) === 0;
         let esListadoUsuarios = rutaActual === rutas.USUARIOS_LISTAR;
-        return esAltaUsuarios || esListadoUsuarios;
+        return ruta === rutas.GESTION && (esAltaUsuarios || esListadoUsuarios || esEditarUsuarios);
     }
 
     render() {
