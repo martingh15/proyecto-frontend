@@ -107,10 +107,6 @@ class Editar extends React.Component {
         this.setState({ botonVolverA: botonVolverA });
     }
 
-    redirigirListado() {
-
-    }
-
     toogleClave(mostrar) {
         this.setState(prevState => ({
             tipoInput: mostrar ? 'text' : 'password'
@@ -208,11 +204,6 @@ class Editar extends React.Component {
         var valor   = true;
         var usuario = this.props.usuarios.update.activo;
         switch (id) {
-            case 'esAdmin':
-                if (usuario.esAdmin) {
-                    valor = false;
-                }
-                break;
             case 'esMozo':
                 if (usuario.esMozo) {
                     valor = false;
@@ -229,9 +220,7 @@ class Editar extends React.Component {
                 }
                 break;
         }
-        if (usuario.esAdmin && !usuario.logueado || !usuario.esAdmin) {
-            cambio[id] = valor;
-        }
+        cambio[id] = valor;
         this.props.updateUsuario(cambio);
         this.setState({
             fueModificado: true
@@ -240,15 +229,11 @@ class Editar extends React.Component {
 
     render() {
         const {fueModificado, imgPassword, tipoInput, botonVolverA } = this.state;
-        let id                = parseInt(this.props.match.params['id']);
         let tipo              = this.props.match.params['tipo'];
         let titulo            = this.getTituloPorRuta();
         let usuario           = this.props.usuarios.update.activo;
-        let logueado          = this.props.usuarios.update.logueado;
-        let esAdmin           = usuario && usuario.esAdmin ? usuario.esAdmin : false;
         let tipoComun         = tipo === rutas.TIPO_COMUN;
         let passwordVacias    = true;
-        let deshabilitarAdmin = logueado.id === id;
         if (usuario) {
             passwordVacias =
                 (usuario.password === "" || usuario.password === undefined)
@@ -298,10 +283,6 @@ class Editar extends React.Component {
                     </Form.Group>
                     <Form.Group className="flex-column" style={{display: tipoComun ? "none" : "flex"}}>
                         <Form.Label>Roles</Form.Label>
-                        <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esAdmin')}>
-                            <input className="form-check-input" type="checkbox" id="esAdmin" disabled={deshabilitarAdmin} checked={esAdmin} onChange={() => {}}/>
-                            <label className="form-check-label" htmlFor="inlineCheckbox1">Administrador</label>
-                        </div>
                         <div className="form-check form-check-inline" onClick={() => this.onChangeRolUsuario('esMozo')}>
                             <input className="form-check-input" type="checkbox" id="esMozo" checked={usuario && usuario.esMozo ? usuario.esMozo : false} onChange={() => {}}/>
                             <label className="form-check-label" htmlFor="inlineCheckbox2">Mozo</label>
