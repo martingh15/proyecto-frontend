@@ -31,6 +31,7 @@ import {
 
 } from '../actions/UsuarioActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
+import pickBy from "lodash/pickBy";
 
 
 function usuariosById(state = {
@@ -113,6 +114,12 @@ function usuariosById(state = {
                 error: null,
                 lastUpdated: null,
                 usuarios: [],
+            });
+        case RECEIVE_DELETE_USUARIO:
+            return Object.assign({}, state, {
+                usuarios: pickBy(state.usuarios, function (value, key) {
+                    return parseInt(key) !== parseInt(action.idUsuario);
+                })
             });
         default:
             return state

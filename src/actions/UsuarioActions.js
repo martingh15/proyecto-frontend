@@ -478,10 +478,11 @@ function requestDeleteUsuario() {
     }
 }
 
-function receiveDeleteUsuario(mensaje) {
+function receiveDeleteUsuario(id, mensaje) {
     return {
         type: RECEIVE_DELETE_USUARIO,
         receivedAt: Date.now(),
+        idUsuario: id,
         success: mensaje
     }
 }
@@ -512,7 +513,7 @@ export function saveDeleteUsuario(id) {
             })
             .then((respuesta) => {
                 let mensaje = respuesta.message;
-                dispatch(receiveDeleteUsuario(mensaje));
+                dispatch(receiveDeleteUsuario(id, mensaje));
                 dispatch(resetDeleteUsuario());
                 history.push(rutas.USUARIOS_LISTAR);
             })
