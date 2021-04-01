@@ -1,4 +1,5 @@
 import c from "../constants/constants";
+import $ from "jquery";
 require('isomorphic-fetch');
 
 var productos = {
@@ -17,25 +18,28 @@ var productos = {
             dataType: 'json'
         };
 
-        return fetch(c.BASE_URL + '/productos', defaultOptions);
+        return fetch(c.BASE_URL + '/productos' + c.DEBUG, defaultOptions);
     },
 
     saveCreate(producto) {
-        let defaultOptions = {
-            url: '',
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                "Content-Type": "application/json;charset=UTF-8",
-                "Authorization": "Bearer " + localStorage.token
+        var formData = new FormData();
+        formData.append("producto", JSON.stringify(producto));
+        formData.append("imagen", producto.imagen);
+
+        return $.ajax({
+            url: c.BASE_URL+'/productos' + c.DEBUG,
+            //dataType: 'json',
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+                xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
             },
-            dataType: 'json',
-            body: JSON.stringify(producto)
-        };
-
-
-        return fetch(c.BASE_URL + '/productos', defaultOptions);
+            contentType: false,
+            type: 'POST',
+            // cache: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+        });
     },
 };
 

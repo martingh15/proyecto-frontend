@@ -6,6 +6,14 @@
     font-size: 23px;
 }
 
+.tabla-listado td {
+    vertical-align: middle;
+}
+
+.tabla-listado .td-imagen img {
+    width: 70px;
+}
+
 .tabla-listado .operacion {
     display: inline;
     padding: 8px 5px;

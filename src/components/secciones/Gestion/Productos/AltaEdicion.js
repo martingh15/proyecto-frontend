@@ -164,7 +164,7 @@ class AltaEdicion extends React.Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Imagen principal</Form.Label>
+                        <Form.Label>Imagen</Form.Label>
                         <ArchivoImagen
                             id="imagen"
                             imagen={this.state.imagen}

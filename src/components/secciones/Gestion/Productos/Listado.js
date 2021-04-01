@@ -9,11 +9,15 @@ import {resetProductos, fetchProductosIfNeeded} from "../../../../actions/Produc
 import "../../../../assets/css/Listado.css";
 
 //Constants
+import c from "../../../../constants/constants";
 import * as rutas from "../../../../constants/rutas";
 
 //Componentes
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Loader from "../../../elementos/Loader";
+
+//Images
+import productoVacio from "../../../../assets/img/emptyImg.jpg";
 
 class Listado extends React.Component {
     constructor(props) {
@@ -62,10 +66,17 @@ class Listado extends React.Component {
             let producto = this.props.productos.byId.productos[idProducto];
             if (producto && producto.id) {
                 let operaciones = this.getOperacionesProducto(producto);
+                let path = productoVacio;
+                if (producto.imagen) {
+                    try {
+                        path = c.BASE_PUBLIC + "img/productos/" + producto.imagen;
+                    } catch (e) {
+                    }
+                }
                 Productos.push(
                     <tr key={producto.id}>
-                        <td>
-                            {producto.imagen}
+                        <td className="td-imagen">
+                            <img src={path} onError={(e) => e.target.src = productoVacio} alt="Imagen de producto" />
                         </td>
                         <td>{producto.nombre}</td>
                         <td>{producto.categoriaNombre}</td>
@@ -92,7 +103,7 @@ class Listado extends React.Component {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th></th>
+                            <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
                             <th>Precio</th>

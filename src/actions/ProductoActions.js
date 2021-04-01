@@ -65,7 +65,7 @@ export function saveCreateProducto(volverA) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
                 } else {
-                    return response.json();
+                    return true;
                 }
             })
             .then(function (data) {
@@ -86,16 +86,10 @@ export function saveCreateProducto(volverA) {
                         dispatch(logout());
                         return;
                     default:
-                        error.json()
-                            .then((error) => {
-                                if (error.message !== "")
-                                    dispatch(errorCreateProducto(error.message));
-                                else
-                                    dispatch(errorCreateProducto(errorMessages.GENERAL_ERROR));
-                            })
-                            .catch((error) => {
-                                dispatch(errorCreateProducto(errorMessages.GENERAL_ERROR));
-                            });
+                        if (error.responseJSON !== "")
+                            dispatch(errorCreateProducto(error.responseJSON.message));
+                        else
+                            dispatch(errorCreateProducto(errorMessages.GENERAL_ERROR));
                         return;
                 }
             });
