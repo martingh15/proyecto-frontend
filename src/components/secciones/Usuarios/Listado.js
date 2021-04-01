@@ -12,7 +12,7 @@ import * as rutas from '../../../constants/rutas.js';
 import Loader from "../../elementos/Loader";
 
 //CSS
-import "../../../assets/css/Usuarios/Listado.css";
+import "../../../assets/css/Listado.css";
 
 //Icons
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -31,8 +31,8 @@ class Listado extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            noHayUsuarios: false,
-            buscando: true
+            buscando:      true,
+            noHayUsuarios: false
         }
     }
 
@@ -162,10 +162,10 @@ class Listado extends React.Component {
             <td></td>
         </tr>;
         return (
-            <div className="tabla-usuarios">
+            <div className="tabla-listado">
                 <div className="table-responsive tarjeta-body listado">
                     <div className="d-flex justify-content-between">
-                        <h1 className="tabla-usuarios-titulo">Usuarios</h1>
+                        <h1 className="tabla-listado-titulo">Usuarios</h1>
                         <a href={rutas.USUARIOS_ALTA_ADMIN + `?volverA=${rutas.USUARIOS_LISTAR}`}
                            data-toggle="tooltip" data-original-title="" title="">
                             <AddBoxIcon style={{ color:  '#5cb860'}}/>

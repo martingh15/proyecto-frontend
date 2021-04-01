@@ -40,7 +40,7 @@ function App() {
                   <Route exact path={rutas.USUARIOS_ALTA} component={Registro} />
                   <Route exact path={rutas.USUARIOS_LISTAR} component={ListadoUsuarios} />
                   <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
-                  <Route exact path={[rutas.PRODUCTOS_LISTAR, rutas.PRODUCTOS_LISTAR_ADMIN]} component={ListadoProductos} />
+                  <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
                   <Route exact path="*" component={NotFound} />
               </Switch>
           </div>

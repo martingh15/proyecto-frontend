@@ -1,12 +1,12 @@
-.tabla-usuarios {
+.tabla-listado {
     margin: 0 30px;
 }
 
-.tabla-usuarios-titulo {
+.tabla-listado-titulo {
     font-size: 23px;
 }
 
-.tabla-usuarios .operacion {
+.tabla-listado .operacion {
     display: inline;
     padding: 8px 5px;
     margin-right: 10px;
@@ -18,11 +18,11 @@
     cursor: pointer;
 }
 
-.tabla-usuarios .operacion:hover {
+.tabla-listado .operacion:hover {
     text-decoration: underline;
 }
 
-.tabla-usuarios .icono-operacion {
+.tabla-listado .icono-operacion {
     width: 12px;
     margin-right: 5px;
 }

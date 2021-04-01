@@ -29,6 +29,7 @@ export const USUARIOS_EDITAR_ADMIN = '/usuarios/editar/admin';
 export const USUARIOS_EDITAR_COMUN = '/usuarios/editar/comun';
 
 //Gestión de productos
+export const PRODUCTO_ALTA          = '/productos/alta';
 export const PRODUCTOS_LISTAR       = '/productos/listar';
 export const PRODUCTOS_LISTAR_ADMIN = '/productos/listar/admin';
 
@@ -72,7 +73,8 @@ const RUTAS = [
     USUARIOS_LISTAR,
     USUARIOS_ALTA_ADMIN,
     USUARIOS_ALTA_COMUN,
-    PRODUCTOS_LISTAR
+    PRODUCTOS_LISTAR,
+    PRODUCTOS_LISTAR_ADMIN
 ];
 
 /**
