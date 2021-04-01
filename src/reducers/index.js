@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import authentication from "./authentication";
-import usuarios from './usuario';
+import usuarios from './usuarios';
+import productos from './productos';
 
 const appReducers = combineReducers({
     authentication,
-    usuarios
+    usuarios,
+	productos
 });
 
 export default appReducers;

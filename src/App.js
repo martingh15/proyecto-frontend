@@ -15,7 +15,8 @@ import Editar from "./components/secciones/Usuarios/Editar";
 import CambiarPassword from "./components/secciones/Usuarios/CambiarPassword";
 import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
 import Gestion from "./components/secciones/Gestion";
-import Listado from "./components/secciones/Usuarios/Listado";
+import ListadoUsuarios from "./components/secciones/Usuarios/Listado";
+import ListadoProductos from "./components/secciones/Gestion/Productos/Listado";
 import NotFound from "./components/secciones/NotFound";
 
 //Redux
@@ -37,8 +38,9 @@ function App() {
                   <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
                   <Route exact path={rutas.GESTION} component={Gestion} />
                   <Route exact path={rutas.USUARIOS_ALTA} component={Registro} />
-                  <Route exact path={rutas.USUARIOS_LISTAR} component={Listado} />
+                  <Route exact path={rutas.USUARIOS_LISTAR} component={ListadoUsuarios} />
                   <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
+                  <Route exact path={[rutas.PRODUCTOS_LISTAR, rutas.PRODUCTOS_LISTAR_ADMIN]} component={ListadoProductos} />
                   <Route exact path="*" component={NotFound} />
               </Switch>
           </div>

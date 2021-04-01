@@ -29,7 +29,8 @@ export const USUARIOS_EDITAR_ADMIN = '/usuarios/editar/admin';
 export const USUARIOS_EDITAR_COMUN = '/usuarios/editar/comun';
 
 //Gestión de productos
-export const PRODUCTOS_LISTAR = '/productos/listar';
+export const PRODUCTOS_LISTAR       = '/productos/listar';
+export const PRODUCTOS_LISTAR_ADMIN = '/productos/listar/admin';
 
 /**
  * Devuelve la url de usuarios
