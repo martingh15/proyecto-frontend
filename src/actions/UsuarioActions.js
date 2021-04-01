@@ -433,7 +433,7 @@ export function fetchUsuarioById(id) {
                 dispatch(updateUsuario(data));
             })
             .catch(function (error) {
-                //dispatch(logout());
+                dispatch(logout());
                 switch (error.status) {
                     case 401:
                         dispatch(errorUsuarios(errorMessages.UNAUTHORIZED_TOKEN));

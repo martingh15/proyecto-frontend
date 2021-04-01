@@ -1,17 +1,23 @@
 .tarjeta-menu {
-    display: inline-block;
+    display: block;
     margin: 15px;
     height: auto;
     color: black;
     position: relative;
+    background: none;
+    border: none;
 }
 
-.tarjeta-menu:hover {
+.tarjeta-menu:focus {
+    outline: none;
+}
+
+.tarjeta-menu .tarjeta:hover {
     color: black;
     text-decoration: none;
 }
 
-.tarjeta-menu:hover span {
+.tarjeta-menu .tarjeta:hover span {
     font-weight: bold;
 }
 

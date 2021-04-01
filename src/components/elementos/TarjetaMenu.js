@@ -1,7 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import history from "../../history";
 
+//CSS
 import "../../assets/css/TarjetaMenu.css";
 
 class TarjetaMenu extends React.Component {
@@ -13,14 +15,14 @@ class TarjetaMenu extends React.Component {
     render() {
         const props = this.props;
         return (
-            <a href={props.ruta} key={props.key} className="tarjeta-menu">
+            <button onClick={() => history.push(props.ruta)} key={props.key} className="tarjeta-menu">
                 <div className={"tarjeta hvr-grow"} onClick={props.click}>
                     <span className="text-capitalize rol">{props.rol}</span>
                     <h2>{props.titulo}</h2>
                     <img src={props.img} alt={props.alt} title={props.title} />
                     <p>{props.descripcion}</p>
                 </div>
-            </a>
+            </button>
         )
     }
 }
