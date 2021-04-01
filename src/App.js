@@ -17,6 +17,7 @@ import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
 import Gestion from "./components/secciones/Gestion";
 import ListadoUsuarios from "./components/secciones/Usuarios/Listado";
 import ListadoProductos from "./components/secciones/Gestion/Productos/Listado";
+import AltaEdicionProducto from "./components/secciones/Gestion/Productos/AltaEdicion";
 import NotFound from "./components/secciones/NotFound";
 
 //Redux
@@ -41,6 +42,7 @@ function App() {
                   <Route exact path={rutas.USUARIOS_LISTAR} component={ListadoUsuarios} />
                   <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
                   <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
+                  <Route exact path={rutas.PRODUCTO_ALTA} component={AltaEdicionProducto} />
                   <Route exact path="*" component={NotFound} />
               </Switch>
           </div>

@@ -67,9 +67,9 @@ class Listado extends React.Component {
                         <td>
                             {producto.imagen}
                         </td>
-                        <td>{producto.codigo}</td>
                         <td>{producto.nombre}</td>
-                        <td>{producto.precioVigente}</td>
+                        <td>{producto.categoriaNombre}</td>
+                        <td>{producto.precioTexto}</td>
                         <td>{operaciones}</td>
                     </tr>
                 );
@@ -77,11 +77,7 @@ class Listado extends React.Component {
         });
         const Cargando =
             <tr>
-                <td></td>
-                <td></td>
-                <td><Loader display={true}/></td>
-                <td></td>
-                <td></td>
+                <td colSpan={5}><Loader display={true}/></td>
             </tr>;
         return (
             <div className="tabla-listado">
@@ -97,8 +93,8 @@ class Listado extends React.Component {
                         <thead>
                         <tr>
                             <th></th>
-                            <th>Código</th>
                             <th>Nombre</th>
+                            <th>Categoria</th>
                             <th>Precio</th>
                             <th>Operaciones</th>
                         </tr>

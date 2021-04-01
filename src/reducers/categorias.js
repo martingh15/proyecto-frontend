@@ -3,38 +3,38 @@ import merge from "lodash/merge";
 
 //Actions
 import {
-    CREATE_PRODUCTO,
-    RESET_CREATE_PRODUCTO,
-    REQUEST_CREATE_PRODUCTO,
-    RECEIVE_CREATE_PRODUCTO,
-    ERROR_CREATE_PRODUCTO,
-    UPDATE_PRODUCTO,
-    RESET_UPDATE_PRODUCTO,
-    REQUEST_UPDATE_PRODUCTO,
-    RECEIVE_UPDATE_PRODUCTO,
-    ERROR_UPDATE_PRODUCTO,
-    INVALIDATE_PRODUCTOS,
-    REQUEST_PRODUCTOS,
-    ERROR_PRODUCTOS,
-    RECEIVE_PRODUCTOS,
-    RESET_PRODUCTOS,
-    INVALIDATE_PRODUCTO_ID,
-    REQUEST_PRODUCTO_ID,
-    RECEIVE_PRODUCTO_ID,
-    ERROR_PRODUCTO_ID,
-    RESET_PRODUCTO_ID, RESET_DELETE_PRODUCTO, REQUEST_DELETE_PRODUCTO, RECEIVE_DELETE_PRODUCTO, ERROR_DELETE_PRODUCTO
+    CREATE_CATEGORIA,
+    RESET_CREATE_CATEGORIA,
+    REQUEST_CREATE_CATEGORIA,
+    RECEIVE_CREATE_CATEGORIA,
+    ERROR_CREATE_CATEGORIA,
+    UPDATE_CATEGORIA,
+    RESET_UPDATE_CATEGORIA,
+    REQUEST_UPDATE_CATEGORIA,
+    RECEIVE_UPDATE_CATEGORIA,
+    ERROR_UPDATE_CATEGORIA,
+    INVALIDATE_CATEGORIAS,
+    REQUEST_CATEGORIAS,
+    ERROR_CATEGORIAS,
+    RECEIVE_CATEGORIAS,
+    RESET_CATEGORIAS,
+    INVALIDATE_CATEGORIA_ID,
+    REQUEST_CATEGORIA_ID,
+    RECEIVE_CATEGORIA_ID,
+    ERROR_CATEGORIA_ID,
+    RESET_CATEGORIA_ID, RESET_DELETE_CATEGORIA, REQUEST_DELETE_CATEGORIA, RECEIVE_DELETE_CATEGORIA, ERROR_DELETE_CATEGORIA
 
-} from '../actions/ProductoActions';
+} from '../actions/CategoriaActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
 import pickBy from "lodash/pickBy";
 
-function productosById(state = {
+function categoriasById(state = {
     isFetching: false,
-    isFetchingProducto: false,
+    isFetchingCategoria: false,
     didInvalidate: true,
-    didInvalidateProducto: true,
-    productos: [],
-    producto: {},
+    didInvalidateCategoria: true,
+    categorias: [],
+    categoria: {},
     error: null,
     success: "",
 }, action) {
@@ -43,76 +43,76 @@ function productosById(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: true,
-                productos: [],
+                categorias: [],
             });
-        //PRODUCTOS
-        case INVALIDATE_PRODUCTOS:
+        //CATEGORIAS
+        case INVALIDATE_CATEGORIAS:
             return Object.assign({}, state, {
                 didInvalidate: true
             });
-        case REQUEST_PRODUCTOS:
+        case REQUEST_CATEGORIAS:
             return Object.assign({}, state, {
                 isFetching: true,
                 didInvalidate: false
             });
-        case RECEIVE_PRODUCTOS:
+        case RECEIVE_CATEGORIAS:
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: false,
-                productos: action.productos.entities.productos,
+                categorias: action.categorias.entities.categorias,
                 lastUpdated: action.receivedAt,
                 error: null
             });
-        case ERROR_PRODUCTOS:
+        case ERROR_CATEGORIAS:
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: true,
                 error: action.error
             });
-        case RESET_PRODUCTOS:
+        case RESET_CATEGORIAS:
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: true,
                 error: null,
                 lastUpdated: null,
-                productos: [],
+                categorias: [],
             });
-        //PRODUCTO
-        case INVALIDATE_PRODUCTO_ID:
+        //CATEGORIA
+        case INVALIDATE_CATEGORIA_ID:
             return Object.assign({}, state, {
-                didInvalidateProducto: true
+                didInvalidateCategoria: true
             });
-        case REQUEST_PRODUCTO_ID:
+        case REQUEST_CATEGORIA_ID:
             return Object.assign({}, state, {
-                isFetchingProducto: true,
-                didInvalidateProducto: false
+                isFetchingCategoria: true,
+                didInvalidateCategoria: false
             });
-        case RECEIVE_PRODUCTO_ID:
+        case RECEIVE_CATEGORIA_ID:
             return Object.assign({}, state, {
-                isFetchingProducto: false,
-                didInvalidateProducto: false,
-                producto: action.producto.entities.producto,
+                isFetchingCategoria: false,
+                didInvalidateCategoria: false,
+                categoria: action.categoria.entities.categoria,
                 lastUpdated: action.receivedAt,
                 error: null
             });
-        case ERROR_PRODUCTO_ID:
+        case ERROR_CATEGORIA_ID:
             return Object.assign({}, state, {
-                isFetchingProducto: false,
-                didInvalidateProducto: true,
+                isFetchingCategoria: false,
+                didInvalidateCategoria: true,
                 error: action.error
             });
-        case RESET_PRODUCTO_ID:
+        case RESET_CATEGORIA_ID:
             return Object.assign({}, state, {
-                isFetchingProducto: false,
-                didInvalidateProducto: true,
+                isFetchingCategoria: false,
+                didInvalidateCategoria: true,
                 error: null,
                 lastUpdated: null,
-                productos: [],
+                categorias: [],
             });
-        case RECEIVE_DELETE_PRODUCTO:
+        case RECEIVE_DELETE_CATEGORIA:
             return Object.assign({}, state, {
-                productos: pickBy(state.productos, function (value, key) {
-                    return parseInt(key) !== parseInt(action.idProducto);
+                categorias: pickBy(state.categorias, function (value, key) {
+                    return parseInt(key) !== parseInt(action.idCategoria);
                 })
             });
         default:
@@ -126,44 +126,42 @@ function create(state = {
     nuevo: {},
     success: "",
     error: null,
-    errores: [],
     ruta: '',
 }, action) {
     switch (action.type) {
         //REGISTRO
-        case CREATE_PRODUCTO:
+        case CREATE_CATEGORIA:
             return Object.assign({}, state, {
                 isCreating: false,
                 success: "",
-                nuevo: merge({}, state.nuevo, action.producto),
+                nuevo: merge({}, state.nuevo, action.categoria),
                 error: null,
             });
-        case RESET_CREATE_PRODUCTO:
+        case RESET_CREATE_CATEGORIA:
             return Object.assign({}, state, {
                 isCreating: false,
                 success: "",
                 error: null,
                 nuevo:{},
             });
-        case REQUEST_CREATE_PRODUCTO:
+        case REQUEST_CREATE_CATEGORIA:
             return Object.assign({}, state, {
                 isCreating: true,
                 success: "",
                 error: null,
             });
-        case RECEIVE_CREATE_PRODUCTO:
+        case RECEIVE_CREATE_CATEGORIA:
             return Object.assign({}, state, {
                 isCreating: false,
                 success: action.message,
                 error: null,
                 ruta: action.ruta,
             });
-        case ERROR_CREATE_PRODUCTO:
+        case ERROR_CREATE_CATEGORIA:
             return Object.assign({}, state, {
                 isCreating: false,
                 success: "",
-                error: action.error,
-                errores: action.errores
+                error: action.error
             });
         case LOGOUT_SUCCESS:
             return Object.assign({}, state, {
@@ -180,8 +178,6 @@ function create(state = {
 let activoDefecto = {
     nombre: '',
     codigo: '',
-    imagen: '',
-    descripcion: ''
 };
 
 function update(state = {
@@ -191,34 +187,34 @@ function update(state = {
     error: null
 }, action) {
     switch (action.type) {
-        //UPDATE PRODUCTO
-        case UPDATE_PRODUCTO:
+        //UPDATE CATEGORIA
+        case UPDATE_CATEGORIA:
             return Object.assign({}, state, {
                 isUpdating: false,
-                activo: merge({}, state.activo, action.producto),
+                activo: merge({}, state.activo, action.categoria),
                 success: "",
                 error: null,
             });
-        case RESET_UPDATE_PRODUCTO:
+        case RESET_UPDATE_CATEGORIA:
             return Object.assign({}, state, {
                 isUpdating: false,
                 activo: activoDefecto,
                 success: "",
                 error: null,
             });
-        case REQUEST_UPDATE_PRODUCTO:
+        case REQUEST_UPDATE_CATEGORIA:
             return Object.assign({}, state, {
                 isUpdating: true,
                 success: "",
                 error: null,
             });
-        case RECEIVE_UPDATE_PRODUCTO:
+        case RECEIVE_UPDATE_CATEGORIA:
             return Object.assign({}, state, {
                 isUpdating: false,
                 success: action.success,
                 error: null,
             });
-        case ERROR_UPDATE_PRODUCTO:
+        case ERROR_UPDATE_CATEGORIA:
             return Object.assign({}, state, {
                 isUpdating: false,
                 success: "",
@@ -236,25 +232,25 @@ function borrar(state = {
 }, action) {
     switch (action.type) {
         //DELETE
-        case RESET_DELETE_PRODUCTO:
+        case RESET_DELETE_CATEGORIA:
             return Object.assign({}, state, {
                 isDeleting: false,
                 success: "",
                 error: null,
             });
-        case REQUEST_DELETE_PRODUCTO:
+        case REQUEST_DELETE_CATEGORIA:
             return Object.assign({}, state, {
                 isDeleting: true,
                 success: "",
                 error: null,
             });
-        case RECEIVE_DELETE_PRODUCTO:
+        case RECEIVE_DELETE_CATEGORIA:
             return Object.assign({}, state, {
                 isDeleting: false,
                 success: action.success,
                 error: null,
             });
-        case ERROR_DELETE_PRODUCTO:
+        case ERROR_DELETE_CATEGORIA:
             return Object.assign({}, state, {
                 isDeleting: false,
                 success: "",
@@ -265,11 +261,11 @@ function borrar(state = {
     }
 }
 
-function productosAllIds(state = [], action) {
+function categoriasAllIds(state = [], action) {
     switch (action.type) {
-        case RECEIVE_PRODUCTOS:
-            return action.productos.result ? action.productos.result : [];
-        case RESET_PRODUCTOS:
+        case RECEIVE_CATEGORIAS:
+            return action.categorias.result ? action.categorias.result : [];
+        case RESET_CATEGORIAS:
              return [];
         default:
             return state
@@ -277,12 +273,12 @@ function productosAllIds(state = [], action) {
 }
 
 
-const productos = combineReducers({
-    allIds: productosAllIds,
-    byId:   productosById,
+const categorias = combineReducers({
+    allIds: categoriasAllIds,
+    byId:   categoriasById,
     create: create,
     update: update,
     delete: borrar
 });
 
-export default productos;
+export default categorias;

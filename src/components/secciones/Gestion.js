@@ -31,7 +31,7 @@ class Gestion extends React.Component {
                 return imgCompras;
             case rutas.USUARIOS_LISTAR:
                 return imgUsuarios;
-            case rutas.PRODUCTOS_LISTAR:
+            case rutas.PRODUCTOS_LISTAR_ADMIN:
                 return imgProductos;
         }
     }

@@ -1,3 +1,5 @@
+import history from "../history";
+
 //Actions
 import { logout } from "./AuthenticationActions";
 
@@ -38,7 +40,7 @@ function reveiceCreateProducto(message, ruta) {
 export function errorCreateProducto(error) {
     return {
         type: ERROR_CREATE_PRODUCTO,
-        error: error,
+        error: error
     }
 }
 
@@ -48,14 +50,14 @@ export function resetCreateProducto() {
     }
 }
 
-export function createProducto(usuario) {
+export function createProducto(producto) {
     return {
         type: CREATE_PRODUCTO,
-        usuario
+        producto
     }
 }
 
-export function saveCreateProducto() {
+export function saveCreateProducto(volverA) {
     return (dispatch, getState) => {
         dispatch(requestCreateProducto());
         return productos.saveCreate(getState().productos.create.nuevo)
@@ -73,6 +75,9 @@ export function saveCreateProducto() {
                 }
                 dispatch(reveiceCreateProducto(mensaje));
                 dispatch(resetCreateProducto());
+                if (rutas.validarRuta(volverA)) {
+                    history.push(volverA);
+                }
             })
             .catch(function (error) {
                 switch (error.status) {
@@ -83,7 +88,6 @@ export function saveCreateProducto() {
                     default:
                         error.json()
                             .then((error) => {
-                                console.log(error);
                                 if (error.message !== "")
                                     dispatch(errorCreateProducto(error.message));
                                 else
@@ -131,10 +135,10 @@ export function resetUpdateProducto() {
     }
 }
 
-export function updateProducto(usuario) {
+export function updateProducto(producto) {
     return {
         type: UPDATE_PRODUCTO,
-        usuario
+        producto
     }
 }
 
@@ -295,7 +299,7 @@ function requestProductoById() {
 function receiveProductoById(json) {
     return {
         type: RECEIVE_PRODUCTO_ID,
-        usuario: normalizeDato(json),
+        producto: normalizeDato(json),
         receivedAt: Date.now()
     }
 }
