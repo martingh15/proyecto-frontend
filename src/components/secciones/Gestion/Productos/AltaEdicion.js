@@ -66,7 +66,7 @@ class AltaEdicion extends React.Component {
         var cambio          = {};
         cambio[e.target.id] = e.target.value;
         if (imagen) {
-            cambio['archivo'] = imagen;
+            cambio = imagen;
         }
         this.props.createProducto(cambio);
     }
@@ -168,7 +168,7 @@ class AltaEdicion extends React.Component {
                         <ArchivoImagen
                             id="imagen"
                             imagen={this.state.imagen}
-                            texto={producto && producto.archivo && producto.archivo.imagen ? producto.archivo.imagen.name : ""}
+                            texto={producto && producto.imagen ? producto.imagen.name : ""}
                             changeImagen={(evento) => this.changeImagen(evento)}
                         />
                         <Form.Text className="text-muted">
