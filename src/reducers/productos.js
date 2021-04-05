@@ -269,6 +269,8 @@ function productosAllIds(state = [], action) {
     switch (action.type) {
         case RECEIVE_PRODUCTOS:
             return action.productos.result ? action.productos.result : [];
+        case RECEIVE_DELETE_PRODUCTO:
+            return state.filter(id => id != action.idProducto);
         case RESET_PRODUCTOS:
              return [];
         default:

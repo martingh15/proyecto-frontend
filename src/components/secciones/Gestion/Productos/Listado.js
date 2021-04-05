@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 //Actions
-import {resetProductos, fetchProductosIfNeeded} from "../../../../actions/ProductoActions";
+import {resetProductos, fetchProductosIfNeeded, saveDeleteProducto, updateProducto} from "../../../../actions/ProductoActions";
 
 //CSS
 import "../../../../assets/css/Listado.css";
@@ -18,6 +18,12 @@ import Loader from "../../../elementos/Loader";
 
 //Images
 import productoVacio from "../../../../assets/img/emptyImg.jpg";
+import tacho from "../../../../assets/icon/delete.png";
+import lapiz from "../../../../assets/icon/pencil.png";
+import Swal from "sweetalert2";
+
+//Librerias
+import history from "../../../../history";
 
 class Listado extends React.Component {
     constructor(props) {
@@ -35,9 +41,11 @@ class Listado extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let allIds       = this.props.productos.allIds;
+        let borrados     = this.props.productos.delete;
         let productos    = this.props.productos.byId;
         let preProductos = prevProps.productos.byId;
-        if (preProductos.isFetching && !productos.isFetching && allIds.length === 0) {
+        let sinIds       = allIds.length === 0;
+        if (sinIds && ((preProductos.isFetching && !productos.isFetching) || (!borrados.isDeleting && prevProps.productos.delete.isDeleting))) {
             this.setState({
                 noHayProductos: true,
             })
@@ -49,8 +57,45 @@ class Listado extends React.Component {
         }
     }
 
+    clickEditar(producto) {
+        let id         = producto.id;
+        let rutaEditar = rutas.getUrl(rutas.PRODUCTOS, id, rutas.ACCION_EDITAR, rutas.TIPO_ADMIN, rutas.PRODUCTOS_LISTAR_ADMIN);
+        this.props.updateProducto(producto);
+        history.push(rutaEditar);
+    }
+
     getOperacionesProducto(producto) {
-        return "";
+        return (
+            <div>
+                <p onClick={() => this.clickEditar(producto)} title="Editar "
+                   className="operacion">
+                    <img src={lapiz} className="icono-operacion" alt="Editar producto"/>
+                    Editar
+                </p>
+                <p onClick={() => this.modalBorrar(producto)} title="Borrar"
+                   className="operacion">
+                    <img src={tacho} className="icono-operacion" alt="Borrar producto"/>
+                    Borrar
+                </p>
+            </div>
+        );
+    }
+
+    modalBorrar(producto) {
+        Swal.fire({
+            title: `Está seguro de borrar el producto '${producto.nombre}'`,
+            icon: 'warning',
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'rgb(88, 219, 131)',
+            cancelButtonColor: '#bfbfbf',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.props.saveDeleteProducto(producto.id);
+            }
+        })
     }
 
     render() {
@@ -133,6 +178,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchProductosIfNeeded: () => {
             dispatch(fetchProductosIfNeeded())
+        },
+        saveDeleteProducto: (id) => {
+            dispatch(saveDeleteProducto(id))
+        },
+        updateProducto: (producto) => {
+            dispatch(updateProducto(producto))
         }
     }
 };

@@ -29,21 +29,25 @@ export const USUARIOS_EDITAR_ADMIN = '/usuarios/editar/admin';
 export const USUARIOS_EDITAR_COMUN = '/usuarios/editar/comun';
 
 //Gestión de productos
+export const PRODUCTOS              = '/productos';
+export const PRODUCTOS_ACCIONES     = '/productos/:accion/:tipo?/:id?';
 export const PRODUCTO_ALTA          = '/productos/alta';
 export const PRODUCTOS_LISTAR       = '/productos/listar';
 export const PRODUCTOS_LISTAR_ADMIN = '/productos/listar/admin';
+export const PRODUCTOS_EDITAR_ADMIN = '/productos/editar/admin/:id';
 
 /**
  * Devuelve la url de usuarios
  *
+ * @param tipoObjeto
  * @param id
  * @param accion ver constantes ACCION_*
  * @param tipo ver constantes TIPO_*
  * @param volverA query para volver a la ruta anterior
  * @returns {string}
  */
-export function getUrlUsuario(id, accion, tipo, volverA) {
-    let ruta = `${USUARIOS}/${accion}/${tipo}/${id}`;
+export function getUrl(tipoObjeto, id, accion, tipo, volverA) {
+    let ruta = `${tipoObjeto}/${accion}/${tipo}/${id}`;
     if (volverA) {
         ruta += `?volverA=${volverA}`
     }

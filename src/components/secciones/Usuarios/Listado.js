@@ -109,7 +109,7 @@ class Listado extends React.Component {
     getOperacionesUsuario(usuario) {
         let id         = usuario.id;
         let logueado   = this.props.usuarios.update.logueado;
-        let rutaEditar = rutas.getUrlUsuario(id, rutas.ACCION_EDITAR, rutas.TIPO_ADMIN, rutas.USUARIOS_LISTAR);
+        let rutaEditar = rutas.getUrl(rutas.USUARIOS, id, rutas.ACCION_EDITAR, rutas.TIPO_ADMIN, rutas.USUARIOS_LISTAR);
         let borrar =
             <p onClick={() => this.modalBorrar(usuario)} title="Borrar"
                className="operacion">

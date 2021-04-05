@@ -99,7 +99,14 @@ class AltaEdicion extends React.Component {
 
     render() {
         const {botonVolverA, volverAValido} = this.state;
-        const producto   = this.props.productos.create.nuevo;
+        let producto = {};
+        let accion = this.props.match.params['accion'];
+        if (accion === rutas.ACCION_ALTA) {
+            producto = this.props.productos.create.nuevo;
+        }
+        if (accion === rutas.ACCION_EDITAR) {
+            producto = this.props.productos.update.activo;
+        }
 
         var opcionesCategoria = this.props.categorias.allIds.map((key) => {
             var categoria = this.props.categorias.byId.categorias[key];
@@ -120,11 +127,11 @@ class AltaEdicion extends React.Component {
                     <Form.Group>
                         <Form.Label>Categoría</Form.Label>
                         <Form.Control
-                            id="idCategoria"
+                            id="categoria_id"
                             as="select"
                             defaultValue=""
                             onChange={(e) => this.onChangeProducto(e)}
-                            value={producto.idCategoria}
+                            value={producto.categoria_id}
                             required={true}
                             disabled={buscando}
                         >
@@ -138,6 +145,7 @@ class AltaEdicion extends React.Component {
                             id="nombre"
                             type="nombre"
                             onChange={(e) => this.onChangeProducto(e)}
+                            value={producto.nombre}
                             placeholder="Ingresar nombre"
                             required={true}
                         />
@@ -145,10 +153,11 @@ class AltaEdicion extends React.Component {
                     <Form.Group>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
-                            id="descricion"
+                            id="descripcion"
                             as="textarea"
                             rows={3}
                             onChange={(e) => this.onChangeProducto(e)}
+                            value={producto.descripcion}
                             placeholder="Ingresar descripción"
                         />
                     </Form.Group>
@@ -159,6 +168,7 @@ class AltaEdicion extends React.Component {
                             type="number"
                             min={0}
                             onChange={(e) => this.onChangeProducto(e)}
+                            value={producto.precioVigente}
                             placeholder="Ingresar precio"
                             required={true}
                         />

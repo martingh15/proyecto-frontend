@@ -18,7 +18,10 @@ var productos = {
             dataType: 'json'
         };
 
-        return fetch(c.BASE_URL + '/productos' + c.DEBUG, defaultOptions);
+        let debug = c.DEBUG;
+        //let debug = "";
+
+        return fetch(c.BASE_URL + '/productos' + debug, defaultOptions);
     },
 
     saveCreate(producto) {
@@ -41,6 +44,23 @@ var productos = {
             enctype: 'multipart/form-data',
         });
     },
+
+    borrarProducto(id) {
+        let defaultOptions = {
+            url: '',
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.token
+            },
+            // cache: false,
+            dataType: 'json',
+        };
+
+        return fetch(c.BASE_URL + '/productos/' + id + c.DEBUG, defaultOptions);
+    }
 };
 
 export default productos;
