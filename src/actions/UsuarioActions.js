@@ -255,10 +255,10 @@ export function fetchUsuarioLogueado() {
                 dispatch(receiveUsuarioLogueado(data));
             })
             .catch(function (error) {
-                dispatch(logout());
                 switch (error.status) {
                     case 401:
                         dispatch(errorUsuarioLogueado(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
                         return;
                     default:
                         dispatch(errorUsuarioLogueado(errorMessages.GENERAL_ERROR));
@@ -343,10 +343,10 @@ export function fetchUsuarios() {
                 dispatch(receiveUsuarios(data));
             })
             .catch(function (error) {
-                dispatch(logout());
                 switch (error.status) {
                     case 401:
                         dispatch(errorUsuarios(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
                         return;
                     default:
                         dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
@@ -433,10 +433,10 @@ export function fetchUsuarioById(id) {
                 dispatch(updateUsuario(data));
             })
             .catch(function (error) {
-                dispatch(logout());
                 switch (error.status) {
                     case 401:
                         dispatch(errorUsuarios(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
                         return;
                     default:
                         dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
@@ -521,7 +521,7 @@ export function saveDeleteUsuario(id) {
                 switch (error.status) {
                     case 401:
                         dispatch(errorDeleteUsuario(errorMessages.UNAUTHORIZED_TOKEN));
-                        //dispatch(logout());
+                        dispatch(logout());
                         return Promise.reject(error);
                     default:
                         error.json()
