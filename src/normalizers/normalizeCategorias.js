@@ -1,7 +1,8 @@
 import { normalize, schema } from 'normalizr';
 
 export function normalizeDato(myData){
-	const categoria = new schema.Entity('categoria', {}, {idAttribute: "id"});
+    const producto = new schema.Entity('productos', {}, {idAttribute: "id"});
+	const categoria = new schema.Entity('categoria', {productos: [producto]}, {idAttribute: "id"});
 
     const mySchema = categoria;
 
@@ -9,8 +10,8 @@ export function normalizeDato(myData){
 }
 
 export function normalizeDatos(myData){
-
-    const categorias = new schema.Entity('categorias', {}, {idAttribute: "id"});
+    const producto = new schema.Entity('productos', {}, {idAttribute: "id"});
+    const categorias = new schema.Entity('categorias', {productos: [producto]}, {idAttribute: "id"});
 
     const mySchemas = [categorias];
 

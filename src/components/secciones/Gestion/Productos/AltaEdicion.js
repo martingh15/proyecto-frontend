@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux';
 
 //Actions
-import {createProducto, saveCreateProducto} from "../../../../actions/ProductoActions";
+import {createProducto, updateProducto, saveCreateProducto, saveUpdateProducto} from "../../../../actions/ProductoActions";
 import {fetchCategorias} from "../../../../actions/CategoriaActions";
 
 //Constants
@@ -26,6 +26,7 @@ import Swal from 'sweetalert2';
 
 //Imagenes
 import emptyImg from "../../../../assets/img/emptyImg.jpg";
+import c from "../../../../constants/constants";
 
 class AltaEdicion extends React.Component {
     constructor(props) {
@@ -46,6 +47,14 @@ class AltaEdicion extends React.Component {
         let logueado = this.props.usuarios.update.activo;
         if (logueado === undefined || (logueado.id && !logueado.esAdmin)) {
             history.push(rutas.INICIO);
+        }
+        let id     = this.props.match.params['id'];
+        let accion = this.props.match.params['accion'];
+        if (accion === rutas.ACCION_EDITAR && prevProps.productos.allIds.length === 0 && this.props.productos.allIds.length > 0) {
+            let producto = this.props.productos.byId.productos[id];
+            if (producto !== undefined) {
+                this.props.updateProducto(producto);
+            }
         }
     }
 
@@ -68,7 +77,14 @@ class AltaEdicion extends React.Component {
         if (imagen) {
             cambio = imagen;
         }
-        this.props.createProducto(cambio);
+        let accion = this.props.match.params['accion'];
+        if (accion === rutas.ACCION_ALTA) {
+            this.props.createProducto(cambio);
+        }
+        if (accion === rutas.ACCION_EDITAR) {
+            this.props.updateProducto(cambio);
+        }
+
     }
 
     changeImagen(e) {
@@ -88,13 +104,21 @@ class AltaEdicion extends React.Component {
         }
         var cambio = {};
         cambio[e.target.id] = file;
+        cambio["fileImagen"] = file.name;
         this.onChangeProducto(e, cambio);
     }
 
     submitForm(e) {
         e.preventDefault();
         let linkVolver = rutas.getQuery('volverA');
-        this.props.saveCreateProducto(linkVolver);
+        let accion = this.props.match.params['accion'];
+        if (accion === rutas.ACCION_ALTA) {
+            this.props.saveCreateProducto(linkVolver);
+        }
+        if (accion === rutas.ACCION_EDITAR) {
+            this.props.saveUpdateProducto(linkVolver);
+        }
+
     }
 
     render() {
@@ -104,9 +128,19 @@ class AltaEdicion extends React.Component {
         if (accion === rutas.ACCION_ALTA) {
             producto = this.props.productos.create.nuevo;
         }
+        let path   = this.state.imagen;
+        let titulo = "Nuevo producto";
         if (accion === rutas.ACCION_EDITAR) {
+            titulo = "Editar producto";
             producto = this.props.productos.update.activo;
+            if (this.state.imagen === emptyImg) {
+                try {
+                    path = c.BASE_PUBLIC + "img/productos/" + producto.imagen;
+                } catch (e) {
+                }
+            }
         }
+
 
         var opcionesCategoria = this.props.categorias.allIds.map((key) => {
             var categoria = this.props.categorias.byId.categorias[key];
@@ -123,7 +157,7 @@ class AltaEdicion extends React.Component {
         return (
             <div className="producto-alta">
                 <Form className="tarjeta-body" onSubmit={(e) => {this.submitForm(e)}}>
-                    <h4>Nuevo producto</h4>
+                    <h4>{titulo}</h4>
                     <Form.Group>
                         <Form.Label>Categoría</Form.Label>
                         <Form.Control
@@ -177,8 +211,9 @@ class AltaEdicion extends React.Component {
                         <Form.Label>Imagen</Form.Label>
                         <ArchivoImagen
                             id="imagen"
-                            imagen={this.state.imagen}
-                            texto={producto && producto.imagen ? producto.imagen.name : ""}
+                            imagen={path}
+                            imgError={emptyImg}
+                            texto={producto && producto.fileImagen ? producto.fileImagen : ""}
                             changeImagen={(evento) => this.changeImagen(evento)}
                         />
                         <Form.Text className="text-muted">
@@ -215,8 +250,14 @@ const mapDispatchToProps = (dispatch) => {
         createProducto: (producto) => {
             dispatch(createProducto(producto))
         },
+        updateProducto: (producto) => {
+            dispatch(updateProducto(producto))
+        },
         saveCreateProducto: (volverA) => {
             dispatch(saveCreateProducto(volverA))
+        },
+        saveUpdateProducto: (volverA) => {
+            dispatch(saveUpdateProducto(volverA))
         },
         fetchCategorias: () => {
             dispatch(fetchCategorias())

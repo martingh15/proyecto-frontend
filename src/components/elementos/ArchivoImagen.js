@@ -7,6 +7,7 @@ import "../../assets/css/ArchivoImagen.css";
 
 //Images
 import addPhoto from "../../assets/img/add_photo_alternate.svg";
+import productoVacio from "../../assets/img/emptyImg.jpg";
 
 class ArchivoImagen extends React.Component {
 
@@ -44,6 +45,7 @@ class ArchivoImagen extends React.Component {
                         className="img-responsive imagen-vacía"
                         ref="imagenPrincipal"
                         src={props.imagen}
+                        onError={(e) => e.target.src = props.imgError}
                         alt="Imagen principal animal"
                     />
                     : ""

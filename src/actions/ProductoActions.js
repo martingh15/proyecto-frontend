@@ -136,7 +136,7 @@ export function updateProducto(producto) {
     }
 }
 
-export function saveUpdateProducto() {
+export function saveUpdateProducto(volverA) {
     return (dispatch, getState) => {
         dispatch(requestUpdateProducto());
         return productos.saveUpdate(getState().productos.update.activo)
@@ -145,13 +145,14 @@ export function saveUpdateProducto() {
                     return Promise.reject(response);
                 } else {
                     dispatch(receiveUpdateProducto());
-                    return response.json();
+                    return true;
                 }
             })
-            .then((respuesta) => {
-                let producto = respuesta.producto;
+            .then(() => {
                 dispatch(resetUpdateProducto());
-                dispatch(updateProducto(producto));
+                if (rutas.validarRuta(volverA)) {
+                    history.push(volverA);
+                }
             })
             .catch(function (error) {
                 switch (error.status) {
@@ -160,16 +161,10 @@ export function saveUpdateProducto() {
                         dispatch(logout());
                         return Promise.reject(error);
                     default:
-                        error.json()
-                            .then(error => {
-                                if (error.message !== "")
-                                    dispatch(errorUpdateProducto(error.message));
-                                else
-                                    dispatch(errorUpdateProducto(errorMessages.GENERAL_ERROR));
-                            })
-                            .catch(error => {
-                                dispatch(errorUpdateProducto(errorMessages.GENERAL_ERROR));
-                            });
+                        if (error.responseJSON !== "")
+                            dispatch(errorUpdateProducto(error.responseJSON.message));
+                        else
+                            dispatch(errorUpdateProducto(errorMessages.GENERAL_ERROR));
                         return;
                 }
             });

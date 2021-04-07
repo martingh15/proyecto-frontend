@@ -18,14 +18,11 @@ var productos = {
             dataType: 'json'
         };
 
-        let debug = c.DEBUG;
-        //let debug = "";
-
-        return fetch(c.BASE_URL + '/productos' + debug, defaultOptions);
+        return fetch(c.BASE_URL + '/productos', defaultOptions);
     },
 
     saveCreate(producto) {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append("producto", JSON.stringify(producto));
         formData.append("imagen", producto.imagen);
 
@@ -35,6 +32,7 @@ var productos = {
             data: formData,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+                xhr.setRequestHeader("Content-Length", 15000);
                 xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
             },
             contentType: false,
@@ -59,7 +57,28 @@ var productos = {
             dataType: 'json',
         };
 
-        return fetch(c.BASE_URL + '/productos/' + id + c.DEBUG, defaultOptions);
+        return fetch(c.BASE_URL + '/productos/' + id, defaultOptions);
+    },
+
+    saveUpdate(producto) {
+        let formData = new FormData();
+        formData.append("producto", JSON.stringify(producto));
+        formData.append("imagen", producto.imagen);
+
+        return $.ajax({
+            url: c.BASE_URL+'/productos/' + producto.id + c.DEBUG,
+            //dataType: 'json',
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+                xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
+            },
+            contentType: false,
+            type: 'POST',
+            // cache: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+        });
     }
 };
 
