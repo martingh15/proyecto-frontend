@@ -328,9 +328,9 @@ export function fetchCategoriaById(id) {
                 dispatch(updateCategoria(data));
             })
             .catch(function (error) {
-                //dispatch(logout());
                 switch (error.status) {
                     case 401:
+                        dispatch(logout());
                         dispatch(errorCategorias(errorMessages.UNAUTHORIZED_TOKEN));
                         return;
                     default:
