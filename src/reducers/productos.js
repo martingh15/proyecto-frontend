@@ -287,7 +287,7 @@ function productosAllIds(state = [], action) {
              return [];
         case RECEIVE_CATEGORIAS:
             let productos = action.categorias.entities.productos;
-            let ids       = Object.keys(productos);
+            let ids       = productos ? Object.keys(productos) : [];
             let enteros   = ids.map(id => parseInt(id));
             return productos ? enteros : [];
         default:
