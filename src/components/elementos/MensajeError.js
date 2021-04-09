@@ -52,9 +52,10 @@ class MensajeError extends React.Component {
         var msgError = "";
 
         if (Array.isArray(error) && !isString(error)) {
-            msgError = error.map(function(er) {
-                return (<li>{er}</li>);
+            let items = error.map(function(er) {
+                return (<li key={Math.random()}>{er}</li>);
             });
+            msgError = <ul>{items}</ul>
         } else{
             msgError = <p>{error}</p>;
         }
