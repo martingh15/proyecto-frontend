@@ -123,7 +123,11 @@ function pedidosById(state = {
 
 function create(state = {
     isCreating: false,
-    nuevo: {},
+    nuevo: {
+        tipo: "",
+        menus: [],
+        productos: [],
+    },
     success: "",
     error: null,
     errores: [],
