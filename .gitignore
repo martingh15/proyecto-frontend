@@ -11,6 +11,7 @@ public/mail
 /.eslintcache
 nbproject/
 /nbproject/
+2.8.0
 
 # testing
 /coverage
