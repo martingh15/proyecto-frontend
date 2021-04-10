@@ -18,6 +18,9 @@ import * as rutas from '../../constants/rutas.js';
 //CSS
 import '../../assets/css/Navegador.css';
 
+//Icons
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+
 //Images
 import logo from "../../assets/img/logo.png";
 
@@ -97,7 +100,6 @@ class Navegador extends React.Component {
             let display     = props.mostrar ? "" : "no-mostrar";
             let grow        = props.grow ? "hvr-grow" : "";
             let ruta        = props.ruta;
-            let tipo        = props.tipo;
             let activa      = this.getRutaActiva(props.ruta);
             let claseActiva = activa ? "activo" : "";
             return(
@@ -179,6 +181,7 @@ class Navegador extends React.Component {
                     />
                 </div>
                 <div className="derecha">
+                    <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()}/>
                     <NoLogueado mostrar={!logueado}/>
                     <Logueado mostrar={logueado}/>
                 </div>

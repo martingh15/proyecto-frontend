@@ -1,0 +1,44 @@
+.carrito {
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    margin: 60px 0 0 0;
+    padding-top: 20px;
+    transition: right 1s;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)!important;
+    background-color: #1579bf;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.carrito-botones {
+    display: flex;
+    justify-content: space-around;
+}
+
+.carrito-botones button {
+    border-radius: 15px;
+}
+
+.carrito-botones .finalizar {
+    color: white;
+    background-color: #ea2a2a;
+}
+
+.carrito-botones .finalizar:hover {
+    background-color: #ff0000;
+}
+
+.carrito-botones .finalizar:disabled {
+    color: #c6c6c6;
+}
+
+.carrito-botones .cancelar {
+    color: black;
+    background-color: #ffffff;
+}
+
+.carrito-botones .cancelar:hover {
+    background-color: #e3e3e3;
+}
+

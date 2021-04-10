@@ -6,7 +6,7 @@
     justify-content: space-between;
     height: 60px;
     position: fixed;
-    z-index: 10;
+    z-index: 12;
     width: 100vw;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
     background-color: #1579bf;
@@ -15,6 +15,12 @@
 
 .navegador .activo {
     text-shadow: 3px 3px black;
+}
+
+.navegador .icono-material {
+    margin: 0 10px;
+    color: white;
+    cursor: pointer;
 }
 
 .navegador .no-mostrar {

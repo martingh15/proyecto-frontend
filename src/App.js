@@ -18,6 +18,7 @@ import Gestion from "./components/secciones/Gestion";
 import ListadoUsuarios from "./components/secciones/Usuarios/Listado";
 import ListadoProductos from "./components/secciones/Gestion/Productos/Listado";
 import AltaEdicionProducto from "./components/secciones/Gestion/Productos/AltaEdicion";
+import Carrito from "./components/elementos/Carrito";
 import NotFound from "./components/secciones/NotFound";
 
 //Redux
@@ -27,28 +28,45 @@ import {connect} from 'react-redux';
 import { withRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 
-function App() {
-  return (
-      <div className="app">
-          <Navegador />
-          <div className="contenedor">
-              <Switch>
-                  <Route exact path={rutas.INICIO} component={Inicio} />
-                  <Route exact path={rutas.LOGIN} component={Login} />
-                  <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
-                  <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
-                  <Route exact path={rutas.GESTION} component={Gestion} />
-                  <Route exact path={rutas.USUARIOS_ALTA} component={Registro} />
-                  <Route exact path={rutas.USUARIOS_LISTAR} component={ListadoUsuarios} />
-                  <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
-                  <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
-                  <Route exact path={rutas.PRODUCTOS_ACCIONES} component={AltaEdicionProducto} />
-                  <Route exact path="*" component={NotFound} />
-              </Switch>
-          </div>
-      </div>
+class App extends React.Component {
+   constructor(props) {
+       super(props);
+       this.state = {
+           mostrar: false
+       };
+   }
 
-  );
+   changeMostrar() {
+       this.setState(prevState => ({
+           mostrar: !prevState.mostrar,
+       }));
+   }
+
+   render() {
+      const {mostrar} = this.state;
+      return (
+          <div className="app">
+              <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>
+              <Carrito mostrar={mostrar} changeMostrar={() => this.changeMostrar()}/>
+              <div className="contenedor">
+                  <Switch>
+                      <Route exact path={rutas.INICIO} component={Inicio} />
+                      <Route exact path={rutas.LOGIN} component={Login} />
+                      <Route exact path={rutas.RESET_PASSWORD} component={CambiarPassword} />
+                      <Route exact path={rutas.VALIDAR_EMAIL} component={ValidarEmail} />
+                      <Route exact path={rutas.GESTION} component={Gestion} />
+                      <Route exact path={rutas.USUARIOS_ALTA} component={Registro} />
+                      <Route exact path={rutas.USUARIOS_LISTAR} component={ListadoUsuarios} />
+                      <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
+                      <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
+                      <Route exact path={rutas.PRODUCTOS_ACCIONES} component={AltaEdicionProducto} />
+                      <Route exact path="*" component={NotFound} />
+                  </Switch>
+              </div>
+          </div>
+
+      );
+  }
 }
 
 function mapStateToProps(state) {
