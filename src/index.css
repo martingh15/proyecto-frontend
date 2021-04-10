@@ -23,6 +23,7 @@ code {
   background-image: url("./assets/img/fondo.jpg");
   height: auto;
   min-height: 100vh;
+  transition: width 1s;
 }
 
 .tarjeta-body {

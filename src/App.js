@@ -48,7 +48,7 @@ class App extends React.Component {
           <div className="app">
               <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>
               <Carrito mostrar={mostrar} changeMostrar={() => this.changeMostrar()}/>
-              <div className="contenedor">
+              <div className="contenedor" style={{width: !mostrar ? "calc(100% - 300px)" : "100%"}}>
                   <Switch>
                       <Route exact path={rutas.INICIO} component={Inicio} />
                       <Route exact path={rutas.LOGIN} component={Login} />
