@@ -161,10 +161,12 @@ export function saveUpdateProducto(volverA) {
                         dispatch(logout());
                         return Promise.reject(error);
                     default:
-                        if (error.responseJSON !== "")
+                        if (error.responseJSON !== "") {
+                            console.log(error.responseJSON)
                             dispatch(errorUpdateProducto(error.responseJSON.message));
-                        else
+                        } else {
                             dispatch(errorUpdateProducto(errorMessages.GENERAL_ERROR));
+                        }
                         return;
                 }
             });

@@ -2,6 +2,7 @@ import React from 'react';
 
 //Actions
 import { fetchUsuarioLogueadoIfNeeded } from "./actions/UsuarioActions";
+import { fetchProductosIfNeeded } from "./actions/ProductoActions";
 
 //Constants
 import * as rutas from './constants/rutas.js';
@@ -19,6 +20,7 @@ import ListadoUsuarios from "./components/secciones/Usuarios/Listado";
 import ListadoProductos from "./components/secciones/Gestion/Productos/Listado";
 import AltaEdicionProducto from "./components/secciones/Gestion/Productos/AltaEdicion";
 import Carrito from "./components/elementos/Carrito";
+import Almacen from "./components/secciones/Almacen";
 import NotFound from "./components/secciones/NotFound";
 
 //Redux
@@ -36,7 +38,11 @@ class App extends React.Component {
        };
    }
 
-   changeMostrar() {
+   componentDidMount() {
+       this.props.fetchProductosIfNeeded();
+   }
+
+    changeMostrar() {
        this.setState(prevState => ({
            mostrar: !prevState.mostrar,
        }));
@@ -48,7 +54,7 @@ class App extends React.Component {
           <div className="app">
               <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>
               <Carrito mostrar={mostrar} changeMostrar={() => this.changeMostrar()}/>
-              <div className="contenedor" style={{width: !mostrar ? "calc(100% - 300px)" : "100%"}}>
+              <div className="contenedor" style={{width: mostrar ? "calc(100% - 300px)" : "100%"}}>
                   <Switch>
                       <Route exact path={rutas.INICIO} component={Inicio} />
                       <Route exact path={rutas.LOGIN} component={Login} />
@@ -60,6 +66,7 @@ class App extends React.Component {
                       <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
                       <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
                       <Route exact path={rutas.PRODUCTOS_ACCIONES} component={AltaEdicionProducto} />
+                      <Route exact path={[rutas.ALMACEN]} component={Almacen} />
                       <Route exact path="*" component={NotFound} />
                   </Switch>
               </div>
@@ -79,6 +86,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchUsuarioLogueadoIfNeeded: () => {
             dispatch(fetchUsuarioLogueadoIfNeeded())
+        },
+        fetchProductosIfNeeded: () => {
+            dispatch(fetchProductosIfNeeded())
         },
     }
 };

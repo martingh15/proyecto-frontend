@@ -20,7 +20,7 @@ class Carrito extends React.Component {
         const {mostrar} = this.props;
         let deshabilitar = true;
         return (
-            <nav className="carrito" style={{right: mostrar ? "-300px" : "0"}}>
+            <nav className="carrito" style={{right: !mostrar ? "-300px" : "0"}}>
                 <div className="carrito-botones">
                     <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar}>
                         Finalizar pedido

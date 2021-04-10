@@ -27,12 +27,11 @@ var productos = {
         formData.append("imagen", producto.imagen);
 
         return $.ajax({
-            url: c.BASE_URL+'/productos' + c.DEBUG,
+            url: c.BASE_URL+'/productos',
             //dataType: 'json',
             data: formData,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                xhr.setRequestHeader("Content-Length", 15000);
                 xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
             },
             contentType: false,
@@ -66,7 +65,7 @@ var productos = {
         formData.append("imagen", producto.imagen);
 
         return $.ajax({
-            url: c.BASE_URL+'/productos/' + producto.id + c.DEBUG,
+            url: c.BASE_URL+'/productos/' + producto.id,
             //dataType: 'json',
             data: formData,
             beforeSend: function (xhr) {
