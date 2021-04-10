@@ -1,0 +1,426 @@
+import history from "../history";
+
+//Actions
+import { logout } from "./AuthenticationActions";
+
+//Api
+import pedidos from "../api/pedidos";
+
+//Constants
+import * as rutas from '../constants/rutas.js';
+import * as errorMessages from '../constants/MessageConstants';
+
+//Normalizer
+import {normalizeDato, normalizeDatos} from "../normalizers/normalizePedidos";
+
+//PEDIDO CREATE
+export const CREATE_PEDIDO		 = 'CREATE_PEDIDO';
+export const RESET_CREATE_PEDIDO   = "RESET_CREATE_PEDIDO";
+export const REQUEST_CREATE_PEDIDO = "REQUEST_CREATE_PEDIDO";
+export const RECEIVE_CREATE_PEDIDO = "RECEIVE_CREATE_PEDIDO";
+export const ERROR_CREATE_PEDIDO   = "ERROR_CREATE_PEDIDO";
+
+//PEDIDOLOGUEADO CREATE
+function requestCreatePedido() {
+    return {
+        type: REQUEST_CREATE_PEDIDO,
+    }
+}
+
+function reveiceCreatePedido(message, ruta) {
+    return {
+        type: RECEIVE_CREATE_PEDIDO,
+        message: message,
+        receivedAt: Date.now(),
+        nuevo: {},
+        ruta: ruta
+    }
+}
+
+export function errorCreatePedido(error) {
+    return {
+        type: ERROR_CREATE_PEDIDO,
+        error: error
+    }
+}
+
+export function resetCreatePedido() {
+    return {
+        type: RESET_CREATE_PEDIDO
+    }
+}
+
+export function createPedido(pedido) {
+    return {
+        type: CREATE_PEDIDO,
+        pedido
+    }
+}
+
+export function saveCreatePedido(volverA) {
+    return (dispatch, getState) => {
+        dispatch(requestCreatePedido());
+        return pedidos.saveCreate(getState().pedidos.create.nuevo)
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    return true;
+                }
+            })
+            .then(function (data) {
+                let mensaje = "El pedido ha sido creado con éxito"
+                if (data.message) {
+                    mensaje = data.message;
+                }
+                dispatch(reveiceCreatePedido(mensaje));
+                dispatch(resetCreatePedido());
+                if (rutas.validarRuta(volverA)) {
+                    history.push(volverA);
+                }
+            })
+            .catch(function (error) {
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorCreatePedido(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
+                        return;
+                    default:
+                        if (error.responseJSON !== "")
+                            dispatch(errorCreatePedido(error.responseJSON.message));
+                        else
+                            dispatch(errorCreatePedido(errorMessages.GENERAL_ERROR));
+                        return;
+                }
+            });
+    }
+}
+
+//PEDIDO UPDATE
+export const UPDATE_PEDIDO		 = 'UPDATE_PEDIDO';
+export const RESET_UPDATE_PEDIDO   = "RESET_UPDATE_PEDIDO";
+export const REQUEST_UPDATE_PEDIDO = "REQUEST_UPDATE_PEDIDO";
+export const RECEIVE_UPDATE_PEDIDO = "RECEIVE_UPDATE_PEDIDO";
+export const ERROR_UPDATE_PEDIDO   = "ERROR_UPDATE_PEDIDO";
+
+function requestUpdatePedido() {
+    return {
+        type: REQUEST_UPDATE_PEDIDO,
+    }
+}
+
+function receiveUpdatePedido() {
+    return {
+        type: RECEIVE_UPDATE_PEDIDO,
+        receivedAt: Date.now()
+    }
+}
+
+function errorUpdatePedido(error) {
+    return {
+        type: ERROR_UPDATE_PEDIDO,
+        error: error,
+    }
+}
+
+export function resetUpdatePedido() {
+    return {
+        type: RESET_UPDATE_PEDIDO
+    }
+}
+
+export function updatePedido(pedido) {
+    return {
+        type: UPDATE_PEDIDO,
+        pedido
+    }
+}
+
+export function saveUpdatePedido(volverA) {
+    return (dispatch, getState) => {
+        dispatch(requestUpdatePedido());
+        return pedidos.saveUpdate(getState().pedidos.update.activo)
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    dispatch(receiveUpdatePedido());
+                    return true;
+                }
+            })
+            .then(() => {
+                dispatch(resetUpdatePedido());
+                if (rutas.validarRuta(volverA)) {
+                    history.push(volverA);
+                }
+            })
+            .catch(function (error) {
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorUpdatePedido(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
+                        return Promise.reject(error);
+                    default:
+                        if (error.responseJSON !== "") {
+                            console.log(error.responseJSON)
+                            dispatch(errorUpdatePedido(error.responseJSON.message));
+                        } else {
+                            dispatch(errorUpdatePedido(errorMessages.GENERAL_ERROR));
+                        }
+                        return;
+                }
+            });
+    }
+}
+
+//PEDIDO LOGUEADO
+export const INVALIDATE_PEDIDOS = 'INVALIDATE_PEDIDOS';
+export const REQUEST_PEDIDOS    = "REQUEST_PEDIDOS";
+export const RECEIVE_PEDIDOS    = "RECEIVE_PEDIDOS";
+export const ERROR_PEDIDOS      = "ERROR_PEDIDOS";
+export const RESET_PEDIDOS      = "RESET_PEDIDOS";
+
+export function invalidatePedidos() {
+    return {
+        type: INVALIDATE_PEDIDOS,
+    }
+}
+
+export function resetPedidos() {
+    return {
+        type: RESET_PEDIDOS
+    }
+}
+
+function requestPedidos() {
+    return {
+        type: REQUEST_PEDIDOS,
+    }
+}
+
+function receivePedidos(json) {
+    return {
+        type: RECEIVE_PEDIDOS,
+        pedidos: normalizeDatos(json),
+        receivedAt: Date.now()
+    }
+}
+
+function errorPedidos(error) {
+    return {
+        type: ERROR_PEDIDOS,
+        error: error,
+    }
+}
+
+export function fetchPedidos() {
+    return dispatch => {
+        dispatch(requestPedidos());
+        return pedidos.getAll()
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    var data = response.json();
+                    return data;
+                }
+            })
+            .then(function (data) {
+                dispatch(receivePedidos(data));
+            })
+            .catch(function (error) {
+                //dispatch(logout());
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorPedidos(errorMessages.UNAUTHORIZED_TOKEN));
+                        return;
+                    default:
+                        dispatch(errorPedidos(errorMessages.GENERAL_ERROR));
+                        return;
+                }
+            });
+    }
+}
+
+function shouldFetchPedidos(state) {
+    const pedidosById   = state.pedidos.byId;
+    const pedidosAllIds = state.pedidos.allIds;
+    if (pedidosById.isFetching) {
+        return false;
+    } else if (pedidosAllIds.length === 0) {
+        return true;
+    } else {
+        return pedidosById.didInvalidate;
+    }
+}
+
+export function fetchPedidosIfNeeded() {
+    return (dispatch, getState) => {
+        if (shouldFetchPedidos(getState())) {
+            return dispatch(fetchPedidos())
+        }
+    }
+}
+
+//PEDIDO
+export const INVALIDATE_PEDIDO_ID = 'INVALIDATE_PEDIDO_ID';
+export const REQUEST_PEDIDO_ID    = "REQUEST_PEDIDO_ID";
+export const RECEIVE_PEDIDO_ID    = "RECEIVE_PEDIDO_ID";
+export const ERROR_PEDIDO_ID      = "ERROR_PEDIDO_ID";
+export const RESET_PEDIDO_ID      = "RESET_PEDIDO_ID";
+
+export function invalidatePedidoById() {
+    return {
+        type: INVALIDATE_PEDIDO_ID,
+    }
+}
+
+export function resetPedidoById() {
+    return {
+        type: RESET_PEDIDO_ID
+    }
+}
+
+function requestPedidoById() {
+    return {
+        type: REQUEST_PEDIDO_ID,
+    }
+}
+
+function receivePedidoById(json) {
+    return {
+        type: RECEIVE_PEDIDO_ID,
+        pedido: normalizeDato(json),
+        receivedAt: Date.now()
+    }
+}
+
+function errorPedidoById(error) {
+    return {
+        type: ERROR_PEDIDO_ID,
+        error: error,
+    }
+}
+
+export function fetchPedidoById(id) {
+    return dispatch => {
+        dispatch(requestPedidoById());
+        return pedidos.getPedido(id)
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    var data = response.json();
+                    return data;
+                }
+            })
+            .then(function (data) {
+                dispatch(receivePedidoById(data));
+                dispatch(updatePedido(data));
+            })
+            .catch(function (error) {
+                //dispatch(logout());
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorPedidos(errorMessages.UNAUTHORIZED_TOKEN));
+                        return;
+                    default:
+                        dispatch(errorPedidos(errorMessages.GENERAL_ERROR));
+                        return;
+                }
+            });
+    }
+}
+
+function shouldFetchPedidoById(id, state) {
+    const pedidosById   = state.pedidos.byId;
+    const pedidosAllIds = state.pedidos.allIds;
+    if (pedidosById.isFetchingPedido) {
+        return false;
+    } else if (pedidosAllIds.length === 0) {
+        return true;
+    } else {
+        return pedidosById.didInvalidatePedido;
+    }
+}
+
+export function fetchPedidoByIdIfNeeded(id) {
+    return (dispatch, getState) => {
+        if (shouldFetchPedidos(id, getState())) {
+            return dispatch(fetchPedidos())
+        }
+    }
+}
+
+//PEDIDO DELETE
+export const RESET_DELETE_PEDIDO   = "RESET_DELETE_PEDIDO";
+export const REQUEST_DELETE_PEDIDO = "REQUEST_DELETE_PEDIDO";
+export const RECEIVE_DELETE_PEDIDO = "RECEIVE_DELETE_PEDIDO";
+export const ERROR_DELETE_PEDIDO   = "ERROR_DELETE_PEDIDO";
+
+function requestDeletePedido() {
+    return {
+        type: REQUEST_DELETE_PEDIDO,
+    }
+}
+
+function receiveDeletePedido(id, mensaje) {
+    return {
+        type: RECEIVE_DELETE_PEDIDO,
+        receivedAt: Date.now(),
+        idPedido: id,
+        success: mensaje
+    }
+}
+
+function errorDeletePedido(error) {
+    return {
+        type: ERROR_DELETE_PEDIDO,
+        error: error,
+    }
+}
+
+export function resetDeletePedido() {
+    return {
+        type: RESET_DELETE_PEDIDO,
+    }
+}
+
+export function saveDeletePedido(id) {
+    return (dispatch, getState) => {
+        dispatch(requestDeletePedido());
+        return pedidos.borrarPedido(id)
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    return response.json();
+                }
+            })
+            .then((respuesta) => {
+                let mensaje = respuesta.message;
+                dispatch(receiveDeletePedido(id, mensaje));
+                dispatch(resetDeletePedido());
+            })
+            .catch(function (error) {
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorDeletePedido(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
+                        return Promise.reject(error);
+                    default:
+                        error.json()
+                            .then(error => {
+                                if (error.message !== "")
+                                    dispatch(errorDeletePedido(error.message));
+                                else
+                                    dispatch(errorDeletePedido(errorMessages.GENERAL_ERROR));
+                            })
+                            .catch(error => {
+                                dispatch(errorDeletePedido(errorMessages.GENERAL_ERROR));
+                            });
+                        return;
+                }
+            });
+    }
+}
