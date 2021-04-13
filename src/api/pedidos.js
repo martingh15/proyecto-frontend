@@ -88,6 +88,22 @@ var pedidos = {
         return fetch(c.BASE_URL + '/pedido/' + id, defaultOptions);
     },
 
+    getPedidoAbierto() {
+        let defaultOptions = {
+            url: '',
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.token
+            },
+            dataType: 'json',
+        };
+
+        return fetch(c.BASE_URL + '/pedidos', defaultOptions);
+    }
+
 };
 
 export default pedidos;

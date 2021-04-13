@@ -22,7 +22,16 @@ import {
     REQUEST_PEDIDO_ID,
     RECEIVE_PEDIDO_ID,
     ERROR_PEDIDO_ID,
-    RESET_PEDIDO_ID, RESET_DELETE_PEDIDO, REQUEST_DELETE_PEDIDO, RECEIVE_DELETE_PEDIDO, ERROR_DELETE_PEDIDO
+    RESET_PEDIDO_ID,
+    RESET_DELETE_PEDIDO,
+    REQUEST_DELETE_PEDIDO,
+    RECEIVE_DELETE_PEDIDO,
+    ERROR_DELETE_PEDIDO,
+    INVALIDATE_PEDIDO_ABIERTO,
+    REQUEST_PEDIDO_ABIERTO,
+    RECEIVE_PEDIDO_ABIERTO,
+    ERROR_PEDIDO_ABIERTO,
+    RESET_PEDIDO_ABIERTO
 
 } from '../actions/PedidoActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
@@ -35,6 +44,7 @@ function pedidosById(state = {
     didInvalidatePedido: true,
     pedidos: [],
     pedido: {},
+    abierto: {},
     error: null,
     success: "",
 }, action) {
@@ -109,6 +119,38 @@ function pedidosById(state = {
                 lastUpdated: null,
                 pedidos: [],
             });
+        //PEDIDO
+        case INVALIDATE_PEDIDO_ABIERTO:
+            return Object.assign({}, state, {
+                didInvalidatePedido: true
+            });
+        case REQUEST_PEDIDO_ABIERTO:
+            return Object.assign({}, state, {
+                isFetchingPedido: true,
+                didInvalidatePedido: false
+            });
+        case RECEIVE_PEDIDO_ABIERTO:
+            return Object.assign({}, state, {
+                isFetchingPedido: false,
+                didInvalidatePedido: false,
+                abierto: action.pedido,
+                lastUpdated: action.receivedAt,
+                error: null
+            });
+        case ERROR_PEDIDO_ABIERTO:
+            return Object.assign({}, state, {
+                isFetchingPedido: false,
+                didInvalidatePedido: true,
+                error: action.error
+            });
+        case RESET_PEDIDO_ABIERTO:
+            return Object.assign({}, state, {
+                isFetchingPedido: false,
+                didInvalidatePedido: true,
+                error: null,
+                lastUpdated: null,
+                abierto: {},
+            });
         case RECEIVE_DELETE_PEDIDO:
             return Object.assign({}, state, {
                 pedidos: pickBy(state.pedidos, function (value, key) {
@@ -123,11 +165,7 @@ function pedidosById(state = {
 
 function create(state = {
     isCreating: false,
-    nuevo: {
-        tipo: "",
-        menus: [],
-        productos: [],
-    },
+    nuevo: {},
     success: "",
     error: null,
     errores: [],

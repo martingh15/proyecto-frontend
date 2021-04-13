@@ -3,6 +3,7 @@ import React from 'react';
 //Actions
 import { fetchUsuarioLogueadoIfNeeded } from "./actions/UsuarioActions";
 import { fetchProductosIfNeeded } from "./actions/ProductoActions";
+import { fetchPedidoAbiertoIfNeeded } from "./actions/PedidoActions";
 
 //Constants
 import * as rutas from './constants/rutas.js';
@@ -40,6 +41,7 @@ class App extends React.Component {
 
    componentDidMount() {
        this.props.fetchProductosIfNeeded();
+       this.props.fetchPedidoAbiertoIfNeeded();
    }
 
     changeMostrar() {
@@ -90,6 +92,9 @@ const mapDispatchToProps = (dispatch) => {
         fetchProductosIfNeeded: () => {
             dispatch(fetchProductosIfNeeded())
         },
+        fetchPedidoAbiertoIfNeeded: () => {
+            dispatch(fetchPedidoAbiertoIfNeeded())
+        }
     }
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

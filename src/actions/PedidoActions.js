@@ -352,6 +352,105 @@ export function fetchPedidoByIdIfNeeded(id) {
     }
 }
 
+//PEDIDO
+export const INVALIDATE_PEDIDO_ABIERTO = 'INVALIDATE_PEDIDO_ABIERTO';
+export const REQUEST_PEDIDO_ABIERTO    = "REQUEST_PEDIDO_ABIERTO";
+export const RECEIVE_PEDIDO_ABIERTO    = "RECEIVE_PEDIDO_ABIERTO";
+export const ERROR_PEDIDO_ABIERTO      = "ERROR_PEDIDO_ABIERTO";
+export const RESET_PEDIDO_ABIERTO      = "RESET_PEDIDO_ABIERTO";
+
+export function invalidatePedidoAbierto() {
+    return {
+        type: INVALIDATE_PEDIDO_ABIERTO,
+    }
+}
+
+export function resetPedidoAbierto() {
+    return {
+        type: RESET_PEDIDO_ABIERTO
+    }
+}
+
+function requestPedidoAbierto() {
+    return {
+        type: REQUEST_PEDIDO_ABIERTO,
+    }
+}
+
+function receivePedidoAbierto(json) {
+    return {
+        type: RECEIVE_PEDIDO_ABIERTO,
+        pedido: json,
+        receivedAt: Date.now()
+    }
+}
+
+function errorPedidoAbierto(error) {
+    return {
+        type: ERROR_PEDIDO_ABIERTO,
+        error: error,
+    }
+}
+
+export function fetchPedidoAbierto() {
+    return dispatch => {
+        dispatch(requestPedidoAbierto());
+        return pedidos.getPedidoAbierto()
+            .then(function (response) {
+                if (response.status >= 400) {
+                    return Promise.reject(response);
+                } else {
+                    var data = response.json();
+                    return data;
+                }
+            })
+            .then(function (data) {
+                let pedido = data.pedido ? data.pedido : {};
+                dispatch(receivePedidoAbierto(pedido));
+            })
+            .catch(function (error) {
+                switch (error.status) {
+                    case 401:
+                        dispatch(errorPedidoAbierto(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(logout());
+                        return;
+                    default:
+                        error.json()
+                            .then(error => {
+                                if (error.message !== "")
+                                    dispatch(errorPedidoAbierto(error.message));
+                                else
+                                    dispatch(errorPedidoAbierto(errorMessages.GENERAL_ERROR));
+                            })
+                            .catch(error => {
+                                dispatch(errorPedidoAbierto(errorMessages.GENERAL_ERROR));
+                            });
+                        return;
+                }
+            });
+    }
+}
+
+function shouldFetchPedidoAbierto(state) {
+    const pedidosById = state.pedidos.byId;
+    const abierto     = pedidosById.abierto;
+    if (pedidosById.isFetchingPedido) {
+        return false;
+    } else if (!abierto.id) {
+        return true;
+    } else {
+        return pedidosById.didInvalidatePedido;
+    }
+}
+
+export function fetchPedidoAbiertoIfNeeded() {
+    return (dispatch, getState) => {
+        if (shouldFetchPedidoAbierto(getState())) {
+            return dispatch(fetchPedidoAbierto())
+        }
+    }
+}
+
 //PEDIDO DELETE
 export const RESET_DELETE_PEDIDO   = "RESET_DELETE_PEDIDO";
 export const REQUEST_DELETE_PEDIDO = "REQUEST_DELETE_PEDIDO";
