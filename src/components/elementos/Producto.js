@@ -2,6 +2,9 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
+//Actions
+import {saveCreatePedido, fetchPedidoById} from "../../actions/PedidoActions"
+
 //Constants
 import c from "../../constants/constants";
 
@@ -18,7 +21,32 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 class Producto extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            pedido: null
+        }
+    }
+
+    agregarProducto(producto, cantidad) {
+        let pedido = this.getPedidoActual();
+        if (!Array.isArray(pedido.lineas)) {
+            pedido.lineas = [];
+        }
+        let linea = {};
+        linea.cantidad = cantidad;
+        linea.producto = producto.id;
+        pedido.lineas.push(linea);
+        this.props.saveCreatePedido(pedido);
+    }
+
+    getPedidoActual() {
+        let abierto = this.props.pedidos.byId.abierto;
+        if (!abierto.id) {
+            return {
+                id: null,
+                lineas: []
+            };
+        }
+        return abierto;
     }
 
     render() {
@@ -44,7 +72,7 @@ class Producto extends React.Component {
                     </div>
                     <div className="producto-derecha-carrito">
                         <div className="producto-derecha-carrito-cantidad">
-                            <Button variant="outlined" color="primary" className="cancelar" >
+                            <Button variant="outlined" color="primary" className="cancelar" onClick={() => this.agregarProducto(producto)}>
                                 <ShoppingCartIcon className="icono-material hvr-grow"/>Agregar
                             </Button>
                         </div>
@@ -60,12 +88,18 @@ class Producto extends React.Component {
 
 function mapStateToProps(state) {
     return {
+        pedidos: state.pedidos
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        saveCreatePedido: (pedido) => {
+            dispatch(saveCreatePedido(pedido))
+        },
+        fetchPedidoById: (pedido) => {
+            dispatch(fetchPedidoById(pedido))
+        }
     }
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Producto));

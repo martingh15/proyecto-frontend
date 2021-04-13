@@ -27,11 +27,16 @@ class Almacen extends React.Component {
                 return (<Producto producto={producto}/>);
             }
         });
+        let hayProductos = productos.length > 0;
+        let clase = hayProductos ? "almacen-productos" : "d-flex justify-content-center align-items-center h-100";
+        if (!hayProductos) {
+            productos = <h2 className="placeholder-producto">No hay productos cargados</h2>;
+        }
         return (
             <div className="almacen">
                 <div className="tarjeta-body">
                     <h1>Almacén</h1>
-                    <div className="almacen-productos">
+                    <div className={clase}>
                         {productos}
                     </div>
                 </div>

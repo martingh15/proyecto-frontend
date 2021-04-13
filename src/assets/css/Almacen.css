@@ -27,3 +27,8 @@
     justify-items: center;
     margin-top: 20px;
 }
+
+.almacen .placeholder-producto {
+    text-align: center;
+    font-size: 23px;
+}
