@@ -86,10 +86,16 @@ export function saveCreatePedido(volverA) {
                         dispatch(logout());
                         return;
                     default:
-                        if (error.responseJSON !== "")
-                            dispatch(errorCreatePedido(error.responseJSON.message));
-                        else
-                            dispatch(errorCreatePedido(errorMessages.GENERAL_ERROR));
+                        error.json()
+                            .then(error => {
+                                if (error.message !== "")
+                                    dispatch(errorCreatePedido(error.message));
+                                else
+                                    dispatch(errorCreatePedido(errorMessages.GENERAL_ERROR));
+                            })
+                            .catch(error => {
+                                dispatch(errorCreatePedido(errorMessages.GENERAL_ERROR));
+                            });
                         return;
                 }
             });
