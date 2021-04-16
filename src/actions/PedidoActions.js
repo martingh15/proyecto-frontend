@@ -161,12 +161,16 @@ export function saveUpdatePedido(volverA) {
                         dispatch(logout());
                         return Promise.reject(error);
                     default:
-                        if (error.responseJSON !== "") {
-                            console.log(error.responseJSON)
-                            dispatch(errorUpdatePedido(error.responseJSON.message));
-                        } else {
-                            dispatch(errorUpdatePedido(errorMessages.GENERAL_ERROR));
-                        }
+                        error.json()
+                            .then(error => {
+                                if (error.message !== "")
+                                    dispatch(errorUpdatePedido(error.message));
+                                else
+                                    dispatch(errorUpdatePedido(errorMessages.GENERAL_ERROR));
+                            })
+                            .catch(error => {
+                                dispatch(errorUpdatePedido(errorMessages.GENERAL_ERROR));
+                            });
                         return;
                 }
             });
