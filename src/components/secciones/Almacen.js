@@ -24,7 +24,7 @@ class Almacen extends React.Component {
         let productos = this.props.productos.allIds.map(id => {
             let producto = this.props.productos.byId.productos[id];
             if (producto !== undefined) {
-                return (<Producto key={Math.random()} producto={producto}/>);
+                return (<Producto key={Math.random()} producto={producto} getCantidad={(producto) => this.props.getCantidad(producto)}/>);
             }
         });
         let hayProductos = productos.length > 0;

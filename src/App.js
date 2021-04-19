@@ -31,6 +31,9 @@ import {connect} from 'react-redux';
 import { withRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 
+//Lodash
+import isEmpty from "lodash/isEmpty";
+
 class App extends React.Component {
    constructor(props) {
        super(props);
@@ -50,6 +53,24 @@ class App extends React.Component {
        }));
    }
 
+    getCantidad(producto) {
+        if (isEmpty(producto)) {
+            return 0;
+        }
+        const abierto  = this.props.pedidos.byId.abierto;
+        let cantidad   = 0;
+        if (Array.isArray(abierto.lineas) && abierto.lineas.length === 0) {
+            return cantidad;
+        }
+        abierto.lineasIds.map(id => {
+            let linea = abierto.lineas[id];
+            if (linea !== undefined && linea.producto_id === producto.id) {
+                cantidad = linea.cantidad;
+            }
+        })
+        return cantidad;
+    }
+
    render() {
       const {mostrar} = this.state;
       return (
@@ -68,7 +89,7 @@ class App extends React.Component {
                       <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
                       <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
                       <Route exact path={rutas.PRODUCTOS_ACCIONES} component={AltaEdicionProducto} />
-                      <Route exact path={[rutas.ALMACEN]} component={Almacen} />
+                      <Route exact path={[rutas.ALMACEN]} render={(props) => <Almacen {...props} getCantidad={(producto) => this.getCantidad(producto)}/>} />
                       <Route exact path="*" component={NotFound} />
                   </Switch>
               </div>
@@ -81,6 +102,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
     return {
         authentication: state.authentication,
+        pedidos: state.pedidos,
     };
 }
 

@@ -32,7 +32,7 @@ class Producto extends React.Component {
 
     componentDidMount() {
         if (this.props.pedidos.byId.abierto.id && this.state.cantidad === null) {
-            let cantidad = this.getCantidad();
+            let cantidad = this.props.getCantidad(this.props.producto);
             this.setState({
                 cantidad: cantidad
             })
@@ -42,7 +42,7 @@ class Producto extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         let cambioActivo = prevProps.pedidos.byId.abierto.id !== this.props.pedidos.byId.abierto.id;
         if (cambioActivo && this.state.cantidad === null) {
-            let cantidad = this.getCantidad();
+            let cantidad = this.props.getCantidad(this.props.producto);
             this.setState({
                 cantidad: cantidad
             })
@@ -120,22 +120,6 @@ class Producto extends React.Component {
         return abierto;
     }
 
-    getCantidad() {
-        const producto = this.props.producto;
-        const abierto  = this.props.pedidos.byId.abierto;
-        let cantidad   = 0;
-        if (Array.isArray(abierto.lineas) && abierto.lineas.length === 0) {
-            return cantidad;
-        }
-        abierto.lineasIds.map(id => {
-            let linea = abierto.lineas[id];
-            if (linea !== undefined && linea.producto_id === producto.id) {
-                cantidad = linea.cantidad;
-            }
-        })
-        return cantidad;
-    }
-
     render() {
         const props    = this.props;
         let {cantidad, guardando} = this.state;
@@ -169,7 +153,6 @@ class Producto extends React.Component {
                     +
                 </button>
             </div>;
-        console.log(guardando)
         return (
             <article key={producto.id} className="producto">
                 <div className="producto-izquierda">

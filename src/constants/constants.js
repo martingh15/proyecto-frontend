@@ -27,5 +27,6 @@ if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_ENVI) {
 export default {
     BASE_URL: BASE_URL,
     BASE_PUBLIC: BASE_PUBLIC,
-    DEBUG: '?XDEBUG_SESSION_START=PHPSTORM'
+    DEBUG: '?XDEBUG_SESSION_START=PHPSTORM',
+    RANDOM: Math.random() * 1000
 }
