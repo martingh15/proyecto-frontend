@@ -65,3 +65,17 @@
     width: 18px;
     margin-right: 5px;
 }
+
+.producto-derecha-carrito-cantidad-gestion button {
+    background: transparent;
+    color: black;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.producto-derecha-carrito .half-circle-spinner {
+    height: 30px;
+    width: 30px;
+    margin-left: 20px;
+}

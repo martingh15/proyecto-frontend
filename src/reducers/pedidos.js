@@ -130,11 +130,22 @@ function pedidosById(state = {
                 didInvalidatePedido: false
             });
         case RECEIVE_PEDIDO_ABIERTO:
+            let pedido       = Object.values(action.pedido.entities.pedido)[0];
+            pedido.lineas    = action.pedido.entities.lineas;
+            if (pedido.lineas === undefined) {
+                pedido.lineas = [];
+            }
+            pedido.lineasIds = Object.keys(pedido.lineas);
             return Object.assign({}, state, {
                 isFetchingPedido: false,
                 didInvalidatePedido: false,
-                abierto: action.pedido,
+                abierto: pedido,
                 lastUpdated: action.receivedAt,
+                error: null
+            });
+        case RESET_CREATE_PEDIDO:
+            return Object.assign({}, state, {
+                abierto: {},
                 error: null
             });
         case ERROR_PEDIDO_ABIERTO:

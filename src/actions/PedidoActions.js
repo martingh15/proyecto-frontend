@@ -65,16 +65,16 @@ export function saveCreatePedido(volverA) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
                 } else {
-                    return true;
+                    var data = response.json();
+                    return data;
                 }
             })
             .then(function (data) {
-                let mensaje = "El pedido ha sido creado con éxito"
-                if (data.message) {
-                    mensaje = data.message;
-                }
-                dispatch(reveiceCreatePedido(mensaje));
+                dispatch(reveiceCreatePedido());
                 dispatch(resetCreatePedido());
+                if (data.pedido) {
+                    dispatch(receivePedidoAbierto(data.pedido));
+                }
                 if (rutas.validarRuta(volverA)) {
                     history.push(volverA);
                 }
@@ -138,7 +138,7 @@ export function resetUpdatePedido() {
 export function updatePedido(pedido) {
     return {
         type: UPDATE_PEDIDO,
-        pedido
+        pedido: normalizeDato(pedido)
     }
 }
 
@@ -326,7 +326,9 @@ export function fetchPedidoById(id) {
             })
             .then(function (data) {
                 dispatch(receivePedidoById(data));
-                dispatch(updatePedido(data));
+                if (data.id) {
+                    dispatch(updatePedido(data));
+                }
             })
             .catch(function (error) {
                 //dispatch(logout());
@@ -390,7 +392,7 @@ function requestPedidoAbierto() {
 function receivePedidoAbierto(json) {
     return {
         type: RECEIVE_PEDIDO_ABIERTO,
-        pedido: json,
+        pedido: normalizeDato(json),
         receivedAt: Date.now()
     }
 }
