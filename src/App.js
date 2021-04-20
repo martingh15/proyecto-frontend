@@ -3,7 +3,7 @@ import React from 'react';
 //Actions
 import { fetchUsuarioLogueadoIfNeeded } from "./actions/UsuarioActions";
 import { fetchProductosIfNeeded } from "./actions/ProductoActions";
-import { fetchPedidoAbiertoIfNeeded } from "./actions/PedidoActions";
+import { fetchPedidoAbiertoIfNeeded, createPedido, saveCreatePedido } from "./actions/PedidoActions";
 
 //Constants
 import * as rutas from './constants/rutas.js';
@@ -38,13 +38,24 @@ class App extends React.Component {
    constructor(props) {
        super(props);
        this.state = {
-           mostrar: false
+           mostrar: false,
+           guardando: false,
+           producto: 0,
        };
    }
 
    componentDidMount() {
        this.props.fetchProductosIfNeeded();
        this.props.fetchPedidoAbiertoIfNeeded();
+   }
+
+   componentDidUpdate(prevProps, prevState, snapshot) {
+       if (prevProps.pedidos.create.isCreating && !this.props.pedidos.create.isCreating) {
+           this.setState({
+               guardando: false,
+               producto: 0,
+           });
+       }
    }
 
     changeMostrar() {
@@ -71,12 +82,77 @@ class App extends React.Component {
         return cantidad;
     }
 
+    agregarProducto(producto, cantidad) {
+        let pedido = this.actualizarPedido(producto, cantidad);
+        this.setState({
+            guardando: true,
+            producto: producto.id,
+        });
+        this.props.createPedido(pedido);
+        this.props.saveCreatePedido();
+    }
+
+    actualizarPedido(producto, cantidad) {
+        let pedido  = this.getPedidoActual();
+        let linea   = this.getLineaProducto(producto, pedido);
+        let nuevas  = pedido.lineas;
+        let idLinea = linea.id > 0 ? linea.id : 0;
+        if (idLinea > 0) {
+            delete pedido.lineas[idLinea];
+        }
+        let nuevaCantidad = cantidad + linea.cantidad;
+        linea.cantidad    = nuevaCantidad;
+        nuevas[idLinea]   = linea;
+        pedido.lineas     = nuevas;
+        this.setState({
+            cantidad: nuevaCantidad
+        })
+        return pedido;
+    }
+
+    getLineaProducto(producto, pedido) {
+        let lineas = pedido.lineas;
+        let linea = null;
+        pedido.lineasIds.map(id => {
+            let item = lineas[id];
+            if (item !== undefined && item.producto_id === producto.id) {
+                linea = item;
+            }
+        });
+        if (linea === null) {
+            return {
+                id: 0,
+                cantidad: 0,
+                producto_id: producto.id
+            };
+        }
+        return linea;
+    }
+
+    getPedidoActual() {
+        const abierto = this.props.pedidos.byId.abierto;
+        if (isNaN(abierto.id)) {
+            return {
+                id: 0,
+                lineas: [],
+                lineasIds: []
+            };
+        }
+        return abierto;
+    }
+
    render() {
-      const {mostrar} = this.state;
+      const {mostrar, guardando, producto} = this.state;
       return (
           <div className="app">
               <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>
-              <Carrito mostrar={mostrar} changeMostrar={() => this.changeMostrar()}/>
+              <Carrito
+                  mostrar={mostrar}
+                  producto={producto}
+                  guardando={guardando}
+                  changeMostrar={() => this.changeMostrar()}
+                  agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
+              />
               <div className="contenedor" style={{width: mostrar ? "calc(100% - 300px)" : "100%"}}>
                   <Switch>
                       <Route exact path={rutas.INICIO} component={Inicio} />
@@ -89,7 +165,15 @@ class App extends React.Component {
                       <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
                       <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
                       <Route exact path={rutas.PRODUCTOS_ACCIONES} component={AltaEdicionProducto} />
-                      <Route exact path={[rutas.ALMACEN]} render={(props) => <Almacen {...props} getCantidad={(producto) => this.getCantidad(producto)}/>} />
+                      <Route exact path={[rutas.ALMACEN]} render={(props) =>
+                          <Almacen
+                              {...props}
+                              getCantidad={(producto) => this.getCantidad(producto)}
+                              agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
+                              producto={producto}
+                              guardando={guardando}
+                          />}
+                      />
                       <Route exact path="*" component={NotFound} />
                   </Switch>
               </div>
@@ -116,7 +200,13 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchPedidoAbiertoIfNeeded: () => {
             dispatch(fetchPedidoAbiertoIfNeeded())
-        }
+        },
+        createPedido: (pedido) => {
+            dispatch(createPedido(pedido))
+        },
+        saveCreatePedido: (volverA) => {
+            dispatch(saveCreatePedido(volverA))
+        },
     }
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

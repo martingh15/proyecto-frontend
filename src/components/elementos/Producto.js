@@ -26,7 +26,6 @@ class Producto extends React.Component {
         super(props);
         this.state = {
             cantidad: null,
-            guardando: false
         }
     }
 
@@ -47,57 +46,6 @@ class Producto extends React.Component {
                 cantidad: cantidad
             })
         }
-        if (prevProps.pedidos.create.isCreating && !this.props.pedidos.create.isCreating) {
-            this.setState({
-                guardando: false
-            });
-        }
-    }
-
-    agregarProducto(producto, cantidad) {
-        let pedido = this.actualizarPedido(producto, cantidad);
-        this.setState({
-            guardando: true
-        });
-        this.props.createPedido(pedido);
-        this.props.saveCreatePedido();
-    }
-
-    actualizarPedido(producto, cantidad) {
-        let pedido        = this.getPedidoActual();
-        let linea         = this.getLineaProducto(producto, pedido);
-        let nuevas        = pedido.lineas;
-        let idLinea       = linea.id > 0 ? linea.id : 0;
-        if (idLinea > 0) {
-            delete pedido.lineas[idLinea];
-        }
-        let nuevaCantidad = cantidad + linea.cantidad;
-        linea.cantidad    = nuevaCantidad;
-        nuevas[idLinea]   = linea;
-        pedido.lineas     = nuevas;
-        this.setState({
-            cantidad: nuevaCantidad
-        })
-        return pedido;
-    }
-
-    getLineaProducto(producto, pedido) {
-        let lineas = pedido.lineas;
-        let linea = null;
-        pedido.lineasIds.map(id => {
-            let item = lineas[id];
-            if (item !== undefined && item.producto_id === producto.id) {
-                linea = item;
-            }
-        });
-        if (linea === null) {
-            return {
-                id: 0,
-                cantidad: 0,
-                producto_id: producto.id
-            };
-        }
-        return linea;
     }
 
     createPedido(pedido, idProducto) {
@@ -108,21 +56,12 @@ class Producto extends React.Component {
         return pedido;
     }
 
-    getPedidoActual() {
-        const abierto = this.props.pedidos.byId.abierto;
-        if (isNaN(abierto.id)) {
-            return {
-                id: 0,
-                lineas: [],
-                lineasIds: []
-            };
-        }
-        return abierto;
-    }
-
     render() {
-        const props    = this.props;
-        let {cantidad, guardando} = this.state;
+        const props = this.props;
+        let {cantidad} = this.state;
+        let guardando  = props.guardando;
+        let idProducto = props.productoGuardando;
+        let loader = guardando && idProducto === props.producto.id;
         const producto = props.producto;
         if (cantidad === null) {
             cantidad = 0;
@@ -166,7 +105,7 @@ class Producto extends React.Component {
                     <div className="producto-derecha-carrito">
                         <div className="producto-derecha-carrito-cantidad">
                             {
-                                guardando ? <Loader display={true} /> : gestionCantidad
+                                loader ? <Loader display={true} /> : gestionCantidad
                             }
                         </div>
                         <p className="producto-derecha-precio font-weight-bold text-right pr-2 m-0 text-nowrap">

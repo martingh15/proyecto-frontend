@@ -9,6 +9,8 @@
     background-color: #1579bf;
     z-index: 10;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .carrito-botones {
@@ -41,4 +43,46 @@
 .carrito-botones .cancelar:hover {
     background-color: #e3e3e3;
 }
+
+.carrito-compras {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+.carrito-compras .carrito-item {
+    padding: 10px;
+    background-color: white;
+    margin: 2px 0;
+    border-radius: 6px;
+}
+
+.carrito-compras .carrito-item-top {
+    display: flex;
+    align-items: center;
+}
+
+.carrito-compras .carrito-item img {
+    width: 45px;
+    border-radius: 50%;;
+    margin-right: 15px
+}
+
+.carrito-compras .carrito-item h2 {
+    font-size: 18px;
+}
+
+.carrito-compras .carrito-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.carrito-compras .half-circle-spinner {
+    height: 30px;
+    width: 30px;
+    margin-left: 40px;
+}
+
 
