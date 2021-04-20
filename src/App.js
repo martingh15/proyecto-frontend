@@ -1,9 +1,9 @@
 import React from 'react';
 
 //Actions
-import { fetchUsuarioLogueadoIfNeeded } from "./actions/UsuarioActions";
-import { fetchProductosIfNeeded } from "./actions/ProductoActions";
-import { fetchPedidoAbiertoIfNeeded, createPedido, saveCreatePedido } from "./actions/PedidoActions";
+import {fetchUsuarioLogueadoIfNeeded} from "./actions/UsuarioActions";
+import {fetchProductosIfNeeded} from "./actions/ProductoActions";
+import {createPedido, fetchPedidoAbiertoIfNeeded, saveCreatePedido} from "./actions/PedidoActions";
 
 //Constants
 import * as rutas from './constants/rutas.js';
@@ -28,10 +28,11 @@ import NotFound from "./components/secciones/NotFound";
 import {connect} from 'react-redux';
 
 //Router
-import { withRouter } from "react-router-dom";
-import { Route, Switch } from "react-router";
+import {withRouter} from "react-router-dom";
+import {Route, Switch} from "react-router";
 
 //Lodash
+import clone from "lodash/clone";
 import isEmpty from "lodash/isEmpty";
 
 class App extends React.Component {
@@ -110,6 +111,22 @@ class App extends React.Component {
         return pedido;
     }
 
+    borrarLinea(idProducto) {
+        let abierto = clone(this.props.pedidos.byId.abierto);
+        let lineas  = abierto.lineasIds;
+        let nuevas  = [];
+        lineas.map(idLinea => {
+            let linea = abierto.lineas[idLinea];
+            let producto = linea.producto;
+            if (linea && producto && producto.id !== idProducto) {
+                nuevas.push(linea);
+            }
+        });
+        abierto.lineas = nuevas;
+        this.props.createPedido(abierto);
+        this.props.saveCreatePedido();
+    }
+
     getLineaProducto(producto, pedido) {
         let lineas = pedido.lineas;
         let linea = null;
@@ -151,6 +168,7 @@ class App extends React.Component {
                   producto={producto}
                   guardando={guardando}
                   changeMostrar={() => this.changeMostrar()}
+                  borrarLinea={(idProducto) => this.borrarLinea(idProducto)}
                   agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
               />
               <div className="contenedor" style={{width: mostrar ? "calc(100% - 300px)" : "100%"}}>
@@ -187,6 +205,7 @@ function mapStateToProps(state) {
     return {
         authentication: state.authentication,
         pedidos: state.pedidos,
+        productos: state.productos,
     };
 }
 

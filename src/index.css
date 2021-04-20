@@ -16,6 +16,10 @@ code {
     monospace;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .contenedor {
   padding-top: 80px;
   background-repeat: no-repeat;

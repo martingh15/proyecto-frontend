@@ -75,20 +75,20 @@ class Producto extends React.Component {
             }
         }
         let gestionCantidad = cantidad === 0 ?
-            <Button variant="outlined" color="primary" className="cancelar" onClick={() => this.agregarProducto(producto, 1)}>
+            <Button variant="outlined" color="primary" className="cancelar" onClick={() => this.props.agregarProducto(producto, 1)}>
                 <ShoppingCartIcon className="icono-material hvr-grow"/>Agregar
             </Button>
             :
             <div className="producto-derecha-carrito-cantidad-gestion">
                 <button
                     className="mr-2"
-                    onClick={() => this.agregarProducto(producto, -1)}>
+                    onClick={() => this.props.agregarProducto(producto, -1)}>
                     -
                 </button>
                 <span>{cantidad}</span>
                 <button
                     className="ml-2"
-                    onClick={() => this.agregarProducto(producto, 1)}>
+                    onClick={() => this.props.agregarProducto(producto, 1)}>
                     +
                 </button>
             </div>;

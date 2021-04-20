@@ -1,8 +1,6 @@
 import React from 'react';
-
-//Routes-redux
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 
 //Constants
 import c from "../../constants/constants";
@@ -26,6 +24,9 @@ class ItemCarrito extends React.Component {
 
     render() {
         const {linea, guardando, productoGuardando} = this.props;
+        if (!linea) {
+            return "";
+        }
         let path      = productoVacio;
         let cantidad  = linea.cantidad ? linea.cantidad : 0;
         let subtotal  = linea.subtotal ? linea.subtotal : 0;
@@ -66,7 +67,7 @@ class ItemCarrito extends React.Component {
                         <span>$ {subtotal * cantidad}</span>
                     </div>
                     <div className="carrito-item-bottom-tacho">
-                        <DeleteIcon/>
+                        <DeleteIcon className="cursor-pointer" onClick={() => this.props.borrarLinea(productoLinea.id)}/>
                     </div>
                 </div>
             </div>
