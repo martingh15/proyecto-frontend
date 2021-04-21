@@ -1,4 +1,8 @@
 import React from 'react';
+import history from "./history";
+
+//Api
+import auth from "./api/authentication";
 
 //Actions
 import {fetchUsuarioLogueadoIfNeeded} from "./actions/UsuarioActions";
@@ -31,9 +35,10 @@ import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 
-//Lodash
+//Librerías
 import clone from "lodash/clone";
 import isEmpty from "lodash/isEmpty";
+import Swal from 'sweetalert2';
 
 class App extends React.Component {
    constructor(props) {
@@ -84,13 +89,30 @@ class App extends React.Component {
     }
 
     agregarProducto(producto, cantidad) {
-        let pedido = this.actualizarPedido(producto, cantidad);
-        this.setState({
-            guardando: true,
-            producto: producto.id,
-        });
-        this.props.createPedido(pedido);
-        this.props.saveCreatePedido();
+        if (!auth.idUsuario()) {
+            Swal.fire({
+                title: `Para comenzar a realizar su pedido debe estar ingresar con su usuario. ¿Desea dirigirse al ingreso? `,
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: 'rgb(88, 219, 131)',
+                cancelButtonColor: '#bfbfbf',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    history.push(rutas.LOGIN);
+                }
+            });
+        } else {
+            let pedido = this.actualizarPedido(producto, cantidad);
+            this.setState({
+                guardando: true,
+                producto: producto.id,
+            });
+            this.props.createPedido(pedido);
+            this.props.saveCreatePedido();
+        }
     }
 
     actualizarPedido(producto, cantidad) {
