@@ -101,7 +101,8 @@ class App extends React.Component {
                 cancelButtonColor: '#bfbfbf',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    history.push(rutas.LOGIN);
+                    let ruta = `${rutas.LOGIN}?volverA=${rutas.ALMACEN}`
+                    history.push(ruta);
                 }
             });
         } else {

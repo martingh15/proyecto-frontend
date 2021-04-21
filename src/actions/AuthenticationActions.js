@@ -19,7 +19,7 @@ export const RESET_LOGIN = 'RESET_LOGIN';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 
-export function login(usuario, to) {
+export function login(usuario, ruta) {
     return (dispatch) => {
         console.log("login");
         dispatch(sendingRequest(true));
@@ -38,8 +38,8 @@ export function login(usuario, to) {
                 var datos = jwt_decode(localStorage.token);
                 dispatch(changeUser(datos.idUsuario, datos.nombre));
                 dispatch(fetchUsuarioLogueado());
-                if (to && to.pathname) {
-                    history.push(to.pathname);
+                if (ruta && rutas.validarRuta(ruta)) {
+                    history.push(ruta);
                 } else {
                     history.push(rutas.INICIO);
                 }
