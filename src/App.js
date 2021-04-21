@@ -27,12 +27,13 @@ import AltaEdicionProducto from "./components/secciones/Gestion/Productos/AltaEd
 import Carrito from "./components/elementos/Carrito";
 import Almacen from "./components/secciones/Almacen";
 import NotFound from "./components/secciones/NotFound";
+import LoaderLarge from "./components/elementos/LoaderLarge";
 
 //Redux
 import {connect} from 'react-redux';
 
 //Router
-import {withRouter} from "react-router-dom";
+import {Router, withRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 
 //Librerías
@@ -48,7 +49,12 @@ class App extends React.Component {
            guardando: false,
            borrando: false,
            producto: 0,
+           blur: false,
        };
+   }
+
+   setBlur(blur) {
+       this.setState({blur: blur});
    }
 
    componentDidMount() {
@@ -195,11 +201,14 @@ class App extends React.Component {
     }
 
    render() {
-      const {mostrar, guardando, producto, borrando} = this.state;
+      const {mostrar, guardando, producto, borrando, blur} = this.state;
+      let claseBlur = blur ? "forzar-blur" : "";
       return (
           <div className="app">
+              <LoaderLarge blur={blur} setBlur={(blur) => this.setBlur(blur)}/>
               <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>
               <Carrito
+                  blur={blur}
                   mostrar={mostrar}
                   producto={producto}
                   guardando={guardando}
@@ -209,7 +218,7 @@ class App extends React.Component {
                   cancelarPedido={(sinLineas) => this.cancelarPedido(sinLineas)}
                   agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
               />
-              <div className="contenedor" style={{width: mostrar ? "calc(100% - 300px)" : "100%"}}>
+              <div className={`contenedor ${claseBlur}`} style={{width: mostrar ? "calc(100% - 300px)" : "100%"}}>
                   <Switch>
                       <Route exact path={rutas.INICIO} component={Inicio} />
                       <Route exact path={rutas.LOGIN} component={Login} />

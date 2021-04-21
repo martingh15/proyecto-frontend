@@ -89,7 +89,8 @@ class Carrito extends React.Component {
     }
 
     render() {
-        const {mostrar}  = this.props;
+        const {mostrar, blur}  = this.props;
+        let claseBlur    = blur ? "forzar-blur" : "";
         let compras      = this.getLineasCarrito();
         let deshabilitar = compras.length === 0;
         let total        = 0;
@@ -98,7 +99,7 @@ class Carrito extends React.Component {
             total = pedido.total;
         }
         return (
-            <nav className="carrito" style={{right: !mostrar ? "-300px" : "0"}}>
+            <nav className={`carrito ${claseBlur}`} style={{right: !mostrar ? "-300px" : "0"}}>
                 <div className="carrito-botones">
                     <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar} onClick={() => this.finalizarPedido(deshabilitar)}>
                         Finalizar pedido
