@@ -221,7 +221,7 @@ class AltaEdicion extends React.Component {
                         </Form.Text>
                     </Form.Group>
                     {
-                        this.props.productos.create.isCreating ?
+                        this.props.productos.create.isCreating || this.props.productos.update.isUpdating ?
                             <Loader display={true}/>
                             :
                             <div className="d-flex">
