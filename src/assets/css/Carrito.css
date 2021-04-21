@@ -85,4 +85,10 @@
     margin-left: 40px;
 }
 
+.carrito-compras .loader-borrando .half-circle-spinner{
+    height: 40px;
+    width: 40px;
+    margin: 0 auto;
+}
+
 

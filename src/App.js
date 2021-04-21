@@ -46,6 +46,7 @@ class App extends React.Component {
        this.state = {
            mostrar: false,
            guardando: false,
+           borrando: false,
            producto: 0,
        };
    }
@@ -59,6 +60,7 @@ class App extends React.Component {
        if (prevProps.pedidos.create.isCreating && !this.props.pedidos.create.isCreating) {
            this.setState({
                guardando: false,
+               borrando: false,
                producto: 0,
            });
        }
@@ -135,6 +137,10 @@ class App extends React.Component {
     }
 
     borrarLinea(idProducto) {
+        this.setState({
+            borrando: true,
+            producto: idProducto,
+        });
         let abierto = clone(this.props.pedidos.byId.abierto);
         let lineas  = abierto.lineasIds;
         let nuevas  = [];
@@ -182,7 +188,8 @@ class App extends React.Component {
     }
 
    render() {
-      const {mostrar, guardando, producto} = this.state;
+      const {mostrar, guardando, producto, borrando} = this.state;
+      console.log(borrando)
       return (
           <div className="app">
               <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>
@@ -190,6 +197,7 @@ class App extends React.Component {
                   mostrar={mostrar}
                   producto={producto}
                   guardando={guardando}
+                  borrando={borrando}
                   changeMostrar={() => this.changeMostrar()}
                   borrarLinea={(idProducto) => this.borrarLinea(idProducto)}
                   agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}

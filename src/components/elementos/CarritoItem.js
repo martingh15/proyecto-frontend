@@ -23,7 +23,7 @@ class ItemCarrito extends React.Component {
     }
 
     render() {
-        const {linea, guardando, productoGuardando} = this.props;
+        const {linea, guardando, productoGuardando, borrando} = this.props;
         if (!linea) {
             return "";
         }
@@ -31,7 +31,8 @@ class ItemCarrito extends React.Component {
         let cantidad  = linea.cantidad ? linea.cantidad : 0;
         let subtotal  = linea.subtotal ? linea.subtotal : 0;
         let productoLinea  = linea.producto ? linea.producto : {};
-        let loader    = guardando && productoGuardando === productoLinea.id;
+        let loader         = guardando && productoGuardando === productoLinea.id;
+        let loaderBorrando = borrando && productoGuardando === productoLinea.id;
         if (productoLinea.imagen) {
             try {
                 path = c.BASE_PUBLIC + "img/productos/" + productoLinea.imagen;
@@ -61,7 +62,7 @@ class ItemCarrito extends React.Component {
                         alt="Imagen de producto" />
                         <h2>{productoLinea.nombre}</h2>
                 </div>
-                <div className="carrito-item-bottom">
+                <div style={{display: loaderBorrando ? "none" : "flex"}} className="carrito-item-bottom">
                     {loader ? <Loader display={true}/> : gestionBotones}
                     <div className="carrito-item-bottom-subtotal font-weight-bold">
                         <span>$ {subtotal * cantidad}</span>
@@ -69,6 +70,9 @@ class ItemCarrito extends React.Component {
                     <div className="carrito-item-bottom-tacho">
                         <DeleteIcon className="cursor-pointer" onClick={() => this.props.borrarLinea(productoLinea.id)}/>
                     </div>
+                </div>
+                <div className="loader-borrando" style={{display: loaderBorrando ? "flex" : "none"}}>
+                    <Loader display={true}/>
                 </div>
             </div>
         );
