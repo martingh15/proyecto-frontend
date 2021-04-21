@@ -8,12 +8,14 @@
     z-index: 9999;
     justify-content: center;
     align-items: center;
-    background-image: url("../../../assets/img/cloud.png");
-    background-position: center;
-    background-repeat: no-repeat
+
 }
 
 .rond_sup {
+    background-image: url("../../img/cloud.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 50;
     border-radius: 150px;
     width: 150px;
     height: 150px;
@@ -21,11 +23,6 @@
     border-right: 5px solid white;
     border-bottom: 5px solid white;
     border-left: 5px solid white;
-    -webkit-animation: anim_sup 1.4s infinite linear;
-    -moz-animation: anim_sup 1.4s infinite linear;
-    -ms-animation: anim_sup 1.4s infinite linear;
-    -o-animation: anim_sup 1.4s infinite linear;
-    animation: anim_sup 1.4s infinite linear
 }
 
 .rond_petit {
