@@ -1,8 +1,12 @@
 import React from 'react';
-
-//Routes-redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
+//Api
+import auth from "../../api/authentication";
+
+//Actions
+import { saveFinalizarPedido } from "../../actions/PedidoActions";
 
 //Components
 import ItemCarrito from "./CarritoItem";
@@ -12,10 +16,8 @@ import '../../assets/css/Carrito.css';
 
 //Libraries
 import isEmpty from "lodash/isEmpty";
-
-//MateriaUI
+import Swal from "sweetalert2";
 import Button from '@material-ui/core/Button';
-import Producto from "./Producto";
 
 class Carrito extends React.Component {
     constructor(props) {
@@ -60,6 +62,32 @@ class Carrito extends React.Component {
         return compras;
     }
 
+    finalizarPedido(sinLineas) {
+        if (sinLineas) {
+            return;
+        }
+        const abierto = this.props.pedidos.byId.abierto;
+        const valido  = abierto.id > 0 && auth.idUsuario();
+        if (!valido) {
+            return;
+        }
+        Swal.fire({
+            title: `¿Está seguro de cerrar el pedido? `,
+            icon: 'question',
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: true,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: 'rgb(88, 219, 131)',
+            cancelButtonColor: '#bfbfbf',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.props.saveFinalizarPedido(abierto.id);
+            }
+        });
+
+    }
+
     render() {
         const {mostrar}  = this.props;
         let compras      = this.getLineasCarrito();
@@ -72,7 +100,7 @@ class Carrito extends React.Component {
         return (
             <nav className="carrito" style={{right: !mostrar ? "-300px" : "0"}}>
                 <div className="carrito-botones">
-                    <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar}>
+                    <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar} onClick={() => this.finalizarPedido(deshabilitar)}>
                         Finalizar pedido
                     </Button>
                     <Button variant="outlined" color="primary" className="cancelar" disabled={deshabilitar} onClick={() => this.props.cancelarPedido(deshabilitar)}>
@@ -97,6 +125,9 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        saveFinalizarPedido: (id) => {
+            dispatch(saveFinalizarPedido(id))
+        }
     }
 };
 

@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 //Actions
-import {createPedido, saveCreatePedido, fetchPedidoById, updatePedido, saveUpdatePedido} from "../../actions/PedidoActions"
+import {createPedido, saveCreatePedido, fetchPedidoById} from "../../actions/PedidoActions"
 
 //Constants
 import c from "../../constants/constants";
@@ -134,12 +134,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchPedidoById: (pedido) => {
             dispatch(fetchPedidoById(pedido))
-        },
-        updatePedido: (pedido) => {
-            dispatch(updatePedido(pedido))
-        },
-        saveUpdatePedido: (volverA) => {
-            dispatch(saveUpdatePedido(volverA))
         },
     }
 };

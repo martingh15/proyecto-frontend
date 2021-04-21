@@ -8,11 +8,11 @@ import {
     REQUEST_CREATE_PEDIDO,
     RECEIVE_CREATE_PEDIDO,
     ERROR_CREATE_PEDIDO,
-    UPDATE_PEDIDO,
-    RESET_UPDATE_PEDIDO,
-    REQUEST_UPDATE_PEDIDO,
-    RECEIVE_UPDATE_PEDIDO,
-    ERROR_UPDATE_PEDIDO,
+    FINALIZAR_PEDIDO,
+    RESET_FINALIZAR_PEDIDO,
+    REQUEST_FINALIZAR_PEDIDO,
+    RECEIVE_FINALIZAR_PEDIDO,
+    ERROR_FINALIZAR_PEDIDO,
     INVALIDATE_PEDIDOS,
     REQUEST_PEDIDOS,
     ERROR_PEDIDOS,
@@ -230,51 +230,40 @@ function create(state = {
     }
 }
 
-let activoDefecto = {
-    nombre: '',
-    codigo: '',
-    imagen: '',
-    fileName: '',
-    descripcion: '',
-    categoria_id: '',
-    precioVigente: ''
-};
-
 function update(state = {
     isUpdating: false,
-    activo: activoDefecto,
+    cerrando: false,
+    activo: {},
     success: "",
     error: null
 }, action) {
     switch (action.type) {
         //UPDATE PEDIDO
-        case UPDATE_PEDIDO:
+        case FINALIZAR_PEDIDO:
             return Object.assign({}, state, {
                 isUpdating: false,
-                activo: merge({}, state.activo, action.pedido),
                 success: "",
                 error: null,
             });
-        case RESET_UPDATE_PEDIDO:
+        case RESET_FINALIZAR_PEDIDO:
             return Object.assign({}, state, {
                 isUpdating: false,
-                activo: activoDefecto,
                 success: "",
                 error: null,
             });
-        case REQUEST_UPDATE_PEDIDO:
+        case REQUEST_FINALIZAR_PEDIDO:
             return Object.assign({}, state, {
                 isUpdating: true,
                 success: "",
                 error: null,
             });
-        case RECEIVE_UPDATE_PEDIDO:
+        case RECEIVE_FINALIZAR_PEDIDO:
             return Object.assign({}, state, {
                 isUpdating: false,
-                success: action.success,
+                success: action.message,
                 error: null,
             });
-        case ERROR_UPDATE_PEDIDO:
+        case ERROR_FINALIZAR_PEDIDO:
             return Object.assign({}, state, {
                 isUpdating: false,
                 success: "",

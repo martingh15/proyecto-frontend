@@ -54,7 +54,7 @@ var pedidos = {
         return fetch(c.BASE_URL + '/pedidos/' + id + c.DEBUG, defaultOptions);
     },
 
-    saveUpdate(pedido) {
+    saveFinalizar(idPedido) {
         let defaultOptions = {
             url: '',
             method: 'POST',
@@ -65,10 +65,9 @@ var pedidos = {
                 "Authorization": "Bearer " + localStorage.token
             },
             dataType: 'json',
-            body: JSON.stringify(pedido)
         };
 
-        return fetch(c.BASE_URL + '/pedidos' + pedido.id, defaultOptions);
+        return fetch(c.BASE_URL + '/pedidos/finalizar/' + idPedido + c.DEBUG, defaultOptions);
     },
 
     getPedido(id) {
