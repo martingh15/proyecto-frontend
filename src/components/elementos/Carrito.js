@@ -64,6 +64,11 @@ class Carrito extends React.Component {
         const {mostrar}  = this.props;
         let compras      = this.getLineasCarrito();
         let deshabilitar = compras.length === 0;
+        let total        = 0;
+        let pedido       = this.props.pedidos.byId.abierto;
+        if (pedido.id) {
+            total = pedido.total;
+        }
         return (
             <nav className="carrito" style={{right: !mostrar ? "-300px" : "0"}}>
                 <div className="carrito-botones">
@@ -76,6 +81,7 @@ class Carrito extends React.Component {
                 </div>
                 <div className="carrito-compras">
                     {compras}
+                    <span className="text-right font-weight-bold">Subtotal: $ {total}</span>
                 </div>
             </nav>
         );
