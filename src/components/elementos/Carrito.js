@@ -75,13 +75,13 @@ class Carrito extends React.Component {
                     <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar}>
                         Finalizar pedido
                     </Button>
-                    <Button variant="outlined" color="primary" className="cancelar" disabled={deshabilitar}>
+                    <Button variant="outlined" color="primary" className="cancelar" disabled={deshabilitar} onClick={() => this.props.cancelarPedido(deshabilitar)}>
                         Cancelar
                     </Button>
                 </div>
                 <div className="carrito-compras">
                     {compras}
-                    <span className="text-right font-weight-bold">Subtotal: $ {total}</span>
+                    <span style={{display: total > 0 ? "block" : "none"}} className="text-right font-weight-bold">Subtotal: $ {total}</span>
                 </div>
             </nav>
         );

@@ -7,7 +7,7 @@ import auth from "./api/authentication";
 //Actions
 import {fetchUsuarioLogueadoIfNeeded} from "./actions/UsuarioActions";
 import {fetchProductosIfNeeded} from "./actions/ProductoActions";
-import {createPedido, fetchPedidoAbiertoIfNeeded, saveCreatePedido} from "./actions/PedidoActions";
+import {createPedido, fetchPedidoAbiertoIfNeeded, saveCreatePedido, saveDeletePedido} from "./actions/PedidoActions";
 
 //Constants
 import * as rutas from './constants/rutas.js';
@@ -187,6 +187,13 @@ class App extends React.Component {
         return abierto;
     }
 
+    cancelarPedido(sinLineas) {
+       const abierto = this.props.pedidos.byId.abierto;
+       if (abierto.id > 0 && !sinLineas) {
+           this.props.saveDeletePedido(abierto.id)
+       }
+    }
+
    render() {
       const {mostrar, guardando, producto, borrando} = this.state;
       console.log(borrando)
@@ -200,6 +207,7 @@ class App extends React.Component {
                   borrando={borrando}
                   changeMostrar={() => this.changeMostrar()}
                   borrarLinea={(idProducto) => this.borrarLinea(idProducto)}
+                  cancelarPedido={(sinLineas) => this.cancelarPedido(sinLineas)}
                   agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
               />
               <div className="contenedor" style={{width: mostrar ? "calc(100% - 300px)" : "100%"}}>
@@ -256,6 +264,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         saveCreatePedido: (volverA) => {
             dispatch(saveCreatePedido(volverA))
+        },
+        saveDeletePedido: (id) => {
+            dispatch(saveDeletePedido(id))
         },
     }
 };

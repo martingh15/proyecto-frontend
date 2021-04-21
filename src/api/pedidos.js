@@ -51,7 +51,7 @@ var pedidos = {
             dataType: 'json',
         };
 
-        return fetch(c.BASE_URL + '/pedidos/' + id, defaultOptions);
+        return fetch(c.BASE_URL + '/pedidos/' + id + c.DEBUG, defaultOptions);
     },
 
     saveUpdate(pedido) {

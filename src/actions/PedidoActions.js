@@ -511,7 +511,7 @@ export function saveDeletePedido(id) {
             .then((respuesta) => {
                 let mensaje = respuesta.message;
                 dispatch(receiveDeletePedido(id, mensaje));
-                dispatch(resetDeletePedido());
+                dispatch(resetCreatePedido());
             })
             .catch(function (error) {
                 switch (error.status) {
