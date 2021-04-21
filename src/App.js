@@ -196,7 +196,6 @@ class App extends React.Component {
 
    render() {
       const {mostrar, guardando, producto, borrando} = this.state;
-      console.log(borrando)
       return (
           <div className="app">
               <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()}/>

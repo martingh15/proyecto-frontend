@@ -13,6 +13,9 @@ import * as errorMessages from '../constants/MessageConstants';
 //Normalizer
 import {normalizeDato, normalizeDatos} from "../normalizers/normalizePedidos";
 
+//Librerias
+import Swal from 'sweetalert2';
+
 //PEDIDO CREATE
 export const CREATE_PEDIDO		 = 'CREATE_PEDIDO';
 export const RESET_CREATE_PEDIDO   = "RESET_CREATE_PEDIDO";
@@ -72,8 +75,25 @@ export function saveCreatePedido(volverA) {
             .then(function (data) {
                 dispatch(reveiceCreatePedido());
                 dispatch(resetCreatePedido());
-                if (data.pedido) {
+                if (data.success && data.pedido) {
                     dispatch(receivePedidoAbierto(data.pedido));
+                }
+                if (data.forzar) {
+                    Swal.fire({
+                        title: data.message,
+                        icon: 'question',
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        focusConfirm: true,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: 'rgb(88, 219, 131)',
+                        cancelButtonColor: '#bfbfbf',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            dispatch(createPedido(data.pedido))
+                            dispatch(saveCreatePedido())
+                        }
+                    });
                 }
                 if (rutas.validarRuta(volverA)) {
                     history.push(volverA);
