@@ -160,18 +160,23 @@ class AltaEdicion extends React.Component {
                     <h4>{titulo}</h4>
                     <Form.Group>
                         <Form.Label>Categoría</Form.Label>
-                        <Form.Control
-                            id="categoria_id"
-                            as="select"
-                            defaultValue=""
-                            onChange={(e) => this.onChangeProducto(e)}
-                            value={producto.categoria_id}
-                            required={true}
-                            disabled={buscando}
-                        >
-                            <option key={0} value="">Seleccionar categoría</option>
-                            {opcionesCategoria}
-                        </Form.Control>
+                        <div className="d-flex">
+                            <Form.Control
+                                id="categoria_id"
+                                as="select"
+                                defaultValue=""
+                                onChange={(e) => this.onChangeProducto(e)}
+                                value={producto.categoria_id}
+                                required={true}
+                                disabled={buscando}
+                            >
+                                <option key={0} value="">Seleccionar categoría</option>
+                                {opcionesCategoria}
+                            </Form.Control>
+                            <Button variant="success" onClick={()=> history.push("/categorias/alta/")}> 
+                            +
+                            </Button>
+                         </div>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>

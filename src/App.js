@@ -23,6 +23,8 @@ import AltaEdicionProducto from "./components/secciones/Gestion/Productos/AltaEd
 import Carrito from "./components/elementos/Carrito";
 import Almacen from "./components/secciones/Almacen";
 import NotFound from "./components/secciones/NotFound";
+import AltaEdicionCategoria from "./components/secciones/Gestion/Productos/AltaEdicionCategoria";
+
 
 //Redux
 import {connect} from 'react-redux';
@@ -68,6 +70,7 @@ class App extends React.Component {
                       <Route exact path={rutas.USUARIOS_EDITAR} component={Editar} />
                       <Route exact path={rutas.PRODUCTOS_LISTAR_ADMIN} component={ListadoProductos} />
                       <Route exact path={rutas.PRODUCTOS_ACCIONES} component={AltaEdicionProducto} />
+                      <Route exact path={rutas.CATEGORIAS_ACCIONES} component={AltaEdicionCategoria} />
                       <Route exact path={[rutas.ALMACEN]} component={Almacen} />
                       <Route exact path="*" component={NotFound} />
                   </Switch>
