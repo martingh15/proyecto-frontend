@@ -60,7 +60,7 @@ export function createCategoria(categoria) {
 export function saveCreateCategoria(volverA) {
     return (dispatch, getState) => {
         dispatch(requestCreateCategoria());
-        return categorias.saveCreate(getState().categorias.create.nueva)
+        return categorias.saveCreate(getState().categorias.create.nuevo)
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
