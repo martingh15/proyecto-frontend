@@ -27,7 +27,7 @@ var pedidos = {
             method: 'POST',
             mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
+                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Bearer " + localStorage.token
             },
@@ -35,7 +35,7 @@ var pedidos = {
             body: JSON.stringify(pedido)
         };
 
-        return fetch(c.BASE_URL + '/pedidos', defaultOptions);
+        return fetch(c.BASE_URL + '/pedidos' + c.DEBUG, defaultOptions);
     },
 
     borrarPedido(id) {
@@ -51,10 +51,10 @@ var pedidos = {
             dataType: 'json',
         };
 
-        return fetch(c.BASE_URL + '/pedidos/' + id, defaultOptions);
+        return fetch(c.BASE_URL + '/pedidos/' + id + c.DEBUG, defaultOptions);
     },
 
-    saveUpdate(pedido) {
+    saveFinalizar(idPedido) {
         let defaultOptions = {
             url: '',
             method: 'POST',
@@ -65,10 +65,9 @@ var pedidos = {
                 "Authorization": "Bearer " + localStorage.token
             },
             dataType: 'json',
-            body: JSON.stringify(pedido)
         };
 
-        return fetch(c.BASE_URL + '/pedidos' + pedido.id, defaultOptions);
+        return fetch(c.BASE_URL + '/pedidos/finalizar/' + idPedido + c.DEBUG, defaultOptions);
     },
 
     getPedido(id) {
@@ -101,7 +100,7 @@ var pedidos = {
             dataType: 'json',
         };
 
-        return fetch(c.BASE_URL + '/pedidos', defaultOptions);
+        return fetch(c.BASE_URL + '/pedidos' + c.DEBUG, defaultOptions);
     }
 
 };

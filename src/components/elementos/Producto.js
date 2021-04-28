@@ -3,10 +3,13 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 //Actions
-import {saveCreatePedido, fetchPedidoById} from "../../actions/PedidoActions"
+import {createPedido, saveCreatePedido, fetchPedidoById} from "../../actions/PedidoActions"
 
 //Constants
 import c from "../../constants/constants";
+
+//Components
+import Loader from "./Loader";
 
 //CSS
 import "../../assets/css/Producto.css";
@@ -22,36 +25,47 @@ class Producto extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pedido: null
+            cantidad: null,
         }
     }
 
-    agregarProducto(producto, cantidad) {
-        let pedido = this.getPedidoActual();
-        if (!Array.isArray(pedido.lineas)) {
-            pedido.lineas = [];
+    componentDidMount() {
+        if (this.props.pedidos.byId.abierto.id && this.state.cantidad === null) {
+            let cantidad = this.props.getCantidad(this.props.producto);
+            this.setState({
+                cantidad: cantidad
+            })
         }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let cambioActivo = prevProps.pedidos.byId.abierto.id !== this.props.pedidos.byId.abierto.id;
+        if (cambioActivo && this.state.cantidad === null) {
+            let cantidad = this.props.getCantidad(this.props.producto);
+            this.setState({
+                cantidad: cantidad
+            })
+        }
+    }
+
+    createPedido(pedido, idProducto) {
         let linea = {};
-        linea.cantidad = cantidad;
-        linea.producto = producto.id;
+        linea.cantidad = 1;
+        linea.producto = idProducto;
         pedido.lineas.push(linea);
-        this.props.saveCreatePedido(pedido);
-    }
-
-    getPedidoActual() {
-        let abierto = this.props.pedidos.byId.abierto;
-        if (!abierto.id) {
-            return {
-                id: null,
-                lineas: []
-            };
-        }
-        return abierto;
+        return pedido;
     }
 
     render() {
-        const props    = this.props;
+        const props = this.props;
+        let {cantidad} = this.state;
+        let guardando  = props.guardando;
+        let idProducto = props.productoGuardando;
+        let loader = guardando && idProducto === props.producto.id;
         const producto = props.producto;
+        if (cantidad === null) {
+            cantidad = 0;
+        }
 
         let path = productoVacio;
         if (producto.imagen) {
@@ -60,6 +74,24 @@ class Producto extends React.Component {
             } catch (e) {
             }
         }
+        let gestionCantidad = cantidad === 0 ?
+            <Button variant="outlined" color="primary" className="cancelar" onClick={() => this.props.agregarProducto(producto, 1)}>
+                <ShoppingCartIcon className="icono-material hvr-grow"/>Agregar
+            </Button>
+            :
+            <div className="producto-derecha-carrito-cantidad-gestion">
+                <button
+                    className="mr-2"
+                    onClick={() => this.props.agregarProducto(producto, -1)}>
+                    -
+                </button>
+                <span>{cantidad}</span>
+                <button
+                    className="ml-2"
+                    onClick={() => this.props.agregarProducto(producto, 1)}>
+                    +
+                </button>
+            </div>;
         return (
             <article key={producto.id} className="producto">
                 <div className="producto-izquierda">
@@ -72,11 +104,11 @@ class Producto extends React.Component {
                     </div>
                     <div className="producto-derecha-carrito">
                         <div className="producto-derecha-carrito-cantidad">
-                            <Button variant="outlined" color="primary" className="cancelar" onClick={() => this.agregarProducto(producto)}>
-                                <ShoppingCartIcon className="icono-material hvr-grow"/>Agregar
-                            </Button>
+                            {
+                                loader ? <Loader display={true} /> : gestionCantidad
+                            }
                         </div>
-                        <p className="producto-derecha-precio font-weight-bold text-right pr-2 m-0">
+                        <p className="producto-derecha-precio font-weight-bold text-right pr-2 m-0 text-nowrap">
                             $ {producto.precioVigente}
                         </p>
                     </div>
@@ -94,12 +126,15 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveCreatePedido: (pedido) => {
-            dispatch(saveCreatePedido(pedido))
+        createPedido: (pedido) => {
+          dispatch(createPedido(pedido))
+        },
+        saveCreatePedido: (volverA) => {
+            dispatch(saveCreatePedido(volverA))
         },
         fetchPedidoById: (pedido) => {
             dispatch(fetchPedidoById(pedido))
-        }
+        },
     }
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Producto));

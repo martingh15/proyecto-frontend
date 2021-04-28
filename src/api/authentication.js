@@ -1,5 +1,6 @@
 import jwt_decode from "jwt-decode";
 import c from "../constants/constants";
+import history from "../history";
 // import {changeUser, sendingRequest} from "../actions/AuthenticationActions";
 // require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -37,7 +38,6 @@ var auth = {
         };
         fetch(c.BASE_URL + '/login', defaultOptions)
             .then(function (response) {
-                console.log(response);
                 if (response.status >= 400) {
                     return Promise.reject(response);
                 } else {

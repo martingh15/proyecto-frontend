@@ -64,7 +64,7 @@ var usuarios = {
             body: JSON.stringify(usuario)
         };
 
-        return fetch(c.BASE_URL + '/usuarios/' + usuario.id, defaultOptions);
+        return fetch(c.BASE_URL + '/usuarios/' + usuario.id + c.DEBUG, defaultOptions);
     },
 
     getUsuarios() {

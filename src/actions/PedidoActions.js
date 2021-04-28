@@ -13,6 +13,9 @@ import * as errorMessages from '../constants/MessageConstants';
 //Normalizer
 import {normalizeDato, normalizeDatos} from "../normalizers/normalizePedidos";
 
+//Librerias
+import Swal from 'sweetalert2';
+
 //PEDIDO CREATE
 export const CREATE_PEDIDO		 = 'CREATE_PEDIDO';
 export const RESET_CREATE_PEDIDO   = "RESET_CREATE_PEDIDO";
@@ -65,16 +68,33 @@ export function saveCreatePedido(volverA) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
                 } else {
-                    return true;
+                    var data = response.json();
+                    return data;
                 }
             })
             .then(function (data) {
-                let mensaje = "El pedido ha sido creado con éxito"
-                if (data.message) {
-                    mensaje = data.message;
-                }
-                dispatch(reveiceCreatePedido(mensaje));
+                dispatch(reveiceCreatePedido());
                 dispatch(resetCreatePedido());
+                if (data.success && data.pedido) {
+                    dispatch(receivePedidoAbierto(data.pedido));
+                }
+                if (data.forzar) {
+                    Swal.fire({
+                        title: data.message,
+                        icon: 'question',
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        focusConfirm: true,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: 'rgb(88, 219, 131)',
+                        cancelButtonColor: '#bfbfbf',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            dispatch(createPedido(data.pedido))
+                            dispatch(saveCreatePedido())
+                        }
+                    });
+                }
                 if (rutas.validarRuta(volverA)) {
                     history.push(volverA);
                 }
@@ -102,80 +122,81 @@ export function saveCreatePedido(volverA) {
     }
 }
 
-//PEDIDO UPDATE
-export const UPDATE_PEDIDO		 = 'UPDATE_PEDIDO';
-export const RESET_UPDATE_PEDIDO   = "RESET_UPDATE_PEDIDO";
-export const REQUEST_UPDATE_PEDIDO = "REQUEST_UPDATE_PEDIDO";
-export const RECEIVE_UPDATE_PEDIDO = "RECEIVE_UPDATE_PEDIDO";
-export const ERROR_UPDATE_PEDIDO   = "ERROR_UPDATE_PEDIDO";
+//PEDIDO FINALIZAR
+export const FINALIZAR_PEDIDO		 = 'FINALIZAR_PEDIDO';
+export const RESET_FINALIZAR_PEDIDO   = "RESET_FINALIZAR_PEDIDO";
+export const REQUEST_FINALIZAR_PEDIDO = "REQUEST_FINALIZAR_PEDIDO";
+export const RECEIVE_FINALIZAR_PEDIDO = "RECEIVE_FINALIZAR_PEDIDO";
+export const ERROR_FINALIZAR_PEDIDO   = "ERROR_FINALIZAR_PEDIDO";
 
-function requestUpdatePedido() {
+function requestFinalizarPedido() {
     return {
-        type: REQUEST_UPDATE_PEDIDO,
+        type: REQUEST_FINALIZAR_PEDIDO,
     }
 }
 
-function receiveUpdatePedido() {
+function receiveFinalizarPedido(mensaje) {
     return {
-        type: RECEIVE_UPDATE_PEDIDO,
-        receivedAt: Date.now()
+        type: RECEIVE_FINALIZAR_PEDIDO,
+        receivedAt: Date.now(),
+        message: mensaje
     }
 }
 
-function errorUpdatePedido(error) {
+function errorFinalizarPedido(error) {
     return {
-        type: ERROR_UPDATE_PEDIDO,
+        type: ERROR_FINALIZAR_PEDIDO,
         error: error,
     }
 }
 
-export function resetUpdatePedido() {
+export function resetFinalizarPedido() {
     return {
-        type: RESET_UPDATE_PEDIDO
+        type: RESET_FINALIZAR_PEDIDO
     }
 }
 
-export function updatePedido(pedido) {
+export function finalizarPedido(pedido) {
     return {
-        type: UPDATE_PEDIDO,
-        pedido
+        type: FINALIZAR_PEDIDO,
+        pedido: normalizeDato(pedido)
     }
 }
 
-export function saveUpdatePedido(volverA) {
+export function saveFinalizarPedido(id) {
     return (dispatch, getState) => {
-        dispatch(requestUpdatePedido());
-        return pedidos.saveUpdate(getState().pedidos.update.activo)
+        dispatch(requestFinalizarPedido());
+        return pedidos.saveFinalizar(id)
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
                 } else {
-                    dispatch(receiveUpdatePedido());
-                    return true;
+                    var data = response.json();
+                    return data;
                 }
             })
-            .then(() => {
-                dispatch(resetUpdatePedido());
-                if (rutas.validarRuta(volverA)) {
-                    history.push(volverA);
+            .then((data) => {
+                dispatch(resetCreatePedido());
+                if (data.message) {
+                    dispatch(receiveFinalizarPedido(data.message));
                 }
             })
             .catch(function (error) {
                 switch (error.status) {
                     case 401:
-                        dispatch(errorUpdatePedido(errorMessages.UNAUTHORIZED_TOKEN));
+                        dispatch(errorFinalizarPedido(errorMessages.UNAUTHORIZED_TOKEN));
                         dispatch(logout());
                         return Promise.reject(error);
                     default:
                         error.json()
                             .then(error => {
                                 if (error.message !== "")
-                                    dispatch(errorUpdatePedido(error.message));
+                                    dispatch(errorFinalizarPedido(error.message));
                                 else
-                                    dispatch(errorUpdatePedido(errorMessages.GENERAL_ERROR));
+                                    dispatch(errorFinalizarPedido(errorMessages.GENERAL_ERROR));
                             })
                             .catch(error => {
-                                dispatch(errorUpdatePedido(errorMessages.GENERAL_ERROR));
+                                dispatch(errorFinalizarPedido(errorMessages.GENERAL_ERROR));
                             });
                         return;
                 }
@@ -326,7 +347,6 @@ export function fetchPedidoById(id) {
             })
             .then(function (data) {
                 dispatch(receivePedidoById(data));
-                dispatch(updatePedido(data));
             })
             .catch(function (error) {
                 //dispatch(logout());
@@ -390,7 +410,7 @@ function requestPedidoAbierto() {
 function receivePedidoAbierto(json) {
     return {
         type: RECEIVE_PEDIDO_ABIERTO,
-        pedido: json,
+        pedido: normalizeDato(json),
         receivedAt: Date.now()
     }
 }
@@ -509,7 +529,7 @@ export function saveDeletePedido(id) {
             .then((respuesta) => {
                 let mensaje = respuesta.message;
                 dispatch(receiveDeletePedido(id, mensaje));
-                dispatch(resetDeletePedido());
+                dispatch(resetCreatePedido());
             })
             .catch(function (error) {
                 switch (error.status) {

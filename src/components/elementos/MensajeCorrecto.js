@@ -46,8 +46,14 @@ class MensajeCorrecto extends React.Component {
                     procesoFinalizado = true;
                 }
                 if (value.update && valuePrev && valuePrev.update && !value.update.isUpdating && valuePrev.update.isUpdating && !value.update.error) {
-                    key = key.slice(0, key.length - 1);
-                    mensajes.push(key.charAt(0).toUpperCase() + key.slice(1) + " actualizado correctamente.");
+                    let mensaje = "" ;
+                    if (value.update.success) {
+                        mensaje = value.update.success;
+                        mensajes.push(mensaje);
+                    } else {
+                        key = key.slice(0, key.length - 1);
+                        mensajes.push(key.charAt(0).toUpperCase() + key.slice(1) + " actualizado correctamente.");
+                    }
                     procesoFinalizado = true;
                 }
                 if (value.delete && valuePrev && valuePrev.delete && !value.delete.isDeleting && valuePrev.delete.isDeleting && !value.delete.error) {

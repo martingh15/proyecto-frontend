@@ -24,9 +24,6 @@ import Swal from 'sweetalert2';
 import lapiz from "../../../assets/icon/pencil.png";
 import tacho from "../../../assets/icon/delete.png";
 
-import pickBy from "lodash/pickBy";
-import clone from "lodash/clone";
-
 class Listado extends React.Component {
     constructor(props) {
         super(props);

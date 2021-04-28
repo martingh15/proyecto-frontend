@@ -83,7 +83,12 @@ class Login extends React.Component {
 
     submitForm(e) {
         e.preventDefault();
-        this.props.login(this.props.authentication.usuario);
+        let   volverA = rutas.getQuery('volverA');
+        const valido  = rutas.validarRuta(volverA);
+        if (!valido) {
+            volverA = "";
+        }
+        this.props.login(this.props.authentication.usuario, volverA);
     }
 
     olvideMiPassword(e) {

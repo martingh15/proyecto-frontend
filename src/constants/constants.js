@@ -6,8 +6,8 @@
 let BASE_URL = "";
 let BASE_PUBLIC = "";
 if (process.env.NODE_ENV === 'development' && !process.env.REACT_APP_ENVI) {
-    BASE_URL = "http://localhost:8000/api";
-    BASE_PUBLIC = "http://localhost:8000/";
+    BASE_URL = "http://localhost:8888/api";
+    BASE_PUBLIC = "http://localhost:8888/";
 }
 
 
@@ -27,5 +27,6 @@ if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_ENVI) {
 export default {
     BASE_URL: BASE_URL,
     BASE_PUBLIC: BASE_PUBLIC,
-    DEBUG: '?XDEBUG_SESSION_START=PHPSTORM'
+    DEBUG: '?XDEBUG_SESSION_START=PHPSTORM',
+    RANDOM: Math.random() * 1000
 }
