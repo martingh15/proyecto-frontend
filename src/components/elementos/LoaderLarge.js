@@ -1,6 +1,6 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 import "../../assets/css/Elementos/LoaderLarge.css";
 
@@ -18,7 +18,7 @@ class LoaderLarge extends React.Component {
         try {
             Object.entries(this.props.todos).forEach(
                 ([key, value]) => {
-                    var valuePrev  = prevProps.todos[key];
+                    var valuePrev = prevProps.todos[key];
                     let isCreating = value.create && valuePrev && valuePrev.create && value.create.isCreating;
                     let isUpdating = value.update && valuePrev && valuePrev.update && value.update.isUpdating;
                     let isDeleting = value.delete && valuePrev && valuePrev.delete && value.delete.isDeleting;
@@ -35,15 +35,15 @@ class LoaderLarge extends React.Component {
 
         }
 
-        if (this.props.blur !== procesoFinalizado) {
+        if (false || this.props.blur !== procesoFinalizado) {
             this.props.setBlur(procesoFinalizado);
         }
     }
 
     render() {
-        const {blur} = this.props;
+        const { blur } = this.props;
         return (
-            <div style={{display: blur ? "flex" : "none"}} className="contener_loader_18">
+            <div style={{ display: blur ? "flex" : "none" }} className="contener_loader_18">
                 <div className="rond_sup">
                     <div className="rond_mil">
                         <div className="rond_petit">
