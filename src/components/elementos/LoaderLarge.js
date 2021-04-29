@@ -35,7 +35,7 @@ class LoaderLarge extends React.Component {
 
         }
 
-        if (false || this.props.blur !== procesoFinalizado) {
+        if (false && this.props.blur !== procesoFinalizado) {
             this.props.setBlur(procesoFinalizado);
         }
     }
