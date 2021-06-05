@@ -204,7 +204,7 @@ class Alta extends React.Component {
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
-                                id="nombre"
+                                id="first_name"
                                 type="nombre"
                                 onChange={(e) => this.onChangeUsuario(e)}
                                 placeholder="Ingresar nombre"

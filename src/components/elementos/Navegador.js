@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 
 //Actions
 import { logout } from "../../actions/AuthenticationActions";
-import {fetchUsuarioLogueadoIfNeeded} from "../../actions/UsuarioActions";
+import { fetchUsuarioLogueadoIfNeeded } from "../../actions/UsuarioActions";
 
 //Api
 import auth from "../../api/authentication";
@@ -39,15 +39,15 @@ class Navegador extends React.Component {
         if (auth.idUsuario() && logueado.id === undefined) {
             this.props.fetchUsuarioLogueadoIfNeeded();
         }
-        if (this.props.usuarios.update.logueado.nombre) {
+        if (this.props.usuarios.update.logueado.first_name) {
             this.setNombreUsuarioLogueado();
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let logueado = this.props.usuarios.update.logueado;
-        if (prevProps.usuarios.update.logueado.nombre !== logueado.nombre
-            && (this.state.nombre === "" || this.state.nombre !== logueado.nombre)) {
+        if (prevProps.usuarios.update.logueado.first_name !== logueado.first_name
+            && (this.state.first_name === "" || this.state.first_name !== logueado.first_name)) {
             this.setNombreUsuarioLogueado();
         }
         if (this.state.esAdmin === null && logueado.id) {
@@ -58,7 +58,7 @@ class Navegador extends React.Component {
     }
 
     setNombreUsuarioLogueado() {
-        let nombre = this.props.usuarios.update ? this.props.usuarios.update.logueado.nombre : "";
+        let nombre = this.props.usuarios.update ? this.props.usuarios.update.logueado.first_name : "";
         this.setState({
             nombre: nombre ? nombre.trim() : ""
         });
@@ -71,7 +71,7 @@ class Navegador extends React.Component {
         if (!this.props.authentication.currentlySending && ruta === rutas.LOGOUT) {
             this.props.logout();
             window.location.reload();
-        } else if(!this.props.authentication.currentlySending) {
+        } else if (!this.props.authentication.currentlySending) {
             history.push(ruta);
         }
 
@@ -79,17 +79,17 @@ class Navegador extends React.Component {
 
     getRutaActiva(ruta) {
         let rutaActual = window.location.pathname;
-        let esActual   = rutaActual === ruta;
+        let esActual = rutaActual === ruta;
         let esRutaGestion = this.comprobarEsRutaGestion(ruta, rutaActual);
         return esActual || esRutaGestion;
     }
 
     comprobarEsRutaGestion(ruta, rutaActual) {
-        let esAltaUsuarios     = rutaActual.indexOf(rutas.USUARIOS_ALTA_ADMIN) === 0;
-        let esEditarUsuarios   = rutaActual.indexOf(rutas.USUARIOS_EDITAR_ADMIN) === 0;
-        let esListadoUsuarios  = rutaActual.indexOf(rutas.USUARIOS_LISTAR) === 0;
+        let esAltaUsuarios = rutaActual.indexOf(rutas.USUARIOS_ALTA_ADMIN) === 0;
+        let esEditarUsuarios = rutaActual.indexOf(rutas.USUARIOS_EDITAR_ADMIN) === 0;
+        let esListadoUsuarios = rutaActual.indexOf(rutas.USUARIOS_LISTAR) === 0;
         let esListadoProductos = rutaActual.indexOf(rutas.PRODUCTOS_LISTAR_ADMIN) === 0;
-        let esAltaProductos    = rutaActual.indexOf(rutas.PRODUCTO_ALTA) === 0;
+        let esAltaProductos = rutaActual.indexOf(rutas.PRODUCTO_ALTA) === 0;
         return ruta === rutas.GESTION && (esAltaUsuarios || esListadoUsuarios || esEditarUsuarios || esListadoProductos || esAltaProductos);
     }
 
@@ -97,16 +97,16 @@ class Navegador extends React.Component {
         const { nombre, esAdmin } = this.state;
         const logueado = this.props.authentication.token;
         const ItemMenu = props => {
-            let display     = props.mostrar ? "" : "no-mostrar";
-            let grow        = props.grow ? "hvr-grow" : "";
-            let ruta        = props.ruta;
-            let activa      = this.getRutaActiva(props.ruta);
+            let display = props.mostrar ? "" : "no-mostrar";
+            let grow = props.grow ? "hvr-grow" : "";
+            let ruta = props.ruta;
+            let activa = this.getRutaActiva(props.ruta);
             let claseActiva = activa ? "activo" : "";
-            return(
+            return (
                 <button
                     className={`itemMenu ${display} ${grow} ${claseActiva}`}
                     onClick={() => this.redirectTo(ruta)}
-                    style={{cursor: props.grow ? "pointer" : "unset"}}
+                    style={{ cursor: props.grow ? "pointer" : "unset" }}
                 >
                     {props.texto}
                 </button>
@@ -156,9 +156,9 @@ class Navegador extends React.Component {
             <nav className="navegador">
                 <div className="izquierda">
                     <img className="logo" src={logo}
-                         onClick={() => this.redirectTo(rutas.INICIO)}
-                         alt="Logo sistema gestión"
-                         title="Logo sistema de gestión gastronómico"
+                        onClick={() => this.redirectTo(rutas.INICIO)}
+                        alt="Logo sistema gestión"
+                        title="Logo sistema de gestión gastronómico"
                     />
                     <ItemMenu
                         mostrar={true}
@@ -181,9 +181,9 @@ class Navegador extends React.Component {
                     />
                 </div>
                 <div className="derecha">
-                    <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()}/>
-                    <NoLogueado mostrar={!logueado}/>
-                    <Logueado mostrar={logueado}/>
+                    <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
+                    <NoLogueado mostrar={!logueado} />
+                    <Logueado mostrar={logueado} />
                 </div>
             </nav>
         );

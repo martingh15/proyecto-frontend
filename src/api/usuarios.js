@@ -4,25 +4,22 @@ require('isomorphic-fetch');
 var usuarios = {
 
     saveCreate(usuario, admin) {
+        usuario.username = usuario.email.substring(0, usuario.email.lastIndexOf("@"));
         let defaultOptions = {
-            url: '',
             method: 'POST',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
-                "Content-Type": "application/json;charset=UTF-8"
+                "Content-Type": "application/json;charset=UTF-8",
             },
-            dataType: 'json',
             body: JSON.stringify(usuario)
         };
 
-        let url = "/registro";
+        let url = "/registro/";
         if (admin) {
             url = "/registro-admin";
             defaultOptions.headers = {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json;charset=UTF-8",
-                "Authorization": "Bearer " + localStorage.token
+                "Authorization": "Token " + localStorage.token
             }
         }
 

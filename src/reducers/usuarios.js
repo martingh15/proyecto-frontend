@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import merge from "lodash/merge";
 
 //Actions
@@ -30,7 +30,7 @@ import {
     RESET_USUARIO_ID, RESET_DELETE_USUARIO, REQUEST_DELETE_USUARIO, RECEIVE_DELETE_USUARIO, ERROR_DELETE_USUARIO
 
 } from '../actions/UsuarioActions';
-import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
+import { LOGOUT_SUCCESS } from "../actions/AuthenticationActions";
 import pickBy from "lodash/pickBy";
 
 
@@ -148,7 +148,7 @@ function create(state = {
                 isCreating: false,
                 success: "",
                 error: null,
-                nuevo:{},
+                nuevo: {},
             });
         case REQUEST_CREATE_USUARIO:
             return Object.assign({}, state, {
@@ -250,10 +250,10 @@ function update(state = {
                 error: action.error,
             });
         case RECEIVE_USUARIO_LOGUEADO:
-            let usuario    = action.usuario ? action.usuario.entities.usuario[action.usuario.result] : {};
-            let roles      = usuario.roles;
+            let usuario = action.usuario ? action.usuario.entities.usuario[action.usuario.result] : {};
+            let roles = usuario.roles;
             if (!Array.isArray(roles)) {
-                return state;
+                roles = [];
             }
             let arrayRoles = [];
             roles.forEach(rol => {
@@ -319,7 +319,7 @@ function usuariosAllIds(state = [], action) {
         case RECEIVE_USUARIOS:
             return action.usuarios.result ? action.usuarios.result : [];
         case RESET_USUARIOS:
-             return [];
+            return [];
         default:
             return state
     }
@@ -328,7 +328,7 @@ function usuariosAllIds(state = [], action) {
 
 const usuarios = combineReducers({
     allIds: usuariosAllIds,
-    byId:   usuariosById,
+    byId: usuariosById,
     create: create,
     update: update,
     delete: borrar,
