@@ -1,6 +1,5 @@
 import auth from "../api/authentication"
 import history from '../history';
-import jwt_decode from 'jwt-decode';
 
 //Actions
 import {fetchUsuarioLogueado, resetUsuarioLogueado} from "./UsuarioActions";
@@ -34,9 +33,7 @@ export function login(usuario, ruta) {
             //dispatch(sendingRequest(false));
             if (success === true) {
                 dispatch(receiveLogin(success, ""));
-                //guardo usuarios logueado
-                var datos = jwt_decode(localStorage.token);
-                dispatch(changeUser(datos.idUsuario, datos.nombre));
+                dispatch(changeUser(localStorage.idUsuario, localStorage.nombre));
                 dispatch(fetchUsuarioLogueado());
                 if (ruta && rutas.validarRuta(ruta)) {
                     history.push(ruta);
@@ -56,6 +53,10 @@ export function login(usuario, ruta) {
                         try {
                             error.json()
                                 .then((error) => {
+                                    if (error.non_field_errors) {
+                                        dispatch(errorLogin(error.non_field_errors));
+                                        return;
+                                    }
                                     if (error.message !=="")
                                         dispatch(errorLogin(error.message));
                                     else
@@ -229,9 +230,7 @@ export function validarToken(tipoToken, token) {
                 } else if (respuesta) {
                     respuesta.json()
                         .then((data) => {
-                            localStorage.token = data.token;
-                            var datos = jwt_decode(data.token);
-                            dispatch(changeUser(datos.idUsuario, datos.nombre));
+                            dispatch(changeUser(localStorage.idUsuario, localStorage.nombre));
                         })
                         .then(() => {
                             dispatch(fetchUsuarioLogueado());

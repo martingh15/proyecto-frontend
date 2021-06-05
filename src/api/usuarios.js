@@ -32,18 +32,12 @@ var usuarios = {
 
     getLogueado() {
         let defaultOptions = {
-            url: '',
             method: 'GET',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
-                "Content-Type": "application/json;charset=UTF-8",
-                "Authorization": "Bearer " + localStorage.token
+                "Authorization": "Token " + localStorage.token
             },
-            // cache: false,
-            dataType: 'json',
         };
-        return fetch(c.BASE_URL + '/usuarios/create', defaultOptions);
+        return fetch(c.BASE_URL + '/usuarios/' + localStorage.idUsuario, defaultOptions);
     },
 
     saveUpdate(usuario, noEsLogueado) {

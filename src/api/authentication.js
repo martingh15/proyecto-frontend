@@ -1,4 +1,3 @@
-import jwt_decode from "jwt-decode";
 import c from "../constants/constants";
 import history from "../history";
 // import {changeUser, sendingRequest} from "../actions/AuthenticationActions";
@@ -13,7 +12,7 @@ require('isomorphic-fetch');
 var auth = {
     /**
      * Logs a user in
-     * @param  {string}   usuario The username of the user
+     * @param  {Object}   usuario The username of the user
      * @param  {Function} callback Called after a user was logged in on the remote server
      */
     login(usuario, callback) {
@@ -23,34 +22,28 @@ var auth = {
             callback(true);
             return;
         }
-
-        let defaultOptions = {
-            url: '',
-            method: 'POST',
-            mode: 'cors',
+        usuario.username = usuario.email;
+        fetch(c.BASE_PUBLIC + 'auth/', {
+            'method': 'POST',
             headers: {
-                "Accept": "application/json",
-                'Access-Control-Allow-Origin': '*',
-                "Content-Type": "application/json;charset=UTF-8"
+                'Content-Type': 'application/json',
+
             },
-            body: JSON.stringify(usuario),
-            dataType: 'json',
-        };
-        fetch(c.BASE_URL + '/login', defaultOptions)
-            .then(function (response) {
-                if (response.status >= 400) {
-                    return Promise.reject(response);
-                } else {
-                    return response.json();
-                }
-            })
-            .then(function (data) {
-                localStorage.token = data.token;
-                callback(true);
-            })
-            .catch(function (error) {
-                callback(false, error);
-            });
+            body: JSON.stringify(usuario)
+        }).then(function(response) {
+            if (response.status >= 400) {
+                return Promise.reject(response);
+            } else {
+                return response.json();
+            }
+        }).then(function (data) {
+            localStorage.token = data.token;
+            localStorage.idUsuario = data.idUsuario;
+            localStorage.nombre = data.nombre;
+            callback(true);
+        }).catch(function (error) {
+            callback(false, error);
+        });
     },
     /**
      * Logs the current user out
@@ -78,16 +71,16 @@ var auth = {
     },
 
     rol() {
-        if (localStorage.token)
-            return jwt_decode(localStorage.token).rol;
+        if (localStorage.rol)
+            return localStorage.rol;
     },
     nombreUsuario() {
-        if (localStorage.token)
-            return jwt_decode(localStorage.token).nombre;
+        if (localStorage.nombre)
+            return localStorage.nombre;
     },
     idUsuario() {
-        if (localStorage.token) {
-            return jwt_decode(localStorage.token).idUsuario;
+        if (localStorage.idUsuario) {
+            return localStorage.idUsuario;
         }
     },
     olvideMiPassword(usuario, callback) {

@@ -252,6 +252,9 @@ function update(state = {
         case RECEIVE_USUARIO_LOGUEADO:
             let usuario    = action.usuario ? action.usuario.entities.usuario[action.usuario.result] : {};
             let roles      = usuario.roles;
+            if (!Array.isArray(roles)) {
+                return state;
+            }
             let arrayRoles = [];
             roles.forEach(rol => {
                 arrayRoles.push(rol.nombre);
