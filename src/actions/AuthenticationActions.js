@@ -96,6 +96,8 @@ export function logout() {
         dispatch(requestLogout());
         dispatch(resetUsuarioLogueado());
         localStorage.removeItem('token');
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('idUsuario');
         document.cookie = 'id_token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         dispatch(receiveLogout());
         history.push(rutas.LOGIN);
