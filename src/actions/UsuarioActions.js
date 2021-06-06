@@ -96,9 +96,8 @@ export function saveCreateUsuario(admin, volverA) {
                     default:
                         error.json()
                             .then((error) => {
-                                console.log(error);
-                                if (error.message !== "")
-                                    dispatch(errorCreateUsuario(error.message));
+                                if (error)
+                                    dispatch(errorCreateUsuario(error));
                                 else
                                     dispatch(errorCreateUsuario(errorMessages.GENERAL_ERROR));
                             })

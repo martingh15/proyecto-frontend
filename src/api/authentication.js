@@ -159,26 +159,26 @@ var auth = {
         }
 
         let defaultOptions = {
-            url: '',
             method: 'POST',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 "Content-Type": "application/json;charset=UTF-8"
             },
-            body: JSON.stringify({token: token}),
-            // cache: false,
-            dataType: 'json',
         };
-        let ruta = tipoToken === 'reset' ? '/validarToken' : '/validarTokenEmail';
-        fetch(c.BASE_URL + ruta, defaultOptions)
+        let ruta = tipoToken === 'reset' ? '/validar-token/' : '/validar-email/';
+        fetch(c.BASE_URL + ruta + token, defaultOptions)
             .then(function (response) {
                 if (response.status >= 400) {
                     //callback(false, response);
                     return Promise.reject(response);
                 } else {
-                    callback(true, response);
+                    return response.json();
                 }
+            })
+            .then(function (data) {
+                localStorage.token = data.token;
+                localStorage.idUsuario = data.idUsuario;
+                localStorage.nombre = data.nombre;
+                callback(true);
             })
             .catch(function (error) {
                 console.log(error);

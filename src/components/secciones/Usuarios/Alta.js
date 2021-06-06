@@ -103,11 +103,11 @@ class Alta extends React.Component {
         }
     }
 
-    onChangeRolUsuario(id) {
+    onChangeRolUsuario(nombre) {
         var valor   = true;
         var cambio  = {};
         var usuario = this.props.usuarios.create.nuevo;
-        switch (id) {
+        switch (nombre) {
             case 'esComensal':
                 if (usuario.esComensal) {
                     valor = false;
@@ -124,7 +124,7 @@ class Alta extends React.Component {
                 }
                 break;
         }
-        cambio[id] = valor;
+        cambio[nombre] = valor;
         this.props.createUsuario(cambio);
     }
 
@@ -142,6 +142,9 @@ class Alta extends React.Component {
         if (!esMozo && !esAdmin && !esVendedor && !esComensal && tipoAdmin) {
             valido = false;
             mensajes.push("* Debe seleccionar al menos un rol para el usuario");
+        }
+        if (!tipoAdmin) {
+            usuario.roles = ['comensal'];
         }
 
         let dni = parseInt(usuario.dni);

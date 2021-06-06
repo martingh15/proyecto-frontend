@@ -47,7 +47,7 @@ class MensajeError extends React.Component {
         if (errorValido && this.state.mostrar !== (error !== null) && error !== null && error.length > 0) {
             this.setState({mostrar: true, error: error});
         }
-}
+    }
 
 
     render() {

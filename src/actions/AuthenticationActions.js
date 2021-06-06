@@ -227,22 +227,12 @@ export function validarToken(tipoToken, token) {
             if (success === true) {
                 if (tipoToken === 'reset') {
                     dispatch(sendingRequest(false, ""));
-                } else if (respuesta) {
-                    respuesta.json()
-                        .then((data) => {
-                            dispatch(changeUser(localStorage.idUsuario, localStorage.nombre));
-                        })
-                        .then(() => {
-                            dispatch(fetchUsuarioLogueado());
-                            dispatch(sendingRequest(false, "¡Bienvenido! Se ha confirmado su email con éxito.", rutas.INICIO));
-                            dispatch(receiveLogin(true, ""));
-                        })
-                        .then(() => {
-                            history.push(rutas.INICIO);
-                        })
                 } else {
+                    dispatch(fetchUsuarioLogueado());
+                    dispatch(sendingRequest(false, "¡Bienvenido! Se ha confirmado su email con éxito.", rutas.INICIO));
+                    dispatch(receiveLogin(true, ""));
                     history.push(rutas.INICIO);
-                }
+                } 
 
             } else {
                 switch (respuesta.status) {
