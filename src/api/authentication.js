@@ -92,17 +92,14 @@ var auth = {
         }
 
         let defaultOptions = {
-            url: '',
             method: 'POST',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 "Content-Type": "application/json;charset=UTF-8"
             },
             body: JSON.stringify({email: usuario.email}),
             dataType: 'json',
         };
-        fetch(c.BASE_URL + '/olvidoPassword', defaultOptions)
+        fetch(c.BASE_URL + '/olvido-password/', defaultOptions)
             .then(function (response) {
                 if (response.status >= 400) {
                     //callback(false, response);
