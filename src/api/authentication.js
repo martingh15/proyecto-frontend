@@ -105,8 +105,11 @@ var auth = {
                     //callback(false, response);
                     return Promise.reject(response);
                 } else {
-                    callback(true);
+                    return response.json();
                 }
+            })
+            .then(function (data) {
+                callback(data);
             })
             .catch(function (error) {
                 console.log(error);

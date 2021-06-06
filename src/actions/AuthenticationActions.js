@@ -156,8 +156,8 @@ export function olvideMiPassword(usuario) {
         }
         auth.olvideMiPassword(usuario, (success, error) => {
             // When the request is finished, hide the loading indicator
-            if (success === true) {
-                dispatch(sendingRequest(false, "Se ha enviado un link a su email para reiniciar su contraseña. Tiene 24 horas para cambiarla."));
+            if (success && success.message) {
+                dispatch(sendingRequest(false, success.message));
             } else {
                 switch (error.status) {
                     case 401:
@@ -244,8 +244,8 @@ export function validarToken(tipoToken, token) {
                         try {
                             respuesta.json()
                                 .then((error) => {
-                                    if (error)
-                                        dispatch(errorLogin(error));
+                                    if (error.message)
+                                        dispatch(errorLogin(error.message));
                                     else
                                         dispatch(errorLogin(errorMessages.GENERAL_ERROR));
                                 })
