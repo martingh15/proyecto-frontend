@@ -254,12 +254,13 @@ class Editar extends React.Component {
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
-                            id="nombre"
+                            id="first_name"
                             type="nombre"
-                            value={usuario && usuario.nombre ? usuario.nombre : ""}
+                            value={usuario && usuario.first_name ? usuario.first_name : ""}
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Nombre"
                             disabled={buscando}
+                            required
                         />
                     </Form.Group>
                     <Form.Group>
@@ -271,6 +272,7 @@ class Editar extends React.Component {
                             onChange={(e) => this.onChangeUsuario(e)}
                             placeholder="Email"
                             disabled={true}
+                            required
                         />
                     </Form.Group>
                     <Form.Group>
