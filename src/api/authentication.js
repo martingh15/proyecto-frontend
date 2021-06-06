@@ -122,18 +122,13 @@ var auth = {
         }
 
         let defaultOptions = {
-            url: '',
             method: 'POST',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 "Content-Type": "application/json;charset=UTF-8"
             },
-            body: JSON.stringify(usuario),
-            // cache: false,
-            dataType: 'json',
+            body: JSON.stringify(usuario)
         };
-        fetch(c.BASE_URL + '/resetPassword', defaultOptions)
+        fetch(c.BASE_URL + '/validar-token/', defaultOptions)
             .then(function (response) {
                 if (response.status >= 400) {
                     //callback(false, response);
@@ -172,9 +167,11 @@ var auth = {
                 }
             })
             .then(function (data) {
-                localStorage.token = data.token;
-                localStorage.idUsuario = data.idUsuario;
-                localStorage.nombre = data.nombre;
+                if (data.token) {
+                    localStorage.token = data.token;
+                    localStorage.idUsuario = data.idUsuario;
+                    localStorage.nombre = data.nombre;
+                }
                 callback(true);
             })
             .catch(function (error) {

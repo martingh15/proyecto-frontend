@@ -95,7 +95,7 @@ class CambiarPassword extends React.Component {
                     <b style={{color: "red"}}>{errorTokenMessage}</b>
                     <b style={{color: "red"}}>{this.props.usuarios.error}</b>
                 </div>
-                <Form className="tarjeta-body" onSubmit={(e) => {
+                <Form style={{ display: !this.props.authentication.currentlySending }}className="tarjeta-body" onSubmit={(e) => {
                     this.submitForm(e)
                 }} style={{display: this.props.authentication.errorMessage ? "none" : "block"}}>
                     <h4>{!this.props.match.params.token ? "Cambiar contraseña" : "Restauración de contraseña"}</h4>

@@ -244,8 +244,8 @@ export function validarToken(tipoToken, token) {
                         try {
                             respuesta.json()
                                 .then((error) => {
-                                    if (error.message !=="")
-                                        dispatch(errorLogin(error.message));
+                                    if (error)
+                                        dispatch(errorLogin(error));
                                     else
                                         dispatch(errorLogin(errorMessages.GENERAL_ERROR));
                                 })
