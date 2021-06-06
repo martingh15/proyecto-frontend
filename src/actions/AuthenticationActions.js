@@ -190,8 +190,8 @@ export function resetPassword(usuario) {
     return (dispatch) => {
         dispatch(sendingRequest(true));
         auth.resetPassword(usuario, (success, error) => {
-            if (success === true) {
-                dispatch(sendingRequest(false, "La contraseña fue cambiada con éxito, intente ingresar nuevamente.", rutas.LOGIN));
+            if (success && success.message) {
+                dispatch(sendingRequest(false, success.message, rutas.LOGIN));
             } else {
                 switch (error.status) {
                     case 401:

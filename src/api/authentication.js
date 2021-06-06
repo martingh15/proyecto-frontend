@@ -131,14 +131,17 @@ var auth = {
             },
             body: JSON.stringify(usuario)
         };
-        fetch(c.BASE_URL + '/validar-token/', defaultOptions)
+        fetch(c.BASE_URL + '/cambiar-password/', defaultOptions)
             .then(function (response) {
                 if (response.status >= 400) {
                     //callback(false, response);
                     return Promise.reject(response);
                 } else {
-                    callback(true);
+                    return response.json();
                 }
+            })
+            .then(function(data) {
+                callback(data);
             })
             .catch(function (error) {
                 console.log(error);

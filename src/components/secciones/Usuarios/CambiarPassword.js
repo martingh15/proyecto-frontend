@@ -78,7 +78,7 @@ class CambiarPassword extends React.Component {
                 history.push(rutas.INICIO);
             else {
                 let usuario = this.props.usuarios.update.activo;
-                usuario.tokenReset = this.props.match.params.token;
+                usuario.token = this.props.match.params.token;
                 this.props.resetPassword(usuario);
             }
         }
