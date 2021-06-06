@@ -1,7 +1,10 @@
 import React from 'react';
 import {Button, Col, Row} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+
+//Api
+import auth from "../../../api/authentication";
 
 //Actions
 import {updateUsuario, saveUpdateUsuario, fetchUsuarioLogueadoIfNeeded} from "../../../actions/UsuarioActions";
@@ -33,6 +36,9 @@ class CambiarPassword extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        if (auth.logueado()) {
+            history.push(rutas.INICIO);
+        }
         if (this.props.match.params.token) {
             this.props.validarToken('reset', this.props.match.params.token);
         } else if (!this.props.authentication.token) {

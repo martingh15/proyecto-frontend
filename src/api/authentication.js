@@ -70,6 +70,10 @@ var auth = {
         return !!localStorage.token;
     },
 
+    logueado() {
+        return localStorage.idUsuario && localStorage.nombre
+    },
+
     rol() {
         if (localStorage.rol)
             return localStorage.rol;
@@ -87,7 +91,7 @@ var auth = {
         // If there is a token in the localStorage, the user already is
         // authenticated
         if (this.loggedIn()) {
-            callback(true);
+            callback({message: "Ya se encuentra logueado."});
             return;
         }
 
@@ -120,7 +124,7 @@ var auth = {
         // If there is a token in the localStorage, the user already is
         // authenticated
         if (this.loggedIn()) {
-            callback(true);
+            callback({message: "Ya se encuentra logueado."});
             return;
         }
 
