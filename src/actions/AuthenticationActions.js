@@ -53,14 +53,11 @@ export function login(usuario, ruta) {
                         try {
                             error.json()
                                 .then((error) => {
-                                    if (error.non_field_errors) {
-                                        dispatch(errorLogin(error.non_field_errors));
-                                        return;
-                                    }
-                                    if (error.message !=="")
+                                    if (error.message && error.message.length > 0) {
                                         dispatch(errorLogin(error.message));
-                                    else
+                                    } else {
                                         dispatch(errorLogin(errorMessages.GENERAL_ERROR));
+                                    }
                                 })
                                 .catch((error) => {
                                     dispatch(errorLogin(errorMessages.GENERAL_ERROR));
