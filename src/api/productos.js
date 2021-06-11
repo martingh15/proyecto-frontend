@@ -5,20 +5,14 @@ require('isomorphic-fetch');
 var productos = {
 
     getAll() {
-
         let defaultOptions = {
-            url: '',
             method: 'GET',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 "Content-Type": "application/json;charset=UTF-8"
-            },
-            // cache: false,
-            dataType: 'json'
+            }
         };
 
-        return fetch(c.BASE_URL + '/productos', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'producto/', defaultOptions);
     },
 
     saveCreate(producto) {
@@ -44,16 +38,10 @@ var productos = {
 
     borrarProducto(id) {
         let defaultOptions = {
-            url: '',
             method: 'DELETE',
-            mode: 'cors',
             headers: {
-                'Access-Control-Allow-Origin': '*',
-                "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Bearer " + localStorage.token
-            },
-            // cache: false,
-            dataType: 'json',
+            }
         };
 
         return fetch(c.BASE_URL + '/productos/' + id, defaultOptions);
@@ -66,7 +54,6 @@ var productos = {
 
         return $.ajax({
             url: c.BASE_URL+'/productos/' + producto.id,
-            //dataType: 'json',
             data: formData,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -74,7 +61,6 @@ var productos = {
             },
             contentType: false,
             type: 'POST',
-            // cache: false,
             processData: false,
             enctype: 'multipart/form-data',
         });
