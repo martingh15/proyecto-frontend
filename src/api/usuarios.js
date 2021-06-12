@@ -35,10 +35,10 @@ var usuarios = {
         return fetch(c.BASE_URL + '/usuarios/' + localStorage.idUsuario + "/", defaultOptions);
     },
 
-    saveUpdate(usuario, noEsLogueado) {
+    saveUpdate(usuario) {
 
         let defaultOptions = {
-            method: noEsLogueado ? 'POST' : 'PUT',
+            method: 'PUT',
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Token " + localStorage.token
@@ -72,7 +72,7 @@ var usuarios = {
             }
         };
 
-        return fetch(c.BASE_URL + '/usuario/' + id, defaultOptions);
+        return fetch(c.BASE_URL + '/usuarios/' + id + '/', defaultOptions);
     },
 
     borrarUsuario(id) {

@@ -119,10 +119,14 @@ class Editar extends React.Component {
         if (e.target.id === "confirmaPass") {
             cambio["password_confirmation"] = e.target.value;
         }
+        var usuario = this.props.usuarios.update.activo;
+        if (usuario.tipoRuta === undefined) {
+            cambio['tipoRuta'] = this.props.match.params.tipo;
+        }
         this.props.updateUsuario(cambio);
         let error = "";
-        if ((e.target.id === "password" && this.props.usuarios.update.activo.confirmaPass !== e.target.value)
-            || (e.target.id === "confirmaPass" && this.props.usuarios.update.activo.password !== e.target.value)) {
+        if ((e.target.id === "password" && usuario.confirmaPass !== e.target.value)
+            || (e.target.id === "confirmaPass" && usuario.password !== e.target.value)) {
             error = "Las contraseñas no coinciden";
         }
         this.confirmaPass.current.setCustomValidity(error);
@@ -176,11 +180,9 @@ class Editar extends React.Component {
     submitForm(e) {
         e.preventDefault();
         if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
-            let id           = parseInt(this.props.match.params['id']);
-            let noEsLogueado = id > 0;
             let validos = this.validarUsuario();
             if (validos) {
-                this.props.saveUpdateUsuario(noEsLogueado);
+                this.props.saveUpdateUsuario();
             }
         }
     }
@@ -383,8 +385,8 @@ const mapDispatchToProps = (dispatch) => {
         updateUsuario: (usuario) => {
             dispatch(updateUsuario(usuario))
         },
-        saveUpdateUsuario: (noEsLogueado) => {
-            dispatch(saveUpdateUsuario(noEsLogueado))
+        saveUpdateUsuario: () => {
+            dispatch(saveUpdateUsuario())
         },
         fetchUsuarioById: (id) => {
             dispatch(fetchUsuarioById(id))

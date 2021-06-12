@@ -14,6 +14,7 @@ import auth from "../../api/authentication";
 
 //Constants
 import * as rutas from '../../constants/rutas.js';
+import * as roles from '../../constants/roles.js';
 
 //CSS
 import '../../assets/css/Navegador.css';

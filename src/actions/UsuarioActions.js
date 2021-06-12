@@ -149,10 +149,10 @@ export function updateUsuario(usuario) {
     }
 }
 
-export function saveUpdateUsuario(noEsLogueado) {
+export function saveUpdateUsuario() {
     return (dispatch, getState) => {
         dispatch(requestUpdateUsuario());
-        return usuarios.saveUpdate(getState().usuarios.update.activo, noEsLogueado)
+        return usuarios.saveUpdate(getState().usuarios.update.activo)
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
@@ -169,8 +169,10 @@ export function saveUpdateUsuario(noEsLogueado) {
                 if (logueado.id === usuario.id) {
                     dispatch(receiveUsuarioLogueado(usuario));
                 }
-                if (usuario.tipoRuta === rutas.TIPO_ADMIN) {
-                    history.push(rutas.USUARIOS_LISTAR);
+                const volverA = rutas.getQuery('volverA');
+                const valido  = rutas.validarRuta(volverA);
+                if (valido && usuario.esAdmin) {
+                    history.push(volverA);
                 } else {
                     history.push(rutas.INICIO);
                 }
