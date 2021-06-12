@@ -119,12 +119,9 @@ class Editar extends React.Component {
         if (e.target.id === "confirmaPass") {
             cambio["password_confirmation"] = e.target.value;
         }
-        var usuario = this.props.usuarios.update.activo;
-        if (usuario.tipoRuta === undefined) {
-            cambio['tipoRuta'] = this.props.match.params.tipo;
-        }
         this.props.updateUsuario(cambio);
         let error = "";
+        var usuario = this.props.usuarios.update.activo;
         if ((e.target.id === "password" && usuario.confirmaPass !== e.target.value)
             || (e.target.id === "confirmaPass" && usuario.password !== e.target.value)) {
             error = "Las contraseñas no coinciden";
@@ -179,12 +176,22 @@ class Editar extends React.Component {
 
     submitForm(e) {
         e.preventDefault();
-        if (this.props.usuarios.update.activo.confirmaPass === this.props.usuarios.update.activo.password) {
+        var usuario = this.props.usuarios.update.activo;
+        if (usuario.confirmaPass === usuario.password) {
             let validos = this.validarUsuario();
             if (validos) {
+                if (usuario.tipoRuta === undefined) {
+                    this.agregarTipoRuta();
+                }
                 this.props.saveUpdateUsuario();
             }
         }
+    }
+
+    agregarTipoRuta() {
+        var cambio = {};
+        cambio["tipoRuta"] = this.props.match.params.tipo;
+        this.props.updateUsuario(cambio);
     }
 
     onClickEye() {

@@ -171,7 +171,7 @@ export function saveUpdateUsuario() {
                 }
                 const volverA = rutas.getQuery('volverA');
                 const valido  = rutas.validarRuta(volverA);
-                if (valido && usuario.esAdmin) {
+                if (valido && respuesta.esAdmin) {
                     history.push(volverA);
                 } else {
                     history.push(rutas.INICIO);
