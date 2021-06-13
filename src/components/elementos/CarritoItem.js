@@ -35,7 +35,7 @@ class ItemCarrito extends React.Component {
         let loaderBorrando = borrando && productoGuardando === productoLinea.id;
         if (productoLinea.imagen) {
             try {
-                path = c.BASE_PUBLIC + "img/productos/" + productoLinea.imagen;
+                path = productoLinea.imagen;
             } catch (e) {
             }
         }

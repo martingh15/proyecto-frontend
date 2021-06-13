@@ -70,7 +70,7 @@ class Producto extends React.Component {
         let path = productoVacio;
         if (producto.imagen) {
             try {
-                path = c.BASE_PUBLIC + "img/productos/" + producto.imagen;
+                path = producto.imagen;
             } catch (e) {
             }
         }
@@ -109,7 +109,7 @@ class Producto extends React.Component {
                             }
                         </div>
                         <p className="producto-derecha-precio font-weight-bold text-right pr-2 m-0 text-nowrap">
-                            $ {producto.precioVigente}
+                            $ {producto.precio_vigente}
                         </p>
                     </div>
                 </div>
