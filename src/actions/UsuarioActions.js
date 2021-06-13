@@ -519,15 +519,12 @@ export function saveDeleteUsuario(id) {
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
-                } else {
-                    return response.json();
                 }
             })
-            .then((respuesta) => {
-                let mensaje = respuesta.message;
+            .then(() => {
+                let mensaje = "Usuario borrado con éxito";
                 dispatch(receiveDeleteUsuario(id, mensaje));
                 dispatch(resetDeleteUsuario());
-                history.push(rutas.USUARIOS_LISTAR);
             })
             .catch(function (error) {
                 switch (error.status) {
@@ -536,16 +533,7 @@ export function saveDeleteUsuario(id) {
                         dispatch(logout());
                         return Promise.reject(error);
                     default:
-                        error.json()
-                            .then(error => {
-                                if (error.message !== "")
-                                    dispatch(errorDeleteUsuario(error.message));
-                                else
-                                    dispatch(errorDeleteUsuario(errorMessages.GENERAL_ERROR));
-                            })
-                            .catch(error => {
-                                dispatch(errorDeleteUsuario(errorMessages.GENERAL_ERROR));
-                            });
+                        dispatch(errorDeleteUsuario(errorMessages.GENERAL_ERROR));
                         return;
                 }
             });

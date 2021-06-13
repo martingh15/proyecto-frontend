@@ -42,7 +42,11 @@ class Listado extends React.Component {
         let allIds      = this.props.usuarios.allIds;
         let usuarios    = this.props.usuarios.byId;
         let preUsuarios = prevProps.usuarios.byId;
-        if (preUsuarios.isFetching && !usuarios.isFetching && allIds.length === 0) {
+        let deleting    = this.props.usuarios.delete;
+        let preDeleting = prevProps.usuarios.delete;
+        let busco = preUsuarios.isFetching && !usuarios.isFetching;
+        let borro = preDeleting.isDeleting && !deleting.isDeleting;
+        if ((busco || borro) && allIds.length === 0) {
             this.setState({
                 noHayUsuarios: true,
             })

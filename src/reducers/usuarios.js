@@ -318,6 +318,8 @@ function usuariosAllIds(state = [], action) {
     switch (action.type) {
         case RECEIVE_USUARIOS:
             return action.usuarios.result ? action.usuarios.result : [];
+        case RECEIVE_DELETE_USUARIO:
+            return state.filter(id => id != action.idUsuario)
         case RESET_USUARIOS:
             return [];
         default:
