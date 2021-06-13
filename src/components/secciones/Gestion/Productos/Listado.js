@@ -9,12 +9,12 @@ import {resetProductos, fetchProductosIfNeeded, saveDeleteProducto, updateProduc
 import "../../../../assets/css/Listado.css";
 
 //Constants
-import c from "../../../../constants/constants";
 import * as rutas from "../../../../constants/rutas";
 
 //Componentes
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Loader from "../../../elementos/Loader";
+import Titulo from "../../../elementos/Titulo";
 
 //Images
 import productoVacio from "../../../../assets/img/emptyImg.jpg";
@@ -139,7 +139,7 @@ class Listado extends React.Component {
             <div className="tabla-listado">
                 <div className="table-responsive tarjeta-body listado">
                     <div className="d-flex justify-content-between">
-                        <h1 className="tabla-listado-titulo">Productos</h1>
+                        <Titulo ruta={rutas.GESTION} titulo={"Productos"} clase="tabla-listado-titulo" />
                         <a href={rutas.PRODUCTO_ALTA + `?volverA=${rutas.PRODUCTOS_LISTAR_ADMIN}`}
                            data-toggle="tooltip" data-original-title="" title="">
                             <AddBoxIcon style={{ color:  '#5cb860'}}/>

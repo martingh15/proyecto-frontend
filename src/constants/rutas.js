@@ -43,6 +43,7 @@ export const CATEGORIA_ALTA          = '/categorias/alta';
 export const CATEGORIAS_LISTAR       = '/categorias/listar';
 export const CATEGORIAS_LISTAR_ADMIN = '/categorias/listar/admin';
 export const CATEGORIAS_EDITAR_ADMIN = '/categorias/editar/admin/:id';
+
 /**
  * Devuelve la url de usuarios
  *

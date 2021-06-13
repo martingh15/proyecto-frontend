@@ -14,6 +14,7 @@ import * as rutas from '../../../constants/rutas.js';
 
 //Components
 import Loader from "../../elementos/Loader";
+import Titulo from "../../elementos/Titulo";
 
 //CSS
 import "../../../assets/css/Usuarios/Editar.css";
@@ -254,12 +255,16 @@ class Editar extends React.Component {
                 <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
             );
         };
+        let ruta = rutas.USUARIOS_LISTAR;
+        if (tipoComun) {
+            ruta = null;
+        }
         return (
             <div className="datos-usuario">
                 <Form className="tarjeta-body" onSubmit={(e) => {
                     this.submitForm(e)
                 }}>
-                    <h4>{titulo}</h4>
+                    <Titulo ruta={ruta} titulo={titulo} />
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control

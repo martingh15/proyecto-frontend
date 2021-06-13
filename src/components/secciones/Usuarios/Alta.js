@@ -16,6 +16,7 @@ import Form from "react-bootstrap/Form";
 
 //Components
 import Loader from "../../elementos/Loader";
+import Titulo from "../../elementos/Titulo";
 
 //CSS
 import '../../../assets/css/Usuarios/Registro.css';
@@ -199,11 +200,13 @@ class Alta extends React.Component {
                 <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
             );
         };
+        var titulo = tipoAdmin ? "Registrar usuario" : "Registro";
         return (
             <div className="registro">
                 <div className="registro-contenedor">
                     <Form className="tarjeta-body" onSubmit={(e) => {this.submitForm(e)}}>
-                        <h4>{!tipoAdmin ? "Registro" : "Registrar usuario"}</h4>
+                        <h4>{}</h4>
+                        <Titulo ruta={rutas.USUARIOS_LISTAR} titulo={titulo} />
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control

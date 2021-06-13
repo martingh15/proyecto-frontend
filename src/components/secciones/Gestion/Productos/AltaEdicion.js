@@ -16,16 +16,17 @@ import Form from "react-bootstrap/Form";
 //Components
 import ArchivoImagen from "../../../elementos/ArchivoImagen";
 import Loader from "../../../elementos/Loader";
+import Titulo from "../../../elementos/Titulo";
 
 //CSS
 import '../../../../assets/css/Productos/AltaEdicion.css';
 
 //Librerias
 import history from "../../../../history";
+import Swal from 'sweetalert2';
 
 //Imagenes
 import emptyImg from "../../../../assets/img/emptyImg.jpg";
-import c from "../../../../constants/constants";
 
 class AltaEdicion extends React.Component {
     constructor(props) {
@@ -44,9 +45,18 @@ class AltaEdicion extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let logueado = this.props.usuarios.update.activo;
+        let logueado = this.props.usuarios.update.logueado;
         if (logueado === undefined || (logueado.id && !logueado.esAdmin)) {
             history.push(rutas.INICIO);
+            Swal.fire({
+                title: `No está autorizado para editar productos. `,
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: false,
+                focusConfirm: true,
+                confirmButtonText: 'Continuar',
+            })
+            
         }
     }
 
@@ -149,7 +159,7 @@ class AltaEdicion extends React.Component {
         return (
             <div className="producto-alta">
                 <Form className="tarjeta-body" onSubmit={(e) => {this.submitForm(e)}}>
-                    <h4>{titulo}</h4>
+                    <Titulo ruta={rutas.PRODUCTOS_LISTAR_ADMIN} titulo={titulo}/>
                     <Form.Group>
                         <Form.Label>Categoría</Form.Label>
                         <div className="d-flex">

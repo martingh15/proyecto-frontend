@@ -1,6 +1,6 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 //Actions
 import {resetUsuarios, fetchUsuarios, saveDeleteUsuario} from "../../../actions/UsuarioActions";
@@ -10,12 +10,10 @@ import * as rutas from '../../../constants/rutas.js';
 
 //Components
 import Loader from "../../elementos/Loader";
+import Titulo from "../../elementos/Titulo";
 
 //CSS
 import "../../../assets/css/Listado.css";
-
-//Icons
-import AddBoxIcon from '@material-ui/icons/AddBox';
 
 //Librerias
 import Swal from 'sweetalert2';
@@ -166,11 +164,7 @@ class Listado extends React.Component {
             <div className="tabla-listado">
                 <div className="table-responsive tarjeta-body listado">
                     <div className="d-flex justify-content-between">
-                        <h1 className="tabla-listado-titulo">Usuarios</h1>
-                        <a href={rutas.USUARIOS_ALTA_ADMIN + `?volverA=${rutas.USUARIOS_LISTAR}`}
-                           data-toggle="tooltip" data-original-title="" title="">
-                            <AddBoxIcon style={{ color:  '#5cb860'}}/>
-                        </a>
+                        <Titulo ruta={rutas.GESTION} titulo={"Usuarios"} clase="tabla-listado-titulo" />
                     </div>
                     <table className="table">
                         <thead>
