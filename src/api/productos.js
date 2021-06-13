@@ -22,6 +22,7 @@ var productos = {
             url: c.BASE_PUBLIC + 'producto/abm//',
             data: formData,
             beforeSend: function (xhr) {
+                xhr.setRequestHeader('Content-Type', "multipart/form-data");
                 xhr.setRequestHeader('Authorization', "Token " + localStorage.token);
             },
             type: 'POST',
@@ -50,10 +51,10 @@ var productos = {
             url: c.BASE_PUBLIC +'producto/abm//' + producto.id + '/',
             data: formData,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
+                xhr.setRequestHeader('Authorization', "Token " + localStorage.token);
             },
-            contentType: false,
-            type: 'POST',
+            type: 'PUT',
+            contentType: false, 
             processData: false,
             enctype: 'multipart/form-data',
         });
@@ -73,12 +74,15 @@ var productos = {
     getFormDataProducto(producto) {
         let formData = new FormData();
         formData.append("nombre", producto.nombre);
-        formData.append("imagen", producto.imagen);
         formData.append("categoria", parseInt(producto.categoria));
         formData.append("habilitado", 1);
         formData.append("descripcion", producto.descripcion);
-        formData.append("imagen_nombre", producto.imagen_nombre);
         formData.append("precio_vigente", parseFloat(producto.precio_vigente));
+
+        if (producto.imagen.name) {
+            formData.append("imagen", producto.imagen);
+            formData.append("imagen_nombre", producto.imagen_nombre);
+        }
         return formData;
     }
 };

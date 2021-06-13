@@ -145,7 +145,7 @@ export function saveUpdateProducto(volverA) {
                     return Promise.reject(response);
                 } else {
                     dispatch(receiveUpdateProducto());
-                    return true;
+                    return response.json();
                 }
             })
             .then(() => {
