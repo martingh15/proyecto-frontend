@@ -11,7 +11,7 @@ var categorias = {
             },
         };
 
-        return fetch(c.BASE_URL + '/productos/categorias', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'producto/categorias//', defaultOptions);
     },
 
     saveCreate(categoria) {

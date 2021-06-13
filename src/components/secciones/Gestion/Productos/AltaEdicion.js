@@ -162,7 +162,7 @@ class AltaEdicion extends React.Component {
                         <Form.Label>Categoría</Form.Label>
                         <div className="d-flex">
                             <Form.Control
-                                id="categoria_id"
+                                id="categoria"
                                 as="select"
                                 defaultValue=""
                                 onChange={(e) => this.onChangeProducto(e)}
@@ -203,7 +203,7 @@ class AltaEdicion extends React.Component {
                     <Form.Group>
                         <Form.Label>Precio</Form.Label>
                         <Form.Control
-                            id="precioVigente"
+                            id="precio_vigente"
                             type="number"
                             min={0}
                             onChange={(e) => this.onChangeProducto(e)}

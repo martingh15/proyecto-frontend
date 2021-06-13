@@ -17,20 +17,20 @@ var productos = {
 
     saveCreate(producto) {
         let formData = new FormData();
-        formData.append("producto", JSON.stringify(producto));
+        formData.append("nombre", producto.nombre);
         formData.append("imagen", producto.imagen);
+        formData.append("categoria", producto.categoria);
+        formData.append("descripcion", producto.descripcion);
+        formData.append("precio_vigente", producto.precio_vigente);
 
         return $.ajax({
-            url: c.BASE_URL+'/productos',
-            //dataType: 'json',
+            url: c.BASE_PUBLIC + 'producto/abm//',
             data: formData,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
+                xhr.setRequestHeader('Authorization', "Token " + localStorage.token);
             },
-            contentType: false,
             type: 'POST',
-            // cache: false,
+            contentType: false,
             processData: false,
             enctype: 'multipart/form-data',
         });
@@ -44,19 +44,21 @@ var productos = {
             }
         };
 
-        return fetch(c.BASE_URL + '/productos/' + id, defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'producto/abm//' + id + '/', defaultOptions);
     },
 
     saveUpdate(producto) {
         let formData = new FormData();
-        formData.append("producto", JSON.stringify(producto));
+        formData.append("nombre", producto.nombre);
         formData.append("imagen", producto.imagen);
+        formData.append("categoria", producto.categoria);
+        formData.append("descripcion", producto.descripcion);
+        formData.append("precio_vigente", producto.precio_vigente);
 
         return $.ajax({
-            url: c.BASE_URL+'/productos/' + producto.id,
+            url: c.BASE_PUBLIC +'producto/abm//' + producto.id + '/',
             data: formData,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
                 xhr.setRequestHeader('authorization', "Bearer "+localStorage.token);
             },
             contentType: false,

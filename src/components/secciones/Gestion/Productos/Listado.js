@@ -114,7 +114,7 @@ class Listado extends React.Component {
                 let path = productoVacio;
                 if (producto.imagen) {
                     try {
-                        path = c.BASE_PUBLIC + "img/productos/" + producto.imagen;
+                        path = producto.imagen;
                     } catch (e) {
                     }
                 }
