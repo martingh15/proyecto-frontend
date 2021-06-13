@@ -129,10 +129,19 @@ function productosById(state = {
     }
 }
 
+let activoDefecto = {
+    nombre: '',
+    imagen: '',
+    descripcion: '',
+    imagen_nombre: '',
+    precio_vigente: '',
+    habilitado: 1
+};
+
 
 function create(state = {
     isCreating: false,
-    nuevo: {},
+    nuevo: activoDefecto,
     success: "",
     error: null,
     errores: [],
@@ -185,16 +194,6 @@ function create(state = {
             return state
     }
 }
-
-let activoDefecto = {
-    nombre: '',
-    codigo: '',
-    imagen: '',
-    fileName: '',
-    descripcion: '',
-    categoria_id: '',
-    precioVigente: ''
-};
 
 function update(state = {
     isUpdating: false,

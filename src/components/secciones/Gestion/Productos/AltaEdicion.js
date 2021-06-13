@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux';
 
 //Actions
-import {createProducto, updateProducto, saveCreateProducto, saveUpdateProducto} from "../../../../actions/ProductoActions";
+import {createProducto, updateProducto, saveCreateProducto, saveUpdateProducto, fetchProductoById} from "../../../../actions/ProductoActions";
 import {fetchCategorias} from "../../../../actions/CategoriaActions";
 
 //Constants
@@ -22,7 +22,6 @@ import '../../../../assets/css/Productos/AltaEdicion.css';
 
 //Librerias
 import history from "../../../../history";
-import Swal from 'sweetalert2';
 
 //Imagenes
 import emptyImg from "../../../../assets/img/emptyImg.jpg";
@@ -41,20 +40,13 @@ class AltaEdicion extends React.Component {
     componentDidMount() {
         this.actualizarBotonVolverA();
         this.props.fetchCategorias();
+        this.props.fetchProductoById(this.props.match.params.id);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let logueado = this.props.usuarios.update.activo;
         if (logueado === undefined || (logueado.id && !logueado.esAdmin)) {
             history.push(rutas.INICIO);
-        }
-        let id     = this.props.match.params['id'];
-        let accion = this.props.match.params['accion'];
-        if (accion === rutas.ACCION_EDITAR && prevProps.productos.allIds.length === 0 && this.props.productos.allIds.length > 0) {
-            let producto = this.props.productos.byId.productos[id];
-            if (producto !== undefined) {
-                this.props.updateProducto(producto);
-            }
         }
     }
 
@@ -104,7 +96,7 @@ class AltaEdicion extends React.Component {
         }
         var cambio = {};
         cambio[e.target.id] = file;
-        cambio["fileImagen"] = file.name;
+        cambio["imagen_nombre"] = file.name;
         this.onChangeProducto(e, cambio);
     }
 
@@ -135,7 +127,7 @@ class AltaEdicion extends React.Component {
             producto = this.props.productos.update.activo;
             if (this.state.imagen === emptyImg) {
                 try {
-                    path = c.BASE_PUBLIC + "img/productos/" + producto.imagen;
+                    path = producto.imagen;
                 } catch (e) {
                 }
             }
@@ -166,7 +158,7 @@ class AltaEdicion extends React.Component {
                                 as="select"
                                 defaultValue=""
                                 onChange={(e) => this.onChangeProducto(e)}
-                                value={producto.categoria_id}
+                                value={producto.categoria}
                                 required={true}
                                 disabled={buscando}
                             >
@@ -207,7 +199,7 @@ class AltaEdicion extends React.Component {
                             type="number"
                             min={0}
                             onChange={(e) => this.onChangeProducto(e)}
-                            value={producto.precioVigente}
+                            value={producto.precio_vigente}
                             placeholder="Ingresar precio"
                             required={true}
                         />
@@ -218,7 +210,7 @@ class AltaEdicion extends React.Component {
                             id="imagen"
                             imagen={path}
                             imgError={emptyImg}
-                            texto={producto && producto.fileImagen ? producto.fileImagen : ""}
+                            texto={producto && producto.imagen_nombre ? producto.imagen_nombre : ""}
                             changeImagen={(evento) => this.changeImagen(evento)}
                         />
                         <Form.Text className="text-muted">
@@ -266,8 +258,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchCategorias: () => {
             dispatch(fetchCategorias())
+        },
+        fetchProductoById: (id) => {
+            dispatch(fetchProductoById(id))
         }
-
     }
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AltaEdicion));

@@ -16,12 +16,7 @@ var productos = {
     },
 
     saveCreate(producto) {
-        let formData = new FormData();
-        formData.append("nombre", producto.nombre);
-        formData.append("imagen", producto.imagen);
-        formData.append("categoria", producto.categoria);
-        formData.append("descripcion", producto.descripcion);
-        formData.append("precio_vigente", producto.precio_vigente);
+        let formData = this.getFormDataProducto(producto);
 
         return $.ajax({
             url: c.BASE_PUBLIC + 'producto/abm//',
@@ -40,7 +35,8 @@ var productos = {
         let defaultOptions = {
             method: 'DELETE',
             headers: {
-                "Authorization": "Bearer " + localStorage.token
+                "Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Token " + localStorage.token
             }
         };
 
@@ -48,12 +44,7 @@ var productos = {
     },
 
     saveUpdate(producto) {
-        let formData = new FormData();
-        formData.append("nombre", producto.nombre);
-        formData.append("imagen", producto.imagen);
-        formData.append("categoria", producto.categoria);
-        formData.append("descripcion", producto.descripcion);
-        formData.append("precio_vigente", producto.precio_vigente);
+        let formData = this.getFormDataProducto(producto);
 
         return $.ajax({
             url: c.BASE_PUBLIC +'producto/abm//' + producto.id + '/',
@@ -66,6 +57,29 @@ var productos = {
             processData: false,
             enctype: 'multipart/form-data',
         });
+    },
+
+    getProducto(id) {
+        let defaultOptions = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8"
+            }
+        };
+
+        return fetch(c.BASE_PUBLIC + 'producto/' + id, defaultOptions);
+    },
+
+    getFormDataProducto(producto) {
+        let formData = new FormData();
+        formData.append("nombre", producto.nombre);
+        formData.append("imagen", producto.imagen);
+        formData.append("categoria", parseInt(producto.categoria));
+        formData.append("habilitado", 1);
+        formData.append("descripcion", producto.descripcion);
+        formData.append("imagen_nombre", producto.imagen_nombre);
+        formData.append("precio_vigente", parseFloat(producto.precio_vigente));
+        return formData;
     }
 };
 
