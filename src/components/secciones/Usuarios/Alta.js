@@ -201,12 +201,13 @@ class Alta extends React.Component {
             );
         };
         var titulo = tipoAdmin ? "Registrar usuario" : "Registro";
+        var ruta = tipoAdmin ? rutas.USUARIOS_LISTAR : null;
         return (
             <div className="registro">
                 <div className="registro-contenedor">
                     <Form className="tarjeta-body" onSubmit={(e) => {this.submitForm(e)}}>
                         <h4>{}</h4>
-                        <Titulo ruta={rutas.USUARIOS_LISTAR} titulo={titulo} />
+                        <Titulo ruta={ruta} titulo={titulo} />
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
