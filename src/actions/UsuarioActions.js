@@ -341,7 +341,9 @@ export function fetchUsuarios() {
                 }
             })
             .then(function (data) {
-                dispatch(receiveUsuarios(data));
+                if (data.exito) {
+                    dispatch(receiveUsuarios(data.usuarios));
+                }
             })
             .catch(function (error) {
                 switch (error.status) {
@@ -350,7 +352,16 @@ export function fetchUsuarios() {
                         dispatch(logout());
                         return;
                     default:
-                        dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
+                        error.json()
+                            .then(error => {
+                                if (error.message !== "")
+                                    dispatch(errorUsuarios(error.message));
+                                else
+                                    dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
+                            })
+                            .catch(error => {
+                                dispatch(errorUsuarios(errorMessages.GENERAL_ERROR));
+                            });
                         return;
                 }
             });

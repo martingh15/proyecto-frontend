@@ -325,7 +325,7 @@ class Editar extends React.Component {
                             <label className="form-check-label" htmlFor="inlineCheckbox3">Comensal</label>
                         </div>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{ display: tipo === 'admin' ? "none": "block"}}>
                         <Form.Label>Contraseña</Form.Label>
                         <div className="contenedor-contrasenia">
                             <input
@@ -337,7 +337,7 @@ class Editar extends React.Component {
                                 required={!passwordVacias}
                                 autoComplete={"new-password"}
                                 placeholder="Contraseña"
-                                minLength="8"
+                                minLength="7"
                                 disabled={buscando}
                             />
                             <ToogleClave/>
@@ -346,7 +346,7 @@ class Editar extends React.Component {
                             Si no desea cambiar la contraseña deje los campos de contraseña vacíos.
                         </Form.Text>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{ display: tipo === 'admin' ? "none": "block"}}>
                         <Form.Label>Contraseña</Form.Label>
                         <div className="contenedor-contrasenia">
                             <input
@@ -359,7 +359,7 @@ class Editar extends React.Component {
                                 required={!passwordVacias}
                                 autoComplete={"new-password"}
                                 placeholder="Confirmar Contraseña"
-                                minLength="8"
+                                minLength="7"
                                 disabled={buscando}
                             />
                             <ToogleClave/>

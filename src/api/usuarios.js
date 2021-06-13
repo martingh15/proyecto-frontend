@@ -15,7 +15,7 @@ var usuarios = {
 
         let url = "/registro/";
         if (admin) {
-            url = "/registro-admin";
+            url = "/usuarios/";
             defaultOptions.headers = {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Token " + localStorage.token
@@ -85,7 +85,7 @@ var usuarios = {
             }
         };
 
-        return fetch(c.BASE_URL + '/usuario/' + id, defaultOptions);
+        return fetch(c.BASE_URL + '/usuarios/' + id + '/', defaultOptions);
     },
 };
 

@@ -78,7 +78,7 @@ class Listado extends React.Component {
     modalBorrar(usuario) {
         let logueado = this.props.usuarios.update.logueado;
         Swal.fire({
-            title: `Está seguro de borrar el usuario '${usuario.nombre}'`,
+            title: `Está seguro de borrar el usuario '${usuario.first_name}'`,
             icon: 'warning',
             showCloseButton: true,
             showCancelButton: true,

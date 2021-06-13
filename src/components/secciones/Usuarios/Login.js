@@ -136,7 +136,7 @@ class Login extends React.Component {
                                     value={nuevoUsuario ? nuevoUsuario.password : ""}
                                     onChange={(e) => this.onChangeUsuario(e)}
                                     placeholder="Contraseña"
-                                    minLength="8"
+                                    minLength="7"
                                     required
                                 />
                                    <img onClick={(e) => this.onClickEye()} src={imgPassword} className="ver-password" alt="Mostrar/ocultar contraseña"/>
