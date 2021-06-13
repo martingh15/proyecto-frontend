@@ -22,7 +22,6 @@ var productos = {
             url: c.BASE_PUBLIC + 'producto/abm//',
             data: formData,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Content-Type', "multipart/form-data");
                 xhr.setRequestHeader('Authorization', "Token " + localStorage.token);
             },
             type: 'POST',
