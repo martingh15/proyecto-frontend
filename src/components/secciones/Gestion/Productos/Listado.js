@@ -124,8 +124,10 @@ class Listado extends React.Component {
                             <img src={path} onError={(e) => e.target.src = productoVacio} alt="Imagen de producto" />
                         </td>
                         <td>{producto.nombre}</td>
-                        <td>{producto.categoriaNombre}</td>
-                        <td>{producto.precioTexto}</td>
+                        <td>{producto.categoria}</td>
+                        <td className="font-weight-bold text-right px-5">
+                            {producto.precio_vigente}
+                        </td>
                         <td>{operaciones}</td>
                     </tr>
                 );
@@ -151,7 +153,7 @@ class Listado extends React.Component {
                             <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
-                            <th>Precio</th>
+                            <th className="text-right px-5">Precio</th>
                             <th>Operaciones</th>
                         </tr>
                         </thead>
