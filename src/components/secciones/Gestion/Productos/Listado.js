@@ -135,13 +135,18 @@ class Listado extends React.Component {
         });
         const Cargando =
             <tr>
-                <td colSpan={5}><Loader display={true}/></td>
+                <td colSpan={5}><Loader display={true} /></td>
             </tr>;
+        let operacion = {
+            'ruta': rutas.CATEGORIAS_LISTAR_ADMIN + '?volverA=' + rutas.PRODUCTOS_LISTAR_ADMIN,
+            'texto': 'Categorías',
+            'clase': 'btn-success',
+        };
         return (
             <div className="tabla-listado">
                 <div className="table-responsive tarjeta-body listado">
                     <div className="d-flex justify-content-between">
-                        <Titulo ruta={rutas.GESTION} titulo={"Productos"} clase="tabla-listado-titulo" />
+                        <Titulo ruta={rutas.GESTION} titulo={"Productos"} clase="tabla-listado-titulo" operaciones={[operacion]} />
                         <a href={rutas.PRODUCTO_ALTA + `?volverA=${rutas.PRODUCTOS_LISTAR_ADMIN}`}
                            data-toggle="tooltip" data-original-title="" title="">
                             <AddBoxIcon style={{ color:  '#5cb860'}}/>

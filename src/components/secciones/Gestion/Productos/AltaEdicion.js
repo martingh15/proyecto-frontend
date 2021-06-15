@@ -41,7 +41,10 @@ class AltaEdicion extends React.Component {
     componentDidMount() {
         this.actualizarBotonVolverA();
         this.props.fetchCategorias();
-        this.props.fetchProductoById(this.props.match.params.id);
+        let id = this.props.match.params.id;
+        if (id) {
+            this.props.fetchProductoById(id);
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -155,6 +158,7 @@ class AltaEdicion extends React.Component {
         });
 
         let buscando = this.props.categorias.byId.isFetching;
+        let rutaCategoria = rutas.CATEGORIA_ALTA + '?volverA=' + rutas.PRODUCTO_ALTA;
 
         return (
             <div className="producto-alta">
@@ -175,7 +179,7 @@ class AltaEdicion extends React.Component {
                                 <option key={0} value="">Seleccionar categoría</option>
                                 {opcionesCategoria}
                             </Form.Control>
-                            <Button variant="success" onClick={()=> history.push("/categorias/alta/")}> 
+                            <Button variant="success" onClick={()=> history.push(rutaCategoria)}> 
                             +
                             </Button>
                          </div>

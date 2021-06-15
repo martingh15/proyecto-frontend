@@ -26,16 +26,32 @@ export default function Titulo(props) {
         marginRight: '10px',
         marginBottom: '5px'
     }
+    const botonStyle = {
+        border: 'none',
+        borderRadius: '6px',
+        fontSize: '15px',
+        height: '24px',
+        marginLeft: '15px'
+    }
     let clase = props.clase ? props.clase : "";
     let texto = "Volver a página anterior";
     let flecha = <img style={style} onClick={() => volverA(ruta)} src={imgVolver} alt="Icono volver" title={texto}/>;
     if (ruta === null) {
         flecha = "";
     }
+    let operaciones = props.operaciones ? props.operaciones : [];
+    let botones     = operaciones.map(op => {
+        return (
+            <button style={botonStyle} onClick={() => history.push(op.ruta)} className={op.clase}>
+                {op.texto}
+            </button>
+        )
+    })
     return (
         <h4 className={clase} >
             {flecha}
             {props.titulo}
+            {botones}
         </h4>
     )
 }
