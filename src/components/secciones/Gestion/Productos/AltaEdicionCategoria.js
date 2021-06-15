@@ -14,17 +14,10 @@ import Form from "react-bootstrap/Form";
 
 //Components
 import Loader from "../../../elementos/Loader";
+import Titulo from "../../../elementos/Titulo";
 
 //CSS
 import '../../../../assets/css/Productos/Categoria.css';
-
-//Librerias
-import history from "../../../../history";
-import Swal from 'sweetalert2';
-
-//Imagenes
-import emptyImg from "../../../../assets/img/emptyImg.jpg";
-import c from "../../../../constants/constants";
 
 class AltaEdicionCategoria extends React.Component {
     constructor(props) {
@@ -89,7 +82,7 @@ class AltaEdicionCategoria extends React.Component {
         return (
             <div className="categoria-alta">
                 <Form className="tarjeta-body" onSubmit={(e) => {this.submitForm(e)}}>
-                    <h4>{titulo}</h4>
+                    <Titulo ruta={rutas.PRODUCTO_ALTA} titulo={titulo}/>
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control

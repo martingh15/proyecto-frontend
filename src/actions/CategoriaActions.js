@@ -75,9 +75,7 @@ export function saveCreateCategoria(volverA) {
                 }
                 dispatch(reveiceCreateCategoria(mensaje));
                 dispatch(resetCreateCategoria());
-                if (rutas.validarRuta(volverA)) {
-                    history.push(volverA);
-                }
+                history.push(rutas.PRODUCTO_ALTA);
             })
             .catch(function (error) {
                 switch (error.status) {

@@ -21,11 +21,10 @@ var categorias = {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Token " + localStorage.token
             },
-            dataType: 'json',
             body: JSON.stringify(categoria)
         };
 
-        return fetch(c.BASE_URL + '/categorias', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'producto/abm/categorias//', defaultOptions);
     },
 };
 
