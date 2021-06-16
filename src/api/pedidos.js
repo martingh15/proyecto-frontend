@@ -76,7 +76,7 @@ var pedidos = {
             }
         };
 
-        return fetch(c.BASE_URL + '/pedidos', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/activo/', defaultOptions);
     }
 
 };

@@ -59,8 +59,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        //this.props.fetchProductosIfNeeded();
-        //this.props.fetchPedidoAbiertoIfNeeded();
+        this.props.fetchProductosIfNeeded();
+        this.props.fetchPedidoAbiertoIfNeeded();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
