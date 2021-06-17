@@ -14,7 +14,7 @@ var pedidos = {
             },
         };
 
-        return fetch(c.BASE_URL + '/pedidos', defaultOptions);
+        return fetch(c.BASE_PUBLIC + '/pedido/', defaultOptions);
     },
 
     saveCreate(pedido) {
@@ -27,7 +27,7 @@ var pedidos = {
             body: JSON.stringify(pedido)
         };
 
-        return fetch(c.BASE_URL + '/pedidos' + c.DEBUG, defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/', defaultOptions);
     },
 
     borrarPedido(id) {
@@ -39,7 +39,7 @@ var pedidos = {
             }
         };
 
-        return fetch(c.BASE_URL + '/pedidos/' + id, defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/' + id, defaultOptions);
     },
 
     saveFinalizar(idPedido) {
@@ -51,7 +51,7 @@ var pedidos = {
             }
         };
 
-        return fetch(c.BASE_URL + '/pedidos/finalizar/' + idPedido, defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/'+ idPedido + '/finalizar/', defaultOptions);
     },
 
     getPedido(id) {
@@ -64,7 +64,7 @@ var pedidos = {
             }
         };
 
-        return fetch(c.BASE_URL + '/pedido/' + id, defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/' + id, defaultOptions);
     },
 
     getPedidoAbierto() {
@@ -73,7 +73,8 @@ var pedidos = {
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Token " + localStorage.token
-            }
+            },
+            dataType: 'json',
         };
 
         return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/activo/', defaultOptions);
