@@ -53,7 +53,9 @@ export function login(usuario, ruta) {
                         try {
                             error.json()
                                 .then((error) => {
-                                    if (error.message && error.message.length > 0) {
+                                    if (Array.isArray(error.non_field_errors)) {
+                                        dispatch(errorLogin(error.non_field_errors[0]));
+                                    } else if (error.message && error.message.length > 0) {
                                         dispatch(errorLogin(error.message));
                                     } else {
                                         dispatch(errorLogin(errorMessages.GENERAL_ERROR));

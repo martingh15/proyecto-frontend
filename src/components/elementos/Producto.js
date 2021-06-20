@@ -109,7 +109,7 @@ class Producto extends React.Component {
                             }
                         </div>
                         <p className="producto-derecha-precio font-weight-bold text-right pr-2 m-0 text-nowrap">
-                            $ {producto.precio_vigente}
+                            {producto.precio_vigente}
                         </p>
                     </div>
                 </div>

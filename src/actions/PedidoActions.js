@@ -435,8 +435,7 @@ export function fetchPedidoAbierto() {
                 }
             })
             .then(function (data) {
-                let pedido = data.pedido ? data.pedido : {};
-                dispatch(receivePedidoAbierto(pedido));
+                dispatch(receivePedidoAbierto(data));
             })
             .catch(function (error) {
                 switch (error.status) {

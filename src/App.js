@@ -90,7 +90,7 @@ class App extends React.Component {
         }
         abierto.lineasIds.map(id => {
             let linea = abierto.lineas[id];
-            if (linea !== undefined && linea.producto_id === producto.id) {
+            if (linea !== undefined && linea.producto.id === producto.id) {
                 cantidad = linea.cantidad;
             }
         })
@@ -168,7 +168,7 @@ class App extends React.Component {
         let linea = null;
         pedido.lineasIds.map(id => {
             let item = lineas[id];
-            if (item !== undefined && item.producto_id === producto.id) {
+            if (item !== undefined && item.producto.id === producto.id) {
                 linea = item;
             }
         });

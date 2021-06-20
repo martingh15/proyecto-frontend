@@ -34,7 +34,7 @@ class Carrito extends React.Component {
         activo.lineasIds.map(id => {
             let linea = activo.lineas[id];
             if (linea) {
-                let producto = this.props.productos.byId.productos[linea.producto_id];
+                let producto = this.props.productos.byId.productos[linea.producto];
                 linea.producto = producto ? producto : {};
             }
             lineas.push(linea);

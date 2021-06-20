@@ -77,7 +77,7 @@ var pedidos = {
             dataType: 'json',
         };
 
-        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/activo/', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/abierto/', defaultOptions);
     }
 
 };
