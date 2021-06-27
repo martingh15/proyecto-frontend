@@ -117,7 +117,7 @@
     height: 100%;
     right: -500px;
     background-color: #1579bf;
-    border-left: 1px solid #0861a0;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)!important;
     transition: right 0.9s;
     text-align: left;
   }

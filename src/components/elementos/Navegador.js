@@ -112,8 +112,7 @@ class Navegador extends React.Component {
     * Alert if clicked on outside of element
     */
     handleClickOutside(event) {
-        var contiene = this.menu.current.contains(event.target);
-        if (this.menu && !contiene) {
+        if (this.menu && !this.menu.current.contains(event.target)) {
             this.setState({ collapse: false });
         }
     }

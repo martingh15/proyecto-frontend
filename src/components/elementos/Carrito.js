@@ -22,7 +22,20 @@ import Button from '@material-ui/core/Button';
 class Carrito extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            mostrar: props.mostrar,
+        }
+
+        this.carrito = React.createRef();
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+    }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
     getLineasPedidoActivo() {
@@ -85,11 +98,17 @@ class Carrito extends React.Component {
                 this.props.saveFinalizarPedido(abierto.id);
             }
         });
+    }
 
+    handleClickOutside(event) {
+        if (this.props.mostrar && this.carrito && !this.carrito.current.contains(event.target)) {
+            this.props.changeMostrar();
+        }
     }
 
     render() {
-        const {mostrar, blur}  = this.props;
+        const { mostrar, blur } = this.props;
+
         let claseBlur    = blur ? "forzar-blur" : "";
         let compras      = this.getLineasCarrito();
         let deshabilitar = compras.length === 0;
@@ -99,7 +118,7 @@ class Carrito extends React.Component {
             total = pedido.total;
         }
         return (
-            <nav className={`carrito ${claseBlur}`} style={{right: !mostrar ? "-300px" : "0"}}>
+            <nav ref={this.carrito} className={`carrito ${claseBlur}`} style={{right: !mostrar ? "-300px" : "0"}}>
                 <div className="carrito-botones">
                     <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar} onClick={() => this.finalizarPedido(deshabilitar)}>
                         Finalizar pedido
