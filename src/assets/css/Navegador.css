@@ -92,7 +92,7 @@
 }
 
 @media (max-width: 849px) {
-  .navegador .derecha {
+  .navegador .derecha, .navegador .izquierda .itemMenu {
     display: none;
   }
   .navegador .derecha-responsive {

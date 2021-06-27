@@ -176,6 +176,30 @@ class Navegador extends React.Component {
                 />
             </>
         );
+
+        const OpcionesMenu = (props) => (
+            <>
+                <ItemMenu
+                        mostrar={props.mostrar}
+                        grow={true}
+                        texto={"Almacén"}
+                        ruta={rutas.ALMACEN}
+                    />
+                    <ItemMenu
+                        mostrar={props.mostrar}
+                        grow={true}
+                        texto={"Menu"}
+                        ruta={rutas.MENU}
+                    />
+                    <ItemMenu
+                        mostrar={props.mostrar && props.esAdmin}
+                        grow={true}
+                        texto={"Gestión"}
+                        admin={true}
+                        ruta={rutas.GESTION}
+                    />
+            </>
+        );
     
         return (
             <nav className="navegador">
@@ -185,25 +209,7 @@ class Navegador extends React.Component {
                         alt="Logo sistema gestión"
                         title="Logo sistema de gestión gastronómico"
                     />
-                    <ItemMenu
-                        mostrar={true}
-                        grow={true}
-                        texto={"Almacén"}
-                        ruta={rutas.ALMACEN}
-                    />
-                    <ItemMenu
-                        mostrar={true}
-                        grow={true}
-                        texto={"Menu"}
-                        ruta={rutas.MENU}
-                    />
-                    <ItemMenu
-                        mostrar={esAdmin}
-                        grow={true}
-                        texto={"Gestión"}
-                        admin={true}
-                        ruta={rutas.GESTION}
-                    />
+                    <OpcionesMenu mostrar={true} esAdmin={esAdmin} />
                 </div>
                 <div className="derecha">
                     <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
@@ -216,6 +222,7 @@ class Navegador extends React.Component {
                         <img src={menu} alt="Menu" onClick={(e) => this.toogleResponsive(e)} />
                     </div>
                     <div className={collapse ? "menu-responsive-collapse colapse" : "menu-responsive-collapse"} style={{ right: collapse ? "-1px" : "-300px" }}>
+                        <OpcionesMenu mostrar={true} esAdmin={esAdmin} />
                         <NoLogueado mostrar={!logueado} />
                         <Logueado mostrar={logueado} nombre={false} />
                     </div>
