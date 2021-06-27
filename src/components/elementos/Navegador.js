@@ -24,6 +24,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 //Images
 import logo from "../../assets/img/logo.png";
+import menu from "../../assets/img/menu.png";
 
 class Navegador extends React.Component {
     constructor(props) {
@@ -31,7 +32,11 @@ class Navegador extends React.Component {
         this.state = {
             nombre: '',
             esAdmin: null,
-        }
+            collapse: false,
+        };
+
+        this.menu = React.createRef();
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     componentDidMount() {
@@ -43,6 +48,7 @@ class Navegador extends React.Component {
         if (this.props.usuarios.update.logueado.first_name) {
             this.setNombreUsuarioLogueado();
         }
+        document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -56,6 +62,10 @@ class Navegador extends React.Component {
                 esAdmin: logueado.esAdmin
             });
         }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
     setNombreUsuarioLogueado() {
@@ -94,8 +104,22 @@ class Navegador extends React.Component {
         return ruta === rutas.GESTION && (esAltaUsuarios || esListadoUsuarios || esEditarUsuarios || esListadoProductos || esAltaProductos);
     }
 
+    toogleResponsive(e) {
+        this.setState({ collapse: !this.state.collapse });
+    }
+
+    /**
+    * Alert if clicked on outside of element
+    */
+    handleClickOutside(event) {
+        var contiene = this.menu.current.contains(event.target);
+        if (this.menu && !contiene) {
+            this.setState({ collapse: false });
+        }
+    }
+
     render() {
-        const { nombre, esAdmin } = this.state;
+        const { nombre, esAdmin, collapse } = this.state;
         const logueado = this.props.authentication.token;
         const ItemMenu = props => {
             let display = props.mostrar ? "" : "no-mostrar";
@@ -133,7 +157,7 @@ class Navegador extends React.Component {
         const Logueado = props => (
             <>
                 <ItemMenu
-                    mostrar={props.mostrar}
+                    mostrar={props.mostrar && props.nombre}
                     grow={false}
                     texto={nombre !== "" ? "Hola " + nombre + "!" : ""}
                     ruta={""}
@@ -153,6 +177,7 @@ class Navegador extends React.Component {
                 />
             </>
         );
+    
         return (
             <nav className="navegador">
                 <div className="izquierda">
@@ -185,6 +210,16 @@ class Navegador extends React.Component {
                     <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
                     <NoLogueado mostrar={!logueado} />
                     <Logueado mostrar={logueado} />
+                </div>
+                <div className="derecha-responsive" ref={this.menu}>
+                    <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
+                    <div className="menu-responsive">
+                        <img src={menu} alt="Menu" onClick={(e) => this.toogleResponsive(e)} />
+                    </div>
+                    <div className={collapse ? "menu-responsive-collapse colapse" : "menu-responsive-collapse"} style={{ right: collapse ? "-1px" : "-300px" }}>
+                        <NoLogueado mostrar={!logueado} />
+                        <Logueado mostrar={logueado} nombre={false} />
+                    </div>
                 </div>
             </nav>
         );

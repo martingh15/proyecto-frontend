@@ -207,7 +207,7 @@ class App extends React.Component {
         return (
             <div className="app">
                 <LoaderLarge blur={blur} setBlur={(blur) => this.setBlur(blur)} />
-                <Navegador carrito={mostrar} changeMostrar={() => this.changeMostrar()} />
+                <Navegador changeMostrar={() => this.changeMostrar()} />
                 <Carrito
                     blur={blur}
                     mostrar={mostrar}

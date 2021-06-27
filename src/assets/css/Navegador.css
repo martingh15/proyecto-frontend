@@ -1,112 +1,166 @@
 /* Extra small devices (phones, less than 768px) */
 /* No media query since this is the default in Bootstrap */
 .navegador {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    height: 60px;
-    position: fixed;
-    z-index: 12;
-    width: 100vw;
-    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-    background-color: #1579bf;
-    align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  height: 60px;
+  position: fixed;
+  z-index: 12;
+  width: 100vw;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  background-color: #1579bf;
+  align-items: center;
 }
 
 .navegador .activo {
-    text-shadow: 3px 3px black;
+  text-shadow: 3px 3px black;
 }
 
 .navegador .icono-material {
-    margin: 0 10px;
-    color: white;
-    cursor: pointer;
+  margin: 0 10px;
+  color: white;
+  cursor: pointer;
 }
 
 .navegador .no-mostrar {
-    display: none !important;
+  display: none !important;
 }
 
 .navegador .logo {
-    height: 30px;
-    width: 30px;
-    margin: 10px 0 10px 30px;
-    cursor: pointer;
+  height: 30px;
+  width: 30px;
+  margin: 10px 0 10px 30px;
+  cursor: pointer;
 }
 
 .navegador .itemMenu {
-    background: transparent;
-    border: none;
-    color: white;
-    font-weight: bold;
-    margin-right: 20px;
-    cursor: pointer;
-    text-decoration: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin-right: 20px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .navegador .itemMenu:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .navegador .itemMenu:focus {
-    background-color: transparent;
+  background-color: transparent;
 }
 
-.navegador button, .navegador button:hover, .navegador .btn-primary:not(:disabled):not(.disabled).active:focus, .navegador .btn-primary:not(:disabled):not(.disabled):active:focus, .navegador .show>.btn-primary.dropdown-toggle:focus {
-    box-shadow: none !important;
-    background-color: transparent;
-    outline: none;
-    border: none;
+.navegador button,
+.navegador button:hover,
+.navegador .btn-primary:not(:disabled):not(.disabled).active:focus,
+.navegador .btn-primary:not(:disabled):not(.disabled):active:focus,
+.navegador .show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: none !important;
+  background-color: transparent;
+  outline: none;
+  border: none;
 }
 
-.navegador .izquierda a, .navegador .derecha a {
-   display: none;
+.navegador .derecha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navegador .derecha-responsive {
+  display: none;
+}
+
+.navegador .izquierda a,
+.navegador .derecha a {
+  display: none;
 }
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-
+@media (max-width: 768px) {
+  .navegador .derecha .grande {
+    display: none;
+  }
+  .navegador .derecha .mi-perfil {
+    cursor: unset;
+    position: fixed;
+    margin-right: 0;
+    right: 15px;
+  }
 }
 
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-
+@media (max-width: 849px) {
+  .navegador .derecha {
+    display: none;
+  }
+  .navegador .derecha-responsive {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+  }
+  .navegador .derecha-responsive img {
+    width: 30px;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+  .navegador .menu-responsive-collapse {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-left: 10px;
+    position: fixed;
+    top: 0px;
+    height: 100%;
+    right: -500px;
+    background-color: #1579bf;
+    border-left: 1px solid #0861a0;
+    transition: right 0.9s;
+    text-align: left;
+  }
+  .navegador .menu-responsive-collapse .itemMenu {
+    text-align: left;
+    margin: 5px 0;
+  }
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+  .navegador .izquierda a,
+  .navegador .derecha a {
+    display: block;
+  }
 
-    .navegador .izquierda a, .navegador .derecha a {
-        display: block;
-    }
+  .navegador .izquierda {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+  }
 
-    .navegador .izquierda {
-        display: flex;
-        align-items: center;
-        background-color: transparent;
-    }
+  .navegador .izquierda .itemMenu {
+    margin-left: 20px;
+  }
 
-    .navegador .izquierda .itemMenu {
-        margin-left: 20px;
-    }
+  .navegador .derecha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+  }
 
-    .navegador .derecha {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent;
-    }
+  .navegador .usuario-logueado {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-right: 30px;
+    color: white;
+    font-weight: bold;
+  }
 
-    .navegador .usuario-logueado {
-        display: flex;
-        flex-flow: row nowrap;
-        margin-right: 30px;
-        color: white;
-        font-weight: bold;
-    }
-
-    .navegador .usuario-logueado .logout {
-        margin-bottom: 0;
-        cursor: pointer;
-    }
+  .navegador .usuario-logueado .logout {
+    margin-bottom: 0;
+    cursor: pointer;
+  }
 }
