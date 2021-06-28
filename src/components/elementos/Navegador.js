@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 
 //Routes-redux
 import history from "../../history";
@@ -14,7 +15,6 @@ import auth from "../../api/authentication";
 
 //Constants
 import * as rutas from '../../constants/rutas.js';
-import * as roles from '../../constants/roles.js';
 
 //CSS
 import '../../assets/css/Navegador.css';
@@ -112,7 +112,7 @@ class Navegador extends React.Component {
     * Alert if clicked on outside of element
     */
     handleClickOutside(event) {
-        if (this.menu && !this.menu.current.contains(event.target)) {
+        if (this.menu && this.menu.current && !this.menu.current.contains(event.target)) {
             this.setState({ collapse: false });
         }
     }
@@ -136,6 +136,30 @@ class Navegador extends React.Component {
                 </button>
             )
         };
+
+        const OpcionesMenu = (props) => (
+            <>
+                <ItemMenu
+                    mostrar={props.mostrar}
+                    grow={true}
+                    texto={"Almacén"}
+                    ruta={rutas.ALMACEN}
+                />
+                <ItemMenu
+                    mostrar={props.mostrar}
+                    grow={true}
+                    texto={"Menu"}
+                    ruta={rutas.MENU}
+                />
+                <ItemMenu
+                    mostrar={props.mostrar && props.esAdmin}
+                    grow={true}
+                    texto={"Gestión"}
+                    admin={true}
+                    ruta={rutas.GESTION}
+                />
+            </>
+        );
 
         const NoLogueado = props => (
             <>
@@ -162,6 +186,7 @@ class Navegador extends React.Component {
                     ruta={""}
                     tipo={"boton"}
                 />
+                <OpcionesMenu mostrar={props.mostrar} esAdmin={esAdmin} />
                 <ItemMenu
                     mostrar={props.mostrar}
                     grow={true}
@@ -177,30 +202,9 @@ class Navegador extends React.Component {
             </>
         );
 
-        const OpcionesMenu = (props) => (
-            <>
-                <ItemMenu
-                        mostrar={props.mostrar}
-                        grow={true}
-                        texto={"Almacén"}
-                        ruta={rutas.ALMACEN}
-                    />
-                    <ItemMenu
-                        mostrar={props.mostrar}
-                        grow={true}
-                        texto={"Menu"}
-                        ruta={rutas.MENU}
-                    />
-                    <ItemMenu
-                        mostrar={props.mostrar && props.esAdmin}
-                        grow={true}
-                        texto={"Gestión"}
-                        admin={true}
-                        ruta={rutas.GESTION}
-                    />
-            </>
-        );
-    
+        let responsive = $(window).width() <= 849;
+        console.log(responsive)
+
         return (
             <nav className="navegador">
                 <div className="izquierda">
@@ -209,24 +213,26 @@ class Navegador extends React.Component {
                         alt="Logo sistema gestión"
                         title="Logo sistema de gestión gastronómico"
                     />
-                    <OpcionesMenu mostrar={true} esAdmin={esAdmin} />
+                    {!responsive ? <OpcionesMenu mostrar={true} esAdmin={esAdmin} /> : ""}
+
                 </div>
                 <div className="derecha">
                     <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
                     <NoLogueado mostrar={!logueado} />
                     <Logueado mostrar={logueado} />
                 </div>
-                <div className="derecha-responsive" ref={this.menu}>
-                    <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
-                    <div className="menu-responsive">
-                        <img src={menu} alt="Menu" onClick={(e) => this.toogleResponsive(e)} />
-                    </div>
-                    <div className={collapse ? "menu-responsive-collapse colapse" : "menu-responsive-collapse"} style={{ right: collapse ? "-1px" : "-300px" }}>
-                        <OpcionesMenu mostrar={true} esAdmin={esAdmin} />
-                        <NoLogueado mostrar={!logueado} />
-                        <Logueado mostrar={logueado} nombre={false} />
-                    </div>
-                </div>
+                {responsive ?
+                    <div className="derecha-responsive" ref={this.menu}>
+                        <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
+                        <div className="menu-responsive">
+                            <img src={menu} alt="Menu" onClick={(e) => this.toogleResponsive(e)} />
+                        </div>
+                        <div className={collapse ? "menu-responsive-collapse colapse" : "menu-responsive-collapse"} style={{ right: collapse ? "-1px" : "-300px" }}>
+                            <NoLogueado mostrar={!logueado} />
+                            <Logueado mostrar={logueado} nombre={false} />
+                        </div>
+                    </div>                
+                : ""}
             </nav>
         );
     }
