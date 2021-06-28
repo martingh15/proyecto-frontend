@@ -218,7 +218,7 @@ class Navegador extends React.Component {
                 <div className="derecha">
                     <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
                     <NoLogueado mostrar={!logueado} />
-                    <Logueado mostrar={logueado} responsive={responsive} />
+                    <Logueado mostrar={logueado} responsive={responsive} nombre={true} />
                 </div>
                 {responsive ?
                     <div className="derecha-responsive" ref={this.menu}>
