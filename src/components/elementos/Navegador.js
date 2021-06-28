@@ -186,7 +186,7 @@ class Navegador extends React.Component {
                     ruta={""}
                     tipo={"boton"}
                 />
-                <OpcionesMenu mostrar={props.mostrar} esAdmin={esAdmin} />
+                <OpcionesMenu mostrar={props.mostrar && props.responsive} esAdmin={esAdmin} />
                 <ItemMenu
                     mostrar={props.mostrar}
                     grow={true}
@@ -203,7 +203,6 @@ class Navegador extends React.Component {
         );
 
         let responsive = $(window).width() <= 849;
-        console.log(responsive)
 
         return (
             <nav className="navegador">
@@ -219,7 +218,7 @@ class Navegador extends React.Component {
                 <div className="derecha">
                     <ShoppingCartIcon className="icono-material hvr-grow" onClick={() => this.props.changeMostrar()} />
                     <NoLogueado mostrar={!logueado} />
-                    <Logueado mostrar={logueado} />
+                    <Logueado mostrar={logueado} responsive={responsive} />
                 </div>
                 {responsive ?
                     <div className="derecha-responsive" ref={this.menu}>
@@ -229,7 +228,7 @@ class Navegador extends React.Component {
                         </div>
                         <div className={collapse ? "menu-responsive-collapse colapse" : "menu-responsive-collapse"} style={{ right: collapse ? "-1px" : "-300px" }}>
                             <NoLogueado mostrar={!logueado} />
-                            <Logueado mostrar={logueado} nombre={false} />
+                            <Logueado mostrar={logueado} responsive={responsive} nombre={false} />
                         </div>
                     </div>                
                 : ""}

@@ -19,6 +19,9 @@ import isEmpty from "lodash/isEmpty";
 import Swal from "sweetalert2";
 import Button from '@material-ui/core/Button';
 
+//Images
+import imgVolver from "../../assets/img/arrow.png";
+
 class Carrito extends React.Component {
     constructor(props) {
         super(props);
@@ -118,7 +121,8 @@ class Carrito extends React.Component {
             total = pedido.total;
         }
         return (
-            <nav ref={this.carrito} className={`carrito ${claseBlur}`} style={{right: !mostrar ? "-300px" : "0"}}>
+            <nav ref={this.carrito} className={`carrito ${claseBlur}`} style={{ right: !mostrar ? "-300px" : "0" }}>
+                <img className="volverA" src={imgVolver} alt="Icono volver" onClick={() => this.props.changeMostrar()} />
                 <div className="carrito-botones">
                     <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar} onClick={() => this.finalizarPedido(deshabilitar)}>
                         Finalizar pedido
