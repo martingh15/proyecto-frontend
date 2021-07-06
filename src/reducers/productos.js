@@ -27,7 +27,6 @@ import {
 } from '../actions/ProductoActions';
 import {LOGOUT_SUCCESS} from "../actions/AuthenticationActions";
 import pickBy from "lodash/pickBy";
-import {RECEIVE_CATEGORIAS} from "../actions/CategoriaActions";
 
 function productosById(state = {
     isFetching: false,
@@ -45,14 +44,6 @@ function productosById(state = {
                 isFetching: false,
                 didInvalidate: true,
                 productos: [],
-            });
-        case RECEIVE_CATEGORIAS:
-            return Object.assign({}, state, {
-                isFetching: false,
-                didInvalidate: false,
-                productos: action.categorias.entities.productos,
-                lastUpdated: action.receivedAt,
-                error: null
             });
         //PRODUCTOS
         case INVALIDATE_PRODUCTOS:
@@ -284,11 +275,6 @@ function productosAllIds(state = [], action) {
             return state.filter(id => id != action.idProducto);
         case RESET_PRODUCTOS:
              return [];
-        case RECEIVE_CATEGORIAS:
-            let productos = action.categorias.entities.productos;
-            let ids       = productos ? Object.keys(productos) : [];
-            let enteros   = ids.map(id => parseInt(id));
-            return productos ? enteros : [];
         default:
             return state
     }

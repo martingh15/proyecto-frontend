@@ -126,7 +126,7 @@ class Listado extends React.Component {
                         <td>{producto.nombre}</td>
                         <td>{producto.categoria}</td>
                         <td className="font-weight-bold text-right px-5">
-                            {producto.precio_vigente}
+                            {producto.precio_texto}
                         </td>
                         <td>{operaciones}</td>
                     </tr>

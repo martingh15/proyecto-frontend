@@ -140,12 +140,12 @@ export function saveUpdateProducto(volverA) {
     return (dispatch, getState) => {
         dispatch(requestUpdateProducto());
         return productos.saveUpdate(getState().productos.update.activo)
-            .then(function (response) {
-                if (response.status >= 400) {
-                    return Promise.reject(response);
+            .then(function (respuesta) {
+                if (!respuesta.exito) {
+                    return Promise.reject(respuesta);
                 } else {
                     dispatch(receiveUpdateProducto());
-                    return response.json();
+                    return respuesta;
                 }
             })
             .then(() => {
@@ -162,7 +162,7 @@ export function saveUpdateProducto(volverA) {
                         return Promise.reject(error);
                     default:
                         if (error.responseJSON !== "") {
-                            console.log(error.responseJSON)
+                            console.log(error)
                             dispatch(errorUpdateProducto(error.responseJSON.message));
                         } else {
                             dispatch(errorUpdateProducto(errorMessages.GENERAL_ERROR));
