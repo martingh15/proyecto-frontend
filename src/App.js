@@ -89,8 +89,8 @@ class App extends React.Component {
             return cantidad;
         }
         abierto.lineasIds.map(id => {
-            let linea = abierto.lineas[id];
-            if (linea !== undefined && linea.producto.id === producto.id) {
+            let linea = abierto.lineas.find(linea => linea.id === id);
+            if (linea !== undefined && linea.producto === producto.id) {
                 cantidad = linea.cantidad;
             }
         })
@@ -131,12 +131,15 @@ class App extends React.Component {
         let nuevas = pedido.lineas;
         let idLinea = linea.id > 0 ? linea.id : 0;
         if (idLinea > 0) {
-            delete pedido.lineas[idLinea];
+            nuevas = pedido.lineas.filter(linea => linea.id !== idLinea);
         }
         let nuevaCantidad = cantidad + linea.cantidad;
         linea.cantidad = nuevaCantidad;
-        nuevas[idLinea] = linea;
+        nuevas.push(linea);
         pedido.lineas = nuevas;
+        pedido.lineasIds = nuevas.map(function (linea) {
+            return linea.id;
+        });
         this.setState({
             cantidad: nuevaCantidad
         })
@@ -167,8 +170,8 @@ class App extends React.Component {
         let lineas = pedido.lineas;
         let linea = null;
         pedido.lineasIds.map(id => {
-            let item = lineas[id];
-            if (item !== undefined && item.producto.id === producto.id) {
+            let item = lineas.find(linea => linea.id === id);
+            if (item !== undefined && item.producto === producto.id) {
                 linea = item;
             }
         });
@@ -176,7 +179,7 @@ class App extends React.Component {
             return {
                 id: 0,
                 cantidad: 0,
-                producto_id: producto.id
+                producto: producto.id
             };
         }
         return linea;
@@ -219,7 +222,7 @@ class App extends React.Component {
                     cancelarPedido={(sinLineas) => this.cancelarPedido(sinLineas)}
                     agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
                 />
-                <div className={`contenedor ${claseBlur}`} style={{ width: mostrar ? "calc(100% - 300px)" : "100%" }}>
+                <div className={`contenedor ${claseBlur}`} style={{ width: mostrar ? "calc(100% - 325px)" : "100%" }}>
                     <Switch>
                         <Route exact path={rutas.INICIO} component={Inicio} />
                         <Route exact path={rutas.LOGIN} component={Login} />

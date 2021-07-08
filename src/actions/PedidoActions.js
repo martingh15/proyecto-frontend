@@ -75,8 +75,8 @@ export function saveCreatePedido(volverA) {
             .then(function (data) {
                 dispatch(reveiceCreatePedido());
                 dispatch(resetCreatePedido());
-                if (data.success && data.pedido) {
-                    dispatch(receivePedidoAbierto(data.pedido));
+                if (data.exito && data.datos) {
+                    dispatch(receivePedidoAbierto(data));
                 }
                 if (data.forzar) {
                     Swal.fire({
