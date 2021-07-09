@@ -75,11 +75,11 @@ class Producto extends React.Component {
             }
         }
         let gestionCantidad = cantidad === 0 ?
-            <Button variant="outlined" color="primary" className="cancelar" onClick={() => this.props.agregarProducto(producto, 1)}>
+            <Button variant="outlined" color="primary" className="cancelar no-cerrar-carrito" onClick={() => this.props.agregarProducto(producto, 1)}>
                 <ShoppingCartIcon className="icono-material hvr-grow"/>Agregar
             </Button>
             :
-            <div className="producto-derecha-carrito-cantidad-gestion">
+            <div className="producto-derecha-carrito-cantidad-gestion no-cerrar-carrito">
                 <button
                     className="mr-2"
                     onClick={() => this.props.agregarProducto(producto, -1)}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import $ from 'jquery';
 
 //Api
 import auth from "../../api/authentication";
@@ -104,9 +105,15 @@ class Carrito extends React.Component {
     }
 
     handleClickOutside(event) {
-        if (this.props.mostrar && this.carrito && !this.carrito.current.contains(event.target)) {
+        let ocultar = this.comprobarOcultarCarrito(event);
+        if (!ocultar && this.props.mostrar && this.carrito && !this.carrito.current.contains(event.target)) {
             this.props.changeMostrar();
         }
+    }
+
+    comprobarOcultarCarrito(evento) {
+        let $elemento = $(evento.target).closest(".no-cerrar-carrito");
+        return $elemento.length > 0;
     }
 
     render() {
