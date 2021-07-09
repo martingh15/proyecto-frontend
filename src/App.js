@@ -88,12 +88,12 @@ class App extends React.Component {
         if (Array.isArray(abierto.lineas) && abierto.lineas.length === 0) {
             return cantidad;
         }
-        abierto.lineasIds.map(id => {
-            let linea = abierto.lineas.find(linea => linea.id === id);
-            if (linea !== undefined && linea.producto === producto.id) {
-                cantidad = linea.cantidad;
-            }
-        })
+        let linea = abierto.lineas.find(function (linea) {
+            return linea.producto.id === producto.id;
+        });
+        if (linea) {
+            cantidad = linea.cantidad;
+        }
         return cantidad;
     }
 
@@ -168,13 +168,7 @@ class App extends React.Component {
 
     getLineaProducto(producto, pedido) {
         let lineas = pedido.lineas;
-        let linea = null;
-        pedido.lineasIds.map(id => {
-            let item = lineas.find(linea => linea.id === id);
-            if (item !== undefined && item.producto === producto.id) {
-                linea = item;
-            }
-        });
+        let linea = lineas.find(linea => linea.producto.id === producto.id);
         if (linea === null) {
             return {
                 id: 0,
@@ -222,7 +216,7 @@ class App extends React.Component {
                     cancelarPedido={(sinLineas) => this.cancelarPedido(sinLineas)}
                     agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
                 />
-                <div className={`contenedor ${claseBlur}`} style={{ width: mostrar ? "calc(100% - 325px)" : "100%" }}>
+                <div className={`contenedor ${claseBlur}`} style={{ width: mostrar ? "calc(100% - 300px)" : "100%" }}>
                     <Switch>
                         <Route exact path={rutas.INICIO} component={Inicio} />
                         <Route exact path={rutas.LOGIN} component={Login} />

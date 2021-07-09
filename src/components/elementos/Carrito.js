@@ -49,9 +49,9 @@ class Carrito extends React.Component {
         }
         let lineas = [];
         activo.lineasIds.map(id => {
-            let linea = activo.lineas[id];
+            let linea = activo.lineas.find(linea => linea.id === id);
             if (linea) {
-                let producto = this.props.productos.byId.productos[linea.producto];
+                let producto = this.props.productos.byId.productos[linea.producto.id];
                 linea.producto = producto ? producto : {};
             }
             lineas.push(linea);
@@ -128,7 +128,7 @@ class Carrito extends React.Component {
             total = pedido.total;
         }
         return (
-            <nav ref={this.carrito} className={`carrito ${claseBlur}`} style={{ right: !mostrar ? "-325px" : "0" }}>
+            <nav ref={this.carrito} className={`carrito ${claseBlur}`} style={{ right: !mostrar ? "-300px" : "0" }}>
                 <img className="volverA" src={imgVolver} alt="Icono volver" onClick={() => this.props.changeMostrar()} />
                 <div className="carrito-botones">
                     <Button variant="outlined" color="secondary" className="finalizar" disabled={deshabilitar} onClick={() => this.finalizarPedido(deshabilitar)}>

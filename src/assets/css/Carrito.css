@@ -1,7 +1,7 @@
 .carrito {
     position: fixed;
     height: 100%;
-    width: 325px;
+    width: 300px;
     padding-top: 20px;
     transition: right 1s;
     box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)!important;
@@ -67,6 +67,7 @@
 .carrito-compras .carrito-item-top {
     display: flex;
     align-items: center;
+    height: 45px;
 }
 
 .carrito-compras .carrito-item img {

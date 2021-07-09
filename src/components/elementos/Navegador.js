@@ -205,7 +205,7 @@ class Navegador extends React.Component {
         let responsive = $(window).width() <= 849;
 
         return (
-            <nav className="navegador">
+            <nav className="navegador no-cerrar-carrito">
                 <div className="izquierda">
                     <img className="logo" src={logo}
                         onClick={() => this.redirectTo(rutas.INICIO)}

@@ -48,14 +48,6 @@ class Producto extends React.Component {
         }
     }
 
-    createPedido(pedido, idProducto) {
-        let linea = {};
-        linea.cantidad = 1;
-        linea.producto = idProducto;
-        pedido.lineas.push(linea);
-        return pedido;
-    }
-
     render() {
         const props = this.props;
         let {cantidad} = this.state;
