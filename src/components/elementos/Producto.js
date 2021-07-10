@@ -85,7 +85,7 @@ class Producto extends React.Component {
                 </button>
             </div>;
         return (
-            <article key={producto.id} className="producto">
+            <article key={producto.id} className="producto no-cerrar-carrito">
                 <div className="producto-izquierda">
                     <img src={path} onError={(e) => e.target.src = productoVacio} alt="Imagen de producto" />
                 </div>

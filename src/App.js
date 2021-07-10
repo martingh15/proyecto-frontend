@@ -169,11 +169,11 @@ class App extends React.Component {
     getLineaProducto(producto, pedido) {
         let lineas = pedido.lineas;
         let linea = lineas.find(linea => linea.producto.id === producto.id);
-        if (linea === null) {
+        if (linea === undefined) {
             return {
                 id: 0,
                 cantidad: 0,
-                producto: producto.id
+                producto: producto
             };
         }
         return linea;
@@ -233,6 +233,7 @@ class App extends React.Component {
                             <Almacen
                                 {...props}
                                 getCantidad={(producto) => this.getCantidad(producto)}
+                                changeMostrar={() => this.changeMostrar()}
                                 agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
                                 producto={producto}
                                 guardando={guardando}

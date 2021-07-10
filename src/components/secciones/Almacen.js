@@ -1,11 +1,12 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 //Actions
 import { fetchProductosIfNeeded } from "../../actions/ProductoActions";
 
 //Components
+import Button from '@material-ui/core/Button';
 import Producto from "../elementos/Producto";
 
 //CSS
@@ -43,10 +44,15 @@ class Almacen extends React.Component {
         }
         return (
             <div className="almacen">
-                <div className="tarjeta-body">
+                <div className="tarjeta-body d-flex flex-column">
                     <h1>Almacén</h1>
                     <div className={clase}>
                         {productos}
+                    </div>
+                    <div class="carrito-botones justify-content-end no-cerrar-carrito align-self-end">
+                        <Button variant="outlined" color="secondary" className="finalizar" onClick={() => this.props.changeMostrar()}>
+                            Carrito
+                        </Button>
                     </div>
                 </div>
             </div>
