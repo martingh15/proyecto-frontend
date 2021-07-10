@@ -134,6 +134,9 @@ class App extends React.Component {
             nuevas = pedido.lineas.filter(linea => linea.id !== idLinea);
         }
         let nuevaCantidad = cantidad + linea.cantidad;
+        if (cantidad === 0) {
+            nuevaCantidad = 0;
+        }
         linea.cantidad = nuevaCantidad;
         nuevas.push(linea);
         pedido.lineas = nuevas;
@@ -144,26 +147,6 @@ class App extends React.Component {
             cantidad: nuevaCantidad
         })
         return pedido;
-    }
-
-    borrarLinea(idProducto) {
-        this.setState({
-            borrando: true,
-            producto: idProducto,
-        });
-        let abierto = clone(this.props.pedidos.byId.abierto);
-        let lineas = abierto.lineasIds;
-        let nuevas = [];
-        lineas.map(idLinea => {
-            let linea = abierto.lineas[idLinea];
-            let producto = linea.producto;
-            if (linea && producto && producto.id !== idProducto) {
-                nuevas.push(linea);
-            }
-        });
-        abierto.lineas = nuevas;
-        this.props.createPedido(abierto);
-        this.props.saveCreatePedido();
     }
 
     getLineaProducto(producto, pedido) {
@@ -212,7 +195,6 @@ class App extends React.Component {
                     guardando={guardando}
                     borrando={borrando}
                     changeMostrar={() => this.changeMostrar()}
-                    borrarLinea={(idProducto) => this.borrarLinea(idProducto)}
                     cancelarPedido={(sinLineas) => this.cancelarPedido(sinLineas)}
                     agregarProducto={(producto, cantidad) => this.agregarProducto(producto, cantidad)}
                 />
