@@ -71,7 +71,6 @@ class Carrito extends React.Component {
                     guardando={this.props.guardando}
                     borrando={this.props.borrando}
                     productoGuardando={this.props.producto}
-                    borrarLinea={(idProducto) => this.props.borrarLinea(idProducto)}
                     agregarProducto={(producto, cantidad) => this.props.agregarProducto(producto, cantidad)}
                 />
             );
