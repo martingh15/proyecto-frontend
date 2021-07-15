@@ -94,7 +94,7 @@ class MensajeCorrecto extends React.Component {
                                              style={{marginTop: "10px", width: "20px"}}/> {mensaje}</p>);
             });
         return (
-            <div>
+            <div className="no-cerrar-carrito">
                 <SweetAlert title={titulo} success onConfirm={() => {
                     this.ocultarModal();
                 }} show={mostrar}

@@ -177,7 +177,25 @@ class App extends React.Component {
     cancelarPedido(sinLineas) {
         const abierto = this.props.pedidos.byId.abierto;
         if (abierto.id > 0 && !sinLineas) {
-            this.props.saveDeletePedido(abierto.id)
+            Swal.fire({
+                title: `¿Está seguro de cancelar el pedido? `,
+                icon: 'warning',
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: true,
+                confirmButtonText: 'Cancelar',
+                cancelButtonText: 'Continuar',
+                confirmButtonColor: '#ea2a2a',
+                cancelButtonColor: '#bfbfbf',
+                customClass: {
+                    container: 'no-cerrar-carrito'
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.props.saveDeletePedido(abierto.id)
+                }
+            });
+            
         }
     }
 

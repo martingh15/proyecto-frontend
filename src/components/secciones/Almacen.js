@@ -49,7 +49,7 @@ class Almacen extends React.Component {
                     <div className={clase}>
                         {productos}
                     </div>
-                    <div class="carrito-botones justify-content-end no-cerrar-carrito align-self-end">
+                    <div className="carrito-botones justify-content-end no-cerrar-carrito align-self-end">
                         <Button variant="outlined" color="secondary" className="finalizar" onClick={() => this.props.changeMostrar()}>
                             Carrito
                         </Button>

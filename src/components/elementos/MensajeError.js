@@ -1,6 +1,6 @@
 import React from "react";
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 //Boostrap
 import Button from "react-bootstrap/Button";
@@ -12,7 +12,7 @@ import isString from "lodash/isString";
 class MensajeError extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {mostrar: false, error: null};
+        this.state = { mostrar: false, error: null };
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -45,46 +45,48 @@ class MensajeError extends React.Component {
             });
         let errorValido = error != null & error !== undefined;
         if (errorValido && this.state.mostrar !== (error !== null) && error !== null && error.length > 0) {
-            this.setState({mostrar: true, error: error});
+            this.setState({ mostrar: true, error: error });
         }
     }
 
 
     render() {
-        const {mostrar, error} = this.state;
+        const { mostrar, error } = this.state;
 
         var msgError = "";
 
         if (Array.isArray(error) && !isString(error)) {
-            let items = error.map(function(er) {
+            let items = error.map(function (er) {
                 return (<li key={Math.random()}>{er}</li>);
             });
             msgError = <ul>{items}</ul>
-        } else{
+        } else {
             msgError = <p>{error}</p>;
         }
 
         return (
-            <Modal show={mostrar} onHide={() => {
-                this.setState({mostrar: false})
-            }}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Error</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {msgError}
-                    <p className="text-warning">
-                        <small>Intentelo nuevamente.</small>
-                    </p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className="danger" onClick={() => {
-                        this.setState({mostrar: false})
-                    }}>
-                        Cerrar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <div className="no-cerrar-carrito">
+                <Modal show={mostrar} onHide={() => {
+                    this.setState({ mostrar: false })
+                }}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Error</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {msgError}
+                        <p className="text-warning">
+                            <small>Intentelo nuevamente.</small>
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="danger" onClick={() => {
+                            this.setState({ mostrar: false })
+                        }}>
+                            Cerrar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         )
     }
 }
