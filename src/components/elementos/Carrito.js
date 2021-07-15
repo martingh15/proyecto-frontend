@@ -56,6 +56,13 @@ class Carrito extends React.Component {
             }
             lineas.push(linea);
         });
+        lineas = lineas.sort(function (a, b) {
+            let productoA = a.producto.nombre;
+            let productoB = b.producto.nombre;
+            if(productoA < productoB) { return -1; }
+            if(productoA > productoB) { return 1; }
+            return 0;
+        })
         return lineas;
     }
 
