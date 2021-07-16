@@ -44,14 +44,14 @@ var pedidos = {
 
     saveFinalizar(idPedido) {
         let defaultOptions = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Authorization": "Token " + localStorage.token
-            }
+            },
         };
 
-        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/'+ idPedido + '/finalizar/', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/' + idPedido + "/", defaultOptions);
     },
 
     getPedido(id) {
