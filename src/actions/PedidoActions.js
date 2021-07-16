@@ -78,23 +78,6 @@ export function saveCreatePedido(volverA) {
                 if (data.exito && data.datos) {
                     dispatch(receivePedidoAbierto(data));
                 }
-                if (data.forzar) {
-                    Swal.fire({
-                        title: data.message,
-                        icon: 'question',
-                        showCloseButton: true,
-                        showCancelButton: true,
-                        focusConfirm: true,
-                        confirmButtonText: 'Aceptar',
-                        confirmButtonColor: 'rgb(88, 219, 131)',
-                        cancelButtonColor: '#bfbfbf',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            dispatch(createPedido(data.pedido))
-                            dispatch(saveCreatePedido())
-                        }
-                    });
-                }
                 if (rutas.validarRuta(volverA)) {
                     history.push(volverA);
                 }
