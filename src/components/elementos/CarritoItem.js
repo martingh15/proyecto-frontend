@@ -65,7 +65,7 @@ class ItemCarrito extends React.Component {
                 <div style={{display: loaderBorrando ? "none" : "flex"}} className="carrito-item-bottom">
                     {loader ? <Loader display={true}/> : gestionBotones}
                     <div className="carrito-item-bottom-subtotal font-weight-bold">
-                        <span style={{display: loader ? "none" : "block"}}>$ {subtotal * cantidad}</span>
+                        <span style={{display: loader ? "none" : "block"}}>$ {subtotal}</span>
                     </div>
                     <div className="carrito-item-bottom-tacho">
                         <DeleteIcon className="cursor-pointer" onClick={() => this.props.agregarProducto(productoLinea, 0)}/>
