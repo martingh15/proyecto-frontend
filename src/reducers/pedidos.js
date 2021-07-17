@@ -140,8 +140,8 @@ function pedidosById(state = {
             if (action.pedido && action.pedido.entities && action.pedido.entities.pedido) {
                 pedido = Object.values(action.pedido.entities.pedido)[0].datos;
             }
-            if (action.pedido.exito && action.pedido.datos && action.pedido.datos.finalizado) {
-                pedido.finalizado = true;
+            if (action.pedido.exito && action.pedido.datos && action.pedido.datos.cerrado) {
+                pedido.cerrado = true;
             }
             if (pedido.lineas === undefined) {
                 pedido.lineas = [];
