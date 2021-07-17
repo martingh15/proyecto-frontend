@@ -162,6 +162,7 @@ export function saveFinalizarPedido(id) {
                 dispatch(resetCreatePedido());
                 if (data.message) {
                     dispatch(receiveFinalizarPedido(data.message));
+                    dispatch(fetchPedidoAbierto())
                 }
             })
             .catch(function (error) {
