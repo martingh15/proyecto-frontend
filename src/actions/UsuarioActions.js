@@ -342,7 +342,7 @@ export function fetchUsuarios() {
             })
             .then(function (data) {
                 if (data.exito) {
-                    dispatch(receiveUsuarios(data.datos.usuarios));
+                    dispatch(receiveUsuarios(data.usuarios));
                 }
             })
             .catch(function (error) {
