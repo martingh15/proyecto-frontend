@@ -4,7 +4,7 @@ require('isomorphic-fetch');
 
 var pedidos = {
 
-    getAll() {
+    getAll(idUsuario) {
 
         let defaultOptions = {
             method: 'GET',
@@ -14,7 +14,7 @@ var pedidos = {
             },
         };
 
-        return fetch(c.BASE_PUBLIC + '/pedido/', defaultOptions);
+        return fetch(c.BASE_PUBLIC + 'gastronomia/pedido/?usuario=' + idUsuario, defaultOptions);
     },
 
     saveCreate(pedido) {

@@ -231,10 +231,10 @@ function errorPedidos(error) {
     }
 }
 
-export function fetchPedidos() {
+export function fetchPedidos(idUsuario) {
     return dispatch => {
         dispatch(requestPedidos());
-        return pedidos.getAll()
+        return pedidos.getAll(idUsuario)
             .then(function (response) {
                 if (response.status >= 400) {
                     return Promise.reject(response);
@@ -244,7 +244,7 @@ export function fetchPedidos() {
                 }
             })
             .then(function (data) {
-                dispatch(receivePedidos(data));
+                dispatch(receivePedidos(data.datos));
             })
             .catch(function (error) {
                 //dispatch(logout());

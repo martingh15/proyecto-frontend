@@ -29,6 +29,7 @@ import Navegador from "./components/elementos/Navegador";
 import NotFound from "./components/secciones/NotFound";
 import Registro from "./components/secciones/Usuarios/Alta";
 import ValidarEmail from "./components/secciones/Usuarios/ValidarEmail";
+import Pedidos from "./components/secciones/Pedidos";
 
 //Redux
 import { connect } from 'react-redux';
@@ -39,7 +40,6 @@ import { Route, Switch } from "react-router";
 
 //Librerías
 import Swal from 'sweetalert2';
-import clone from "lodash/clone";
 import isEmpty from "lodash/isEmpty";
 
 class App extends React.Component {
@@ -247,6 +247,7 @@ class App extends React.Component {
                                 guardando={guardando}
                             />}
                         />
+                        <Route exact path={rutas.PEDIDOS} component={Pedidos} />
                         <Route exact path="*" component={NotFound} />
                     </Switch>
                 </div>

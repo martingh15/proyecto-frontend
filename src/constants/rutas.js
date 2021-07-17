@@ -44,6 +44,9 @@ export const CATEGORIAS_LISTAR       = '/categorias/listar';
 export const CATEGORIAS_LISTAR_ADMIN = '/categorias/listar/admin';
 export const CATEGORIAS_EDITAR_ADMIN = '/categorias/editar/admin/:id';
 
+//Gestión de pedidos
+export const PEDIDOS = '/pedidos';
+
 /**
  * Devuelve la url de usuarios
  *
@@ -87,7 +90,8 @@ const RUTAS = [
     USUARIOS_ALTA_COMUN,
     PRODUCTOS_LISTAR,
     PRODUCTOS_LISTAR_ADMIN,
-    PRODUCTO_ALTA
+    PRODUCTO_ALTA,
+    PEDIDOS
 ];
 
 /**

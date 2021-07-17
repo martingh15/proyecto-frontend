@@ -152,6 +152,13 @@ class Navegador extends React.Component {
                     ruta={rutas.MENU}
                 />
                 <ItemMenu
+                    mostrar={props.mostrar}
+                    grow={true}
+                    texto={"Pedidos"}
+                    admin={true}
+                    ruta={rutas.PEDIDOS}
+                />
+                <ItemMenu
                     mostrar={props.mostrar && props.esAdmin}
                     grow={true}
                     texto={"Gestión"}
