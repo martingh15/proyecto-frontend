@@ -143,7 +143,7 @@ class Listado extends React.Component {
                 let operaciones = this.getOperacionesUsuario(usuario);
                 Usuarios.push(
                     <tr key={usuario.id}>
-                        <td>{usuario.nombre}</td>
+                        <td>{usuario.first_name}</td>
                         <td>{usuario.email}</td>
                         <td>{usuario.dni}</td>
                         <td>{roles}</td>
