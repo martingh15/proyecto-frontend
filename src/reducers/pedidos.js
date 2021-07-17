@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import merge from "lodash/merge";
+import isEmpty from "lodash/isEmpty";
 
 //Actions
 import {
@@ -44,7 +45,12 @@ function pedidosById(state = {
     didInvalidatePedido: true,
     pedidos: [],
     pedido: {},
-    abierto: {},
+    abierto: {
+        id: 0,
+        forzar: false,
+        lineas: [],
+        lineasIds: [],
+    },
     error: null,
     success: "",
 }, action) {
@@ -130,7 +136,13 @@ function pedidosById(state = {
                 didInvalidatePedido: false
             });
         case RECEIVE_PEDIDO_ABIERTO:
-            let pedido       = Object.values(action.pedido.entities.pedido)[0].datos;
+            let pedido = {};
+            if (action.pedido && action.pedido.entities && action.pedido.entities.pedido) {
+                pedido = Object.values(action.pedido.entities.pedido)[0].datos;
+            }
+            if (action.pedido.exito && action.pedido.datos && action.pedido.datos.finalizado) {
+                pedido.finalizado = true;
+            }
             if (pedido.lineas === undefined) {
                 pedido.lineas = [];
             }
@@ -140,13 +152,18 @@ function pedidosById(state = {
             return Object.assign({}, state, {
                 isFetchingPedido: false,
                 didInvalidatePedido: false,
-                abierto: pedido,
+                abierto: merge(state.abierto, pedido),
                 lastUpdated: action.receivedAt,
                 error: null
             });
         case RESET_CREATE_PEDIDO:
             return Object.assign({}, state, {
-                abierto: {},
+                abierto: {
+                    id: 0,
+                    forzar: false,
+                    lineas: [],
+                    lineasIds: [],
+                },
                 error: null
             });
         case ERROR_PEDIDO_ABIERTO:

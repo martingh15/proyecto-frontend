@@ -74,8 +74,8 @@ export function saveCreatePedido(volverA) {
             })
             .then(function (data) {
                 dispatch(reveiceCreatePedido());
-                dispatch(resetCreatePedido());
-                if (data.exito && data.datos) {
+                if (data.exito) {
+                    dispatch(resetCreatePedido());
                     dispatch(receivePedidoAbierto(data));
                 }
                 if (rutas.validarRuta(volverA)) {
@@ -391,9 +391,12 @@ function requestPedidoAbierto() {
 }
 
 function receivePedidoAbierto(json) {
+    if (json && json.datos && json.datos.id) {
+        json = normalizeDato(json);
+    }
     return {
         type: RECEIVE_PEDIDO_ABIERTO,
-        pedido: normalizeDato(json),
+        pedido: json,
         receivedAt: Date.now()
     }
 }
@@ -418,7 +421,9 @@ export function fetchPedidoAbierto() {
                 }
             })
             .then(function (data) {
-                dispatch(receivePedidoAbierto(data));
+                if (data.exito) {
+                    dispatch(receivePedidoAbierto(data));
+                }                
             })
             .catch(function (error) {
                 switch (error.status) {
@@ -512,6 +517,7 @@ export function saveDeletePedido(id) {
                 let mensaje = respuesta.message;
                 dispatch(receiveDeletePedido(id, mensaje));
                 dispatch(resetCreatePedido());
+                dispatch(fetchPedidoAbierto())
             })
             .catch(function (error) {
                 switch (error.status) {

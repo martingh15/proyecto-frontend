@@ -116,17 +116,38 @@ class App extends React.Component {
             });
         } else {
             let pedido = this.actualizarPedido(producto, cantidad);
-            this.setState({
-                guardando: true,
-                producto: producto.id,
-            });
-            this.props.createPedido(pedido);
-            this.props.saveCreatePedido();
+            if (pedido.finalizado) {
+                Swal.fire({
+                    title: "Ya tiene un pedido por retirar. ¿Está seguro de comenzar otro pedido?",
+                    icon: 'question',
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    focusConfirm: true,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: 'rgb(88, 219, 131)',
+                    cancelButtonColor: '#bfbfbf',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.crearPedidoAbierto(producto, pedido);
+                    }
+                });
+            } else {
+                this.crearPedidoAbierto(producto, pedido);
+            }
         }
     }
 
+    crearPedidoAbierto(producto, pedido) {
+        this.setState({
+            guardando: true,
+            producto: producto.id,
+        });
+        this.props.createPedido(pedido);
+        this.props.saveCreatePedido();
+    }
+
     actualizarPedido(producto, cantidad) {
-        let pedido = this.getPedidoActual();
+        let pedido = this.props.pedidos.byId.abierto;;
         let linea = this.getLineaProducto(producto, pedido);
         let nuevas = pedido.lineas;
         let idLinea = linea.id > 0 ? linea.id : 0;
@@ -162,18 +183,6 @@ class App extends React.Component {
         return linea;
     }
 
-    getPedidoActual() {
-        const abierto = this.props.pedidos.byId.abierto;
-        if (isNaN(abierto.id)) {
-            return {
-                id: 0,
-                lineas: [],
-                lineasIds: []
-            };
-        }
-        return abierto;
-    }
-
     cancelarPedido(sinLineas) {
         const abierto = this.props.pedidos.byId.abierto;
         if (abierto.id > 0 && !sinLineas) {
@@ -187,15 +196,12 @@ class App extends React.Component {
                 cancelButtonText: 'Continuar',
                 confirmButtonColor: '#ea2a2a',
                 cancelButtonColor: '#bfbfbf',
-                customClass: {
-                    container: 'no-cerrar-carrito'
-                },
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.props.saveDeletePedido(abierto.id)
+                    this.props.saveDeletePedido(abierto.id);
                 }
             });
-            
+
         }
     }
 
