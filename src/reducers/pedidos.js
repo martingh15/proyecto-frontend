@@ -178,7 +178,12 @@ function pedidosById(state = {
                 didInvalidatePedido: true,
                 error: null,
                 lastUpdated: null,
-                abierto: {},
+                abierto: {
+                    id: 0,
+                    forzar: false,
+                    lineas: [],
+                    lineasIds: [],
+                },
             });
         case RECEIVE_DELETE_PEDIDO:
             return Object.assign({}, state, {

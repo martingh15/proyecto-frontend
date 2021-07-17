@@ -78,6 +78,9 @@ export function saveCreatePedido(volverA) {
                     dispatch(resetCreatePedido());
                     dispatch(receivePedidoAbierto(data));
                 }
+                if (data.datos && data.datos.pedido === 'borrado') {
+                    dispatch(fetchPedidoAbierto())
+                }
                 if (rutas.validarRuta(volverA)) {
                     history.push(volverA);
                 }
